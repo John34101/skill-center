@@ -1,0 +1,74 @@
+[
+ {
+  "name": "家长回复·计算总出错·文章骨架",
+  "skill": "writing-shape",
+  "scene": "家长答疑",
+  "note": "结构让回复告别『你要细心点』式说教，直接落到 3 个可执行归因+一周动作",
+  "link": "",
+  "point": "3 个候选开头 → 选「粗心是结果不是原因」→ 三个归因 + 一周执行表"
+ },
+ {
+  "name": "口播稿·刷题没效果三件事·节奏骨架",
+  "skill": "writing-beats",
+  "scene": "口播视频",
+  "note": "口播稿从此有起承转合，不再平铺直叙",
+  "link": "",
+  "point": "钩子→反转→限时训练→讲题输出→间隔重做→收尾，6 拍起承转合"
+ },
+ {
+  "name": "10月初中数学内容策略",
+  "skill": "content-strategy",
+  "scene": "内容创作",
+  "note": "选题从『我想发什么』变成『家长在焦虑什么』",
+  "link": "",
+  "point": "受众焦虑点调研 → 4 个内容支柱（计算/几何/函数/习惯）→ 12 条选题+日历"
+ },
+ {
+  "name": "Skill中心 worker.js 安全审计",
+  "skill": "security-audit",
+  "scene": "效率管理",
+  "note": "发现 4 个问题：BASE_TOKEN 常量硬编码在源码、ALLOWED_ORIGIN 仅验 Origin 头可伪造、无速率限制可被刷写库、user token 明文存 KV",
+  "link": "",
+  "point": "审出 4 个问题：token 硬编码 · Origin 可伪造 · 无限流 · KV 明文"
+ },
+ {
+  "name": "沉淀·Base写入与技能安装经验",
+  "skill": "self-improving-agent",
+  "scene": "效率管理",
+  "note": "经验落盘后可被后续任务复用，越用越聪明",
+  "link": "",
+  "point": "沉淀 3 条复用经验：Base 扁平写入 · 安装需备份 · CLI 以 --help 为准"
+ },
+ {
+  "name": "Skill中心·机房机架视觉方向",
+  "skill": "frontend-design",
+  "scene": "效率管理",
+  "note": "先定方向再写代码，避免模板化 AI 通用 UI；该风格已实际应用在线上 Skill 中心",
+  "link": "",
+  "point": "机房机架风：深色底 + 单色等宽 + 模块化单元 + 状态灯"
+ },
+ {
+  "name": "初中家长数学高频问题调研",
+  "skill": "agent-reach",
+  "scene": "家长答疑",
+  "note": "3 大板块直接对应内容支柱，可作为选题与答疑弹药库",
+  "link": "",
+  "point": "3 大高频板块：计算粗心 · 几何辅助线 · 函数图像与应用"
+ },
+ {
+  "name": "一线三垂直模型图解页",
+  "skill": "visual-explainer",
+  "scene": "题目解析",
+  "note": "压轴题『隐形全等』可视化，学生一眼看懂；产物可作课件配图",
+  "link": "https://aka.doubaocdn.com/s/UkDjhk1zt2",
+  "point": ""
+ },
+ {
+  "name": "一元二次方程知识地图",
+  "skill": "ljg-map",
+  "scene": "教学备课",
+  "note": "复习时一张图看完全章关系，学生反馈比看笔记快；产物可打印",
+  "link": "https://aka.doubaocdn.com/s/oXUTiS7VUX",
+  "point": ""
+ }
+]

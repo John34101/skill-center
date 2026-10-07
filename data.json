@@ -1676,7 +1676,7 @@
    "link": "",
    "steps": "按 writing-shape 流程：①读家长提问素材；②定前提（家长已知『计算出错』现象，需补归因框架）；③给出 3 个候选开头（共情立论/归因清单/错题场景切入）；④选定『粗心是结果不是原因』角度；⑤逐段搭骨架：共情开场→归因1熟练度不足→归因2过程不规范（跳步/草稿乱）→归因3检查无方法→一周执行表→预期管理",
    "note": "结构让回复告别『你要细心点』式说教，直接落到 3 个可执行归因+一周动作",
-   "cover": "",
+   "cover": "https://aka.doubaocdn.com/s/SuNhAZVajw",
    "bg": "家长问『初一孩子计算总出错、粗心怎么办』，代写回复前先用写作结构搭骨架",
    "time": "开头角度选择耗时最多；一次给 3 个候选让用户拍板更快",
    "repro": "已验证可复现"
@@ -1690,7 +1690,7 @@
    "link": "",
    "steps": "按 writing-beats：①定前提（家长懂『刷题』）；②候选起始 beat，选定『钩子：刷题没效果不是题量问题』；③逐 beat 推进并检查 grounding：钩子→反转（先归因错题）→第一件事限时训练→第二件事讲题输出→第三件事错题间隔重做→收尾一周计划",
    "note": "口播稿从此有起承转合，不再平铺直叙",
-   "cover": "",
+   "cover": "https://aka.doubaocdn.com/s/jVRdLyP9YR",
    "bg": "做『孩子刷题没效果』口播视频，用节奏技能设计节拍序列",
    "time": "beat 间 grounding 检查耗时，每个新概念必须先落地再被引用",
    "repro": "已验证可复现"
@@ -1704,7 +1704,7 @@
    "link": "",
    "steps": "按 content-strategy Before Planning：①业务背景（口播号定位学习方法、答疑号定位家长问题）；②受众调研（初一初二家长，焦虑点=计算/几何/函数/习惯）；③4 个内容支柱：计算基本功/几何入门/函数启蒙/学习习惯；④产出 12 条选题+第一周日历",
    "note": "选题从『我想发什么』变成『家长在焦虑什么』",
-   "cover": "",
+   "cover": "https://aka.doubaocdn.com/s/IeHnw59PUU",
    "bg": "为口播号+家长答疑号做 10 月内容规划",
    "time": "受众调研是重头，素材够才能让选题不空",
    "repro": "已验证可复现"
@@ -1718,7 +1718,7 @@
    "link": "",
    "steps": "按 security-audit 审计 backend/worker.js：①硬编码凭据检查；②Origin 校验强度；③速率限制；④token 存储方式；⑤API 容错。逐条对照 checklist 输出发现+修复建议",
    "note": "发现 4 个问题：BASE_TOKEN 常量硬编码在源码、ALLOWED_ORIGIN 仅验 Origin 头可伪造、无速率限制可被刷写库、user token 明文存 KV",
-   "cover": "",
+   "cover": "https://aka.doubaocdn.com/s/wLKcHBIydo",
    "bg": "网页反馈链路 worker.js 上线后做安全自查",
    "time": "逐条对照约 5 分钟",
    "repro": "已验证可复现"
@@ -1732,7 +1732,7 @@
    "link": "",
    "steps": "按 self-improving-agent 流程：①回顾既有 learnings；②沉淀 3 条新经验：Base 写入用 --json 扁平 create_records（不要 --create-records flag）；安装技能后要 cp -rL 到 .user_skills 并 tar 备份，否则环境清除会丢；lark-cli 参数以 --help 实测为准",
    "note": "经验落盘后可被后续任务复用，越用越聪明",
-   "cover": "",
+   "cover": "https://aka.doubaocdn.com/s/nLdYsWZKIL",
    "bg": "连续踩坑后沉淀可复用经验，避免重复犯错",
    "time": "约 3 分钟",
    "repro": "已验证可复现"
@@ -1746,7 +1746,7 @@
    "link": "",
    "steps": "按 frontend-design 原则（ground in subject matter）：以『管理面板/机房』为主题定方向——深色底+单色等宽字体+模块化单元卡片+状态指示灯点缀，先定设计令牌再写代码",
    "note": "先定方向再写代码，避免模板化 AI 通用 UI；该风格已实际应用在线上 Skill 中心",
-   "cover": "",
+   "cover": "https://aka.doubaocdn.com/s/zXivQFV8rV",
    "bg": "Skill 中心改版前用前端设计技能定视觉方向",
    "time": "方向定稿约 10 分钟",
    "repro": "已验证可复现"
@@ -1760,7 +1760,7 @@
    "link": "",
    "steps": "用 agent-reach 检索多平台（抖音/教育平台/媒体），聚合出 3 大板块：①计算粗心（归因=熟练度/过程不规范/检查无方法）；②几何证明（辅助线、全等模型）；③函数（一次/二次函数图像与应用）；附真实来源链接",
    "note": "3 大板块直接对应内容支柱，可作为选题与答疑弹药库",
-   "cover": "",
+   "cover": "https://aka.doubaocdn.com/s/rVqNUD4p8U",
    "bg": "为选题与答疑积累素材，调研全网家长高频问题",
    "time": "检索源杂，需甄别营销内容",
    "repro": "已验证可复现"
@@ -1774,7 +1774,7 @@
    "link": "https://aka.doubaocdn.com/s/UkDjhk1zt2",
    "steps": "按 visual-explainer：①design judgment 定教育风（浅色+蓝绿黄三色）；②plan first（三要素卡+SVG 示意图+三步推理+考点提示）；③写自包含 HTML，SVG 精确画直角与等角标注；④本地渲染验证",
    "note": "压轴题『隐形全等』可视化，学生一眼看懂；产物可作课件配图",
-   "cover": "",
+   "cover": "https://aka.doubaocdn.com/s/o6bh2A2fVi",
    "bg": "给学生/家长讲『一线三垂直（K字模型）』，用图解页直观呈现",
    "time": "SVG 直角标注需精确坐标，约 10 分钟",
    "repro": "已验证可复现"
@@ -1788,7 +1788,7 @@
    "link": "https://aka.doubaocdn.com/s/oXUTiS7VUX",
    "steps": "按 ljg-map：①读讲义提炼节点（定义/判别/四解法/Δ/韦达/应用）；②按真实关系连线（并列解法、Δ由公式法导出、韦达由求根公式导出）；③每节点配短公式与白话；④产出 SVG 知识地图 HTML",
    "note": "复习时一张图看完全章关系，学生反馈比看笔记快；产物可打印",
-   "cover": "",
+   "cover": "https://aka.doubaocdn.com/s/dmVSbVhgAE",
    "bg": "期中复习前把一元二次方程全章画成知识地图",
    "time": "关系梳理是核心耗时点，确保箭头语义真实",
    "repro": "已验证可复现"
@@ -1863,7 +1863,10 @@
   "deeptutor": "感兴趣",
   "security-audit": "不感兴趣",
   "self-improving-agent": "感兴趣",
-  "hermes-edu-skills": "感兴趣"
+  "hermes-edu-skills": "感兴趣",
+  "money-printer-turbo": "不感兴趣",
+  "ponytail": "感兴趣",
+  "seedance-2.0-prompt-writing": "感兴趣"
  },
  "handbook": {
   "manimate": {
@@ -2275,5 +2278,5 @@
    "diff": "1分钟内上手"
   }
  },
- "updated": "2026-10-08 01:01"
+ "updated": "2026-10-08 06:53"
 }
