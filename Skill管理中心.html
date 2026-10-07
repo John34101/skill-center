@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill 中心</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232F5D50'/%3E%3Cpath d='M10 22V10h3.4l3.1 6.6L19.6 10H23v12h-3.2v-6.9L17.1 21h-1.4l-2.7-7.9V22z' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#F3F4F6; --surface:#FFFFFF; --ink:#1B1E23; --ink-2:#5A6472;
+    --line:#D8DCE3; --line-2:#C3CAD4;
+    --blue:#2B59C3; --amber:#E09F3E; --red:#C33C2E; --green:#2F9E5B;
+    --blue-soft:#E9EEF9; --amber-soft:#FBF3E3; --red-soft:#FBE9E5; --green-soft:#EAF4EE;
+    --radius:10px;
+    --sans:'IBM Plex Sans','PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{font-size:16px;scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--blue);color:#fff}
+  a{color:var(--blue);text-decoration:none}
+  button{font-family:inherit}
+  .mono,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+  /* ===== 顶栏 ===== */
+  .topbar{display:flex;align-items:center;gap:14px;background:var(--surface);border-bottom:1px solid var(--line);padding:11px 24px;position:sticky;top:0;z-index:90}
+  .topbar-brand{display:flex;align-items:center;gap:10px}
+  .brand-mark{width:22px;height:22px;border-radius:6px;background:var(--ink);display:grid;place-items:center;flex:none}
+  .brand-mark i{width:9px;height:9px;border-radius:2.5px;background:var(--amber);display:block}
+  .topbar-brand b{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .topbar-sub{font-size:11.5px;color:var(--ink-2);padding:2px 8px;border:1px solid var(--line);border-radius:999px;background:var(--bg)}
+  .topbar .spacer{flex:1}
+  .topbar-sync{font-size:11.5px;color:var(--ink-2);font-family:var(--mono)}
+  .topbar-sync b{color:var(--ink);font-weight:500}
+
+  /* ===== 机架状态条（唯一记忆点）===== */
+  .rack{background:#17191D;color:#C9CED6;display:flex;align-items:center;gap:26px;padding:9px 24px;font-family:var(--mono);font-size:12.5px;position:sticky;top:53px;z-index:85}
+  .rack .lbl{color:#7D8694}
+  .rack .seg{display:flex;align-items:center;gap:7px}
+  .led{width:8px;height:8px;border-radius:50%;flex:none}
+  .led.g{background:var(--green);box-shadow:0 0 0 3px rgba(47,158,91,.16)}
+  .led.a{background:var(--amber);box-shadow:0 0 0 3px rgba(224,159,62,.16)}
+  .led.r{background:var(--red);box-shadow:0 0 0 3px rgba(195,60,46,.15)}
+  .led.n{background:transparent;border:1.5px solid #4A5260}
+  .rack b{color:#E6EAEF;font-weight:500}
+  .rack .spacer{flex:1}
+
+  /* ===== 布局 ===== */
+  .layout{display:grid;grid-template-columns:216px 1fr;min-height:calc(100vh - 108px)}
+  #sidebar{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:16px 12px;min-height:0}
+  .side-brand{display:flex;flex-direction:column;gap:2px;padding:2px 10px 14px}
+  .side-brand b{font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .side-brand .side-tag{font-size:11px;color:var(--ink-2)}
+  #sidebar .search{margin:0 6px 14px;flex:none;position:relative}
+  .search input{width:100%;padding:8px 12px 8px 34px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font-size:13.5px;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}
+  .search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(43,89,195,.12);background:var(--surface)}
+  .search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);stroke:var(--ink-2);pointer-events:none}
+  #sideNav{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px;padding:2px 0}
+  .nav-group{margin-bottom:12px}
+  .nav-tt{font-size:11px;font-weight:600;letter-spacing:.06em;color:#9AA3B0;padding:0 10px 5px}
+  #sideNav a{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;font-size:13.5px;color:var(--ink-2);text-decoration:none;transition:background .12s,color .12s;border-left:3px solid transparent}
+  #sideNav a:hover{background:var(--bg);color:var(--ink)}
+  #sideNav a.on{color:var(--blue);background:var(--blue-soft);border-left-color:var(--blue);font-weight:600}
+  .side-foot{padding:12px 10px 4px;border-top:1px solid var(--line);font-size:11px;color:var(--ink-2);font-family:var(--mono)}
+  .side-foot .updated{white-space:nowrap}
+  .updated b{color:var(--ink);font-weight:600}
+  #mobileBar{display:none}
+
+  main{padding:22px 26px 80px;width:100%;max-width:none;min-width:0}
+  .sec-hidden{display:none!important}
+
+  /* ===== 区块通用 ===== */
+  section{margin:34px 0}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 14px}
+  .sec-head h2{font-size:19px;margin:0;font-weight:600;letter-spacing:-.01em}
+  .sec-head .sub{font-size:12.5px;color:var(--ink-2)}
+  .sec-head .grow{flex:1}
+  .empty{padding:26px;text-align:center;color:var(--ink-2);font-size:13.5px;background:var(--surface);border:1px dashed var(--line-2);border-radius:var(--radius)}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;transition:border-color .15s,box-shadow .15s}
+  .card:hover{border-color:var(--line-2);box-shadow:0 2px 10px rgba(27,30,35,.05)}
+
+  .btn{display:inline-flex;align-items:center;gap:6px;justify-content:center;font-size:13px;font-weight:500;border-radius:7px;padding:6px 13px;border:1px solid transparent;cursor:pointer;transition:background .13s,border-color .13s,color .13s;text-decoration:none;min-height:30px;font-family:inherit}
+  .btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .btn.primary{background:var(--blue);color:#fff}
+  .btn.primary:hover{background:#2449A3}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+  .btn.ghost:hover{border-color:var(--blue);color:var(--blue)}
+  .btn.sub{background:transparent;color:var(--ink-2);border-color:var(--line-2);font-size:12px;padding:4px 10px;min-height:25px}
+  .btn.sub:hover{border-color:var(--ink-2);color:var(--ink)}
+  .btn.done{background:var(--blue-soft);color:var(--blue);border-color:#C8D6F2;cursor:default;font-weight:500}
+  .btn.danger{color:var(--red);border-color:#EBC4BC;background:transparent}
+  .btn.danger:hover{background:var(--red-soft)}
+  .btn:disabled{opacity:.7;cursor:not-allowed}
+  .btn.pending{opacity:.6}
+
+  .chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;padding:2px 9px;border-radius:999px;border:1px solid;white-space:nowrap}
+  .chip.inst{color:var(--green);background:var(--green-soft);border-color:#BFE0CB}
+  .chip.missing{color:#9A6B12;background:var(--amber-soft);border-color:#EFDCB4}
+  .chip.recover{color:var(--red);background:var(--red-soft);border-color:#F0C9C2}
+  .chip.rate-good{color:var(--green);background:var(--green-soft);border-color:#BFE0CB}
+  .chip.rate-mid{color:#9A6B12;background:var(--amber-soft);border-color:#EFDCB4}
+  .chip.rate-bad{color:var(--red);background:var(--red-soft);border-color:#F0C9C2}
+  .chip.rate-none{color:var(--ink-2);background:transparent;border-color:var(--line-2)}
+  .chip.t-chip{font-size:11px;padding:1px 8px;background:#EEF0F3;border-color:var(--line);color:var(--ink-2)}
+  .chip.interested{color:#2B5B8C;background:#E8F0F8;border-color:#C4D9EC}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none;box-shadow:0 0 0 3px rgba(0,0,0,.05)}
+  .dot.inst{background:var(--green)} .dot.missing{background:var(--amber)} .dot.recover{background:var(--red)}
+
+  .heat-tag{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);white-space:nowrap}
+  .heat-tag b{font-weight:500;color:var(--ink)}
+
+  /* ===== 今日推荐 ===== */
+  #feedRow{display:flex;flex-direction:column;gap:22px}
+  .feed-sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+  .feed-sec-tt{font-size:14px;font-weight:600}
+  .feed-sec-sub{font-size:11.5px;color:var(--ink-2)}
+  .feed-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media (min-width:1560px){.feed-grid{grid-template-columns:repeat(4,1fr)}}
+  @media (min-width:2080px){.feed-grid{grid-template-columns:repeat(5,1fr)}}
+  @media (min-width:2600px){.feed-grid{grid-template-columns:repeat(6,1fr)}}
+  @media (min-width:3200px){.feed-grid{grid-template-columns:repeat(7,1fr)}}
+  .feed-empty{font-size:13px;color:var(--ink-2);padding:14px 16px;border:1px dashed var(--line-2);border-radius:12px}
+  .feed-card{padding:16px 18px;display:flex;flex-direction:column;gap:9px;position:relative}
+  .feed-card .fc-top{display:flex;align-items:flex-start;gap:8px}
+  .feed-card .fc-name{font-size:15.5px;font-weight:600;line-height:1.3}
+  .feed-card .fc-en{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);display:block;margin-top:2px;word-break:break-all}
+  .feed-card .fc-why{font-size:13px;color:var(--ink-2);flex:1;line-height:1.55}
+  .feed-card .fc-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .feed-card .fc-acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:2px}
+  .feed-card .fc-acts .btn{min-height:32px}
+  .feed-sub{font-size:12px;color:var(--ink-2)}
+
+  /* ===== 待我决定 ===== */
+  .inbox-list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+  .inbox-row{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line)}
+  .inbox-row:last-child{border-bottom:none}
+  .inbox-row:hover{background:#F8F9FB}
+  .inbox-date{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);width:64px;flex:none}
+  .inbox-name{font-size:14px;font-weight:600;min-width:0}
+  .inbox-name em{display:block;font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--ink-2);font-weight:400}
+  .inbox-why{font-size:12.5px;color:var(--ink-2);flex:1;min-width:0}
+  .inbox-acts{display:flex;align-items:center;gap:8px;flex:none}
+  .details{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:4px 8px}
+  .details summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);padding:8px 10px;list-style:none;display:flex;align-items:center;gap:6px}
+  .details summary::-webkit-details-marker{display:none}
+  .details summary::before{content:"▸";color:var(--ink-2);font-size:11px;transition:transform .15s}
+  .details[open] summary::before{transform:rotate(90deg)}
+  .hist-group{margin-bottom:6px}
+  .hist-group>div:first-child{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);padding:8px 10px 2px}
+  .hist-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;font-size:13px}
+  .hist-row:hover{background:var(--bg)}
+  .hist-row .d{font-family:var(--mono);font-size:11px;color:var(--ink-2);flex:none}
+  .hist-row .n{font-weight:600;cursor:pointer;flex:none}
+  .hist-row .w{color:var(--ink-2);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* ===== 工具箱 ===== */
+  .tool-filters{display:flex;gap:8px;margin:0 0 14px;flex-wrap:wrap}
+  .tool-filters .btn{border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);font-size:12.5px;padding:5px 13px}
+  .tool-filters .btn.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .scene-group{margin-bottom:24px}
+  .scene-title{display:flex;align-items:baseline;gap:10px;font-size:14.5px;font-weight:600;margin:0 0 10px}
+  .scene-cnt{font-family:var(--mono);font-size:11px;color:var(--ink-2);font-weight:400}
+  .tool-list{border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+  .tool-row:first-child{border-top-left-radius:11px;border-top-right-radius:11px}
+  .tool-row:last-child{border-bottom-left-radius:11px;border-bottom-right-radius:11px}
+  .tool-row{display:grid;grid-template-columns:16px minmax(0,1fr) auto auto auto auto;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--line)}
+  .tool-row:last-child{border-bottom:none}
+  .tool-row:hover{background:#F8F9FB}
+  .tool-name{font-size:14px;font-weight:600;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tool-name em{display:block;font-style:normal;font-family:var(--mono);font-size:11px;color:var(--ink-2);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tool-tags{display:flex;gap:6px;min-width:0}
+  .tool-tags .heat-tag{font-family:var(--sans);font-size:11px;background:#EEF0F3;border-radius:999px;padding:2px 8px;color:var(--ink-2);border:1px solid var(--line)}
+  .tool-cases{flex:none}
+  .case-pill{font-size:11.5px;color:var(--ink-2);white-space:nowrap}
+  .case-pill b{font-family:var(--mono);font-weight:500;color:var(--ink)}
+  .tool-right{display:flex;align-items:center;flex:none}
+  .kebab{position:relative}
+  .kebab-btn{width:28px;height:28px;border:0;border-radius:6px;background:none;color:var(--ink-2);cursor:pointer;display:grid;place-items:center;padding:0}
+  .kebab-btn:hover{background:#EEF0F3;color:var(--ink)}
+  .kebab.open .kebab-btn{background:#EEF0F3;color:var(--ink)}
+  .kebab-menu{display:none;position:absolute;top:32px;right:0;z-index:60;width:168px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:4px;box-shadow:0 8px 24px rgba(27,30,35,.10)}
+  .kebab.open .kebab-menu{display:block}
+  .kebab-menu .mi{display:flex;align-items:center;gap:8px;width:100%;height:36px;padding:0 10px;border:0;background:none;border-radius:6px;font:inherit;font-size:13.5px;color:var(--ink);cursor:pointer;text-align:left}
+  .kebab-menu .mi svg{width:16px;height:16px;color:var(--ink-2);flex:none}
+  .kebab-menu .mi:hover,.kebab-menu .mi[aria-selected="true"]{background:#F2EFE8}
+  .kebab-menu .mi.danger{color:var(--red)}
+  .kebab-menu .mi.danger svg{color:var(--red)}
+  .kebab-menu .mi.danger:hover,.kebab-menu .mi.danger[aria-selected="true"]{background:var(--red-soft)}
+  .kebab-menu .mi-sep{height:1px;background:var(--line);border:0;margin:4px 0}
+
+  /* ===== 用法案例 ===== */
+  .case-filters{display:flex;gap:8px;margin:0 0 14px;flex-wrap:wrap}
+  .case-filters .btn{border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);font-size:12.5px;padding:5px 13px}
+  .case-filters .btn.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .case-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media (min-width:1560px){.case-grid{grid-template-columns:repeat(3,1fr)}}
+  @media (min-width:2080px){.case-grid{grid-template-columns:repeat(4,1fr)}}
+  @media (min-width:2600px){.case-grid{grid-template-columns:repeat(5,1fr)}}
+  .case-card{padding:16px 18px;display:flex;flex-direction:column;gap:9px}
+  .case-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .case-top b{font-size:14.5px;font-weight:600}
+  .case-meta{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-2);flex-wrap:wrap}
+  .case-meta .skill-link{font-weight:600;color:var(--blue);cursor:pointer}
+  .case-steps{font-size:13px;color:var(--ink-2);line-height:1.55}
+  .case-note{font-size:12px;color:var(--red);background:var(--red-soft);border-radius:7px;padding:6px 10px}
+  .case-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:10px}
+  .case-foot>span{font-size:11.5px;color:var(--ink-2)}
+
+  /* ===== 热度参考 ===== */
+  .heat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (min-width:2080px){.heat-grid{grid-template-columns:repeat(3,1fr)}}
+  @media (min-width:2800px){.heat-grid{grid-template-columns:repeat(4,1fr)}}
+  .heat-board{padding:14px 16px}
+  .heat-board h3{font-size:13px;font-weight:600;margin:0 0 10px;font-family:var(--mono)}
+  .heat-row{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:8px;padding:7px 6px;border-radius:7px;font-size:13px}
+  .heat-row:hover{background:var(--bg)}
+  .heat-row .n{font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+  .heat-row .nm{font-weight:600;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .heat-row .nm em{display:block;font-style:normal;font-family:var(--mono);font-size:10.5px;color:var(--ink-2);font-weight:400}
+  .heat-row .v{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);white-space:nowrap}
+  .heat-row .growth{font-family:var(--mono);font-size:10.5px;color:var(--green);white-space:nowrap}
+
+  /* ===== 数据面板 ===== */
+  #statsBar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .stat-pill{font-size:12.5px;color:var(--ink-2);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:5px 13px;white-space:nowrap}
+  .stat-pill b{font-family:var(--mono);font-weight:500;color:var(--ink)}
+  .mini-bar{display:flex;height:10px;border-radius:999px;overflow:hidden;background:#EDEFF3;margin:10px 0}
+  .mini-bar i{display:block;height:100%}
+  .mini-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-2)}
+  .mini-legend span{display:inline-flex;align-items:center;gap:5px}
+  .mini-legend i{width:8px;height:8px;border-radius:2px;display:inline-block}
+
+  /* ===== 详情抽屉 ===== */
+  #mask{position:fixed;inset:0;background:rgba(27,30,35,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:120}
+  #mask.show{opacity:1;pointer-events:auto;touch-action:none}
+  body.drawer-lock{overflow:hidden}
+  #drawer{position:fixed;top:0;right:0;bottom:0;width:420px;max-width:92vw;background:var(--surface);box-shadow:-10px 0 40px rgba(27,30,35,.12);transform:translateX(105%);transition:transform .25s ease;z-index:130;display:flex}
+  #drawer.open{transform:translateX(0)}
+  .drawer-in{flex:1;overflow-y:auto;padding:22px 24px}
+  .drawer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+  .drawer-name{font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .drawer-en{font-family:var(--mono);font-size:12px;color:var(--ink-2);margin-top:2px;word-break:break-all}
+  .drawer-close{width:32px;height:32px;border:0;border-radius:7px;background:var(--bg);color:var(--ink-2);font-size:16px;cursor:pointer;flex:none}
+  .drawer-close:hover{background:#EEF0F3;color:var(--ink)}
+  .drawer-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .drawer-desc{font-size:13.5px;color:var(--ink-2);line-height:1.6;margin-bottom:14px}
+  .drawer-acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .rate-sec{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:16px;background:var(--bg)}
+  .rate-label{font-size:12px;color:var(--ink-2);margin-bottom:8px}
+  .rate-btns{display:flex;gap:8px}
+  /* ===== 案例展示（它能干什么）===== */
+  .case-hero{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:16px;background:var(--surface)}
+  .case-hero .ch-top{padding:11px 14px 0;font-size:11.5px;font-weight:600;color:var(--ink-2);letter-spacing:.05em}
+  .case-hero img.case-cover{width:100%;display:block;object-fit:cover;max-height:240px;margin-top:8px;background:var(--bg)}
+  .case-hero .ch-body{padding:12px 14px 14px}
+  .case-hero .ch-name{font-size:14.5px;font-weight:600;margin-bottom:7px;line-height:1.4}
+  .case-hero .ch-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+  .case-hero .ch-steps{font-size:13px;color:var(--ink-2);line-height:1.65;white-space:pre-line}
+  .case-hero .ch-foot{display:flex;align-items:center;gap:10px;margin-top:9px;flex-wrap:wrap}
+  .case-hero details.case-details{margin-top:7px}
+  .case-hero details.case-details summary{cursor:pointer;font-size:13px;color:var(--blue);user-select:none;padding:3px 0;outline:none}
+  .case-hero details.case-details .full{font-size:13px;color:var(--ink-2);line-height:1.7;white-space:pre-line;border-top:1px dashed var(--line);margin-top:8px;padding-top:10px}
+  .drawer-block{border-top:1px solid var(--line);padding-top:12px;margin-top:14px}
+  .drawer-block h4{font-size:13px;font-weight:600;margin:0 0 8px}
+  .drow{display:flex;gap:10px;font-size:13px;padding:4px 0;align-items:baseline}
+  .drow .k{font-family:var(--mono);font-size:11px;color:var(--ink-2);flex:none;width:70px}
+  .drow .v{color:var(--ink);min-width:0;word-break:break-word}
+
+  /* ===== 反馈面板 ===== */
+  .fb-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.96);width:480px;max-width:92vw;background:var(--surface);border-radius:14px;box-shadow:0 20px 60px rgba(27,30,35,.25);z-index:140;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;display:flex;flex-direction:column;overflow:hidden}
+  .fb-panel.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+  .fb-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line)}
+  .fb-head b{font-size:15px;font-weight:600}
+  .fb-frame{width:100%;height:420px;border:0}
+  .fb-tip{font-size:11.5px;color:var(--ink-2);padding:10px 18px;border-top:1px solid var(--line)}
+  .fb-tip.done{color:var(--green)}
+
+  /* ===== 确认弹窗（卸载） ===== */
+  .cf-mask{position:fixed;inset:0;background:rgba(27,30,35,.4);z-index:150;display:flex;align-items:center;justify-content:center;padding:20px}
+  .cf-box{background:var(--surface);border-radius:12px;padding:20px 22px;max-width:360px;width:100%;box-shadow:0 20px 60px rgba(27,30,35,.25)}
+  .cf-title{font-size:15px;font-weight:600;margin-bottom:6px}
+  .cf-sub{font-size:12.5px;color:var(--ink-2);margin-bottom:16px;line-height:1.5}
+  .cf-actions{display:flex;justify-content:flex-end;gap:8px}
+  .cf-btn{border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:7px;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer}
+  .cf-btn:hover{border-color:var(--ink-2)}
+  .cf-btn.danger{background:var(--red);border-color:var(--red);color:#fff}
+  .cf-btn.danger:hover{background:#A93025}
+
+  footer{background:#17191D;color:#7D8694;font-size:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:13px 26px;font-family:var(--mono);margin-left:0}
+  footer .f-l{display:flex;align-items:center;gap:8px;color:#9AA3B0}
+  footer .f-l .led{width:7px;height:7px;flex:none}
+  footer b{color:#E6EAEF;font-weight:500}
+  footer .f-r{color:#6E7785}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:1020px){
+    .feed-grid,.case-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:700px){
+    .feed-grid,.case-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr}
+    #sidebar{position:fixed;top:0;bottom:0;left:0;width:250px;transform:translateX(-105%);transition:transform .22s ease;z-index:125;box-shadow:10px 0 40px rgba(27,30,35,.15)}
+    #sidebar.open{transform:translateX(0)}
+    #mobileBar{display:flex;position:sticky;top:0;z-index:95;background:var(--surface);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 14px;align-items:center;gap:12px}
+    #mobileBar .brand{display:flex;align-items:baseline;gap:10px;flex:1}
+    #mobileBar .brand b{font-size:17px;font-weight:600}
+    #menuBtn{width:38px;height:38px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);font-size:16px;cursor:pointer;color:var(--ink);flex:none;display:flex;align-items:center;justify-content:center}
+    main{padding:16px 14px 80px}
+    footer{margin-left:0;padding:16px 14px 30px}
+    .rack{top:59px}
+    .topbar{display:none}
+  }
+  @media (max-width:640px){
+    .feed-grid,.case-grid,.heat-grid{grid-template-columns:1fr}
+    .inbox-row{flex-wrap:wrap;gap:8px}
+    .inbox-why{flex-basis:100%;order:3}
+    .tool-row{grid-template-columns:14px minmax(0,1fr) auto;gap:10px}
+    .tool-tags{display:none}
+    .rack{overflow-x:auto;white-space:nowrap}
+    .heat-row .growth{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div id="mobileBar">
+  <button id="menuBtn" aria-label="打开菜单" onclick="openSidebar()">☰</button>
+  <div class="brand"><b>Skill 中心</b></div>
+</div>
+
+<header class="topbar">
+  <div class="topbar-brand">
+    <span class="brand-mark"><i></i></span>
+    <b>Skill 管理中心</b>
+    <span class="topbar-sub">技能资产管理台</span>
+  </div>
+  <span class="spacer"></span>
+  <div class="topbar-sync">数据更新于 <b id="updText">—</b></div>
+</header>
+
+<div class="rack" id="rackBar" aria-label="机架状态"></div>
+
+<div class="layout">
+  <aside id="sidebar">
+    <div class="side-brand"><b>Skill 中心</b><span class="side-tag">技能管理台 · 每日双档推荐</span></div>
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="searchInput" type="search" placeholder="搜技能：中文名 / 英文名 / 描述" autocomplete="off">
+    </div>
+    <nav id="sideNav">
+      <div class="nav-group">
+        <div class="nav-tt">今日</div>
+        <a href="#sec-recommend" data-view="recommend" class="on">今日推荐</a>
+        <a href="#sec-inbox" data-view="inbox">待我决定</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-tt">资产</div>
+        <a href="#sec-toolbox" data-view="toolbox">我的工具箱</a>
+        <a href="#sec-cases" data-view="cases">用法案例</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-tt">洞察</div>
+        <a href="#sec-heat" data-view="heat">热度参考</a>
+        <a href="#sec-stats" data-view="stats">数据面板</a>
+      </div>
+    </nav>
+    <div class="side-foot">
+      <div>每日推荐 09:00 · 双档推送</div>
+    </div>
+  </aside>
+
+  <main>
+    <section id="sec-recommend">
+      <div class="sec-head"><h2 id="feedTitle">今日推荐</h2><span class="sub" id="feedSub"></span></div>
+      <div id="feedRow"></div>
+    </section>
+
+    <section id="sec-inbox">
+      <div class="sec-head"><h2>待我决定</h2><span class="sub">历次推荐里还没决定装不装的</span></div>
+      <div id="inboxList"></div>
+      <details class="details" id="historyWrap" style="margin-top:18px">
+        <summary id="historySummary">推荐历史</summary>
+        <div id="historyList" class="hist-group"></div>
+      </details>
+    </section>
+
+    <section id="sec-toolbox">
+      <div class="sec-head"><h2>我的工具箱</h2><span class="sub">按工作场景分组</span></div>
+      <div class="tool-filters" id="toolFilters"></div>
+      <div id="sceneGroups"></div>
+    </section>
+
+    <section id="sec-cases">
+      <div class="sec-head"><h2>用法案例</h2><span class="sub">直接用过的产物，点击技能可看详情</span></div>
+      <div class="case-filters" id="caseFilters"></div>
+      <div id="caseGrid" class="case-grid"></div>
+    </section>
+
+    <section id="sec-heat">
+      <div class="sec-head"><h2>热度参考</h2><span class="sub">只看还没装的，发现新东西</span></div>
+      <div class="heat-grid">
+        <div class="card heat-board" id="heatGithub"></div>
+        <div class="card heat-board" id="heatSkills"></div>
+      </div>
+    </section>
+
+    <section id="sec-stats">
+      <div class="sec-head"><h2>数据面板</h2></div>
+      <div class="card" style="padding:18px 22px">
+        <div id="statsBar"></div>
+        <div class="mini-bar" id="miniBar"></div>
+        <div class="mini-legend" id="miniLegend"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="f-l"><i class="led g"></i>数据源：飞书多维表格「Skill 技能管理台」</div>
+  <div class="f-r">操作：感兴趣 / 不感兴趣 / 有用 / 没用 点按钮即提交 · 安装 / 卸载在对话里说一声</div>
+</footer>
+
+<div id="mask"></div>
+<aside id="drawer"><div class="drawer-in" id="drawerIn"></div></aside>
+<div id="fbPanel" class="fb-panel" role="dialog" aria-modal="true" aria-label="提交反馈">
+  <div class="fb-head">
+    <b id="fbTitle">提交反馈</b>
+    <button class="drawer-close" onclick="closeFbPanel()" aria-label="关闭">×</button>
+  </div>
+  <iframe id="fbFrame" class="fb-frame" src="about:blank" title="表单"></iframe>
+  <div class="fb-tip" id="fbTip">在表单中完成填写并提交，成功后本面板自动确认。</div>
+</div>
+
+<script>
+/* ===== 数据快照（由 sync_from_base.py 维护）===== */
+const SKILL_LEDGER = [
+  {name:"manimate",cn:"图解动画",cat:"视频制作",tags:["视频生成", "教学讲解"],status:"已安装",backup:"无需备份",hot:null,source:"",biz:["口播视频", "教学备课"],last:"2026-09-25",score:5,desc:"用 Manim 从文字生成图解动画视频，已产出勾股定理证明、逆等线模型两个动画",note:"本地注册型技能，多次环境切换后稳定存活"},
+  {name:"hyperframes",cn:"无脸讲解流水线",cat:"视频制作",tags:["视频生成", "自动化"],status:"被环境清除",backup:"已备份",hot:null,source:"",biz:["口播视频"],last:"2026-09-28",score:5,desc:"无脸讲解视频全流水线（分镜+配音+7帧并行构建+渲染），已做代数式概念视频",note:"大技能包被环境清除，需从备份 tar 恢复"},
+  {name:"archify",cn:"架构流程图",cat:"效率工具",tags:["可视化"],status:"已安装",backup:"已备份",hot:75228,source:"https://skilld.dev/skills/trending",biz:["题目解析", "教学备课"],last:"2026-09-29",score:5,desc:"用 JSON 生成架构/流程/序列图，已做一元二次方程解法流程图与几何辅助线三图",note:"2026-10-06 通过网页指令安装（重新安装，原被环境清除）"},
+  {name:"openmaic",cn:"多AI课堂",cat:"教学与教研",tags:["自动化"],status:"已安装",backup:"已备份",hot:39631,source:"https://skilld.dev/skills/trending",biz:["教学备课"],last:null,score:null,desc:"生成多 AI 互动课堂（OpenMAIC 平台）",note:"平台本体独立部署，仅引导技能在装"},
+  {name:"last30days",cn:"30天调研",cat:"数据分析",tags:["调研检索"],status:"已安装",backup:"无需备份",hot:63179,source:"https://skilld.dev/skills/trending",biz:["内容创作", "家长答疑"],last:"2026-10-01",score:4,desc:"抓取近 30 天社区讨论，已跑初中生家长数学问题调研",note:"Reddit/YouTube 源超时，结论以公开报道补充"},
+  {name:"humanizer-zh",cn:"去AI味",cat:"内容创作",tags:["写作润色"],status:"已安装",backup:"无需备份",hot:null,source:"",biz:["家长答疑", "内容创作"],last:"2026-09-29",score:4,desc:"中文文本去 AI 味润色",note:"稳定存活"},
+  {name:"book-to-skill",cn:"书转技能",cat:"效率工具",tags:["调研检索"],status:"已安装",backup:"无需备份",hot:33069,source:"https://www.openagentskill.com/best/open-source-ai-agent-skills",biz:["教学备课"],last:null,score:null,desc:"把书/文档 PDF 转成可用的 Agent Skill",note:"2026-10-01 安装"},
+  {name:"marketingskills",cn:"营销子技能",cat:"内容创作",tags:["写作润色", "自动化"],status:"已安装",backup:"无需备份",hot:51959,source:"https://skilld.dev/skills/trending",biz:["内容创作"],last:null,score:null,desc:"49 个营销子技能集合（A/B测试、文案、SEO等）",note:"2026-10-01 安装"},
+  {name:"superpowers",cn:"Coding框架",cat:"AI开发",tags:["自动化"],status:"被环境清除",backup:"已备份",hot:208000,source:"https://github.com/obra/superpowers",biz:["效率管理"],last:null,score:null,desc:"Claude Code 生态最流行的 agentic coding 技能框架",note:"从备份恢复"},
+  {name:"visual-explainer",cn:"HTML图解",cat:"效率工具",tags:["可视化"],status:"已安装",backup:"已备份",hot:9955,source:"https://lobehub.com/skills/nicobailon-visual-explainer",biz:["题目解析", "教学备课"],last:null,score:null,desc:"把复杂信息生成精美 HTML 图解页或幻灯片",note:"2026-10-02 安装（GitHub nicobailon/visual-explainer ⭐6.3K）"},
+  {name:"typesafe-ai",cn:"决策模型",cat:"AI开发",tags:["自动化"],status:"已安装",backup:"已备份",hot:2475,source:"https://skilld.dev/skills/trending",biz:["家长答疑", "效率管理"],last:null,score:null,desc:"Jev 类型化决策模型：选题打分、学生分层、回复分流",note:"2026-10-02 安装（typesafe-ai/skills，82.4K 安装量）"},
+  {name:"manim-video",cn:"数学动画",cat:"视频制作",tags:["视频生成", "教学讲解"],status:"已安装",backup:"已备份",hot:407,source:"https://skills.sh/nousresearch/hermes-agent/manim-video",biz:["口播视频", "教学备课"],last:"2026-10-02",score:5,desc:"3Blue1Brown 风格 Manim 数学动画流水线（计划→代码→渲染→拼接），已测三角形内角和证明动画",note:"2026-10-02 安装并测试，产出三角形内角和定理证明动画"},
+  {name:"remotion-best-practices",cn:"视频模板引擎",cat:"视频制作",tags:["视频生成", "自动化"],status:"已安装",backup:"已备份",hot:563000,source:"https://skills.sh/remotion-dev/skills/remotion-best-practices",biz:["口播视频", "内容创作"],last:null,score:null,desc:"Remotion 官方技能包，React 编程式视频模板化制作，28+ 模块化规则",note:"2026-10-02 安装（官方整套含 create/render/captions 等子技能），待测试"},
+  {name:"ppt-master",cn:"PPT大师",cat:"文档办公",tags:["自动化"],status:"已安装",backup:"已备份",hot:57372,source:"https://skilld.dev/gh/hugohe3/ppt-master",biz:["教学备课", "内容创作"],last:null,score:null,desc:"AI演示工作流：生成可编辑PPTX课件/讲义，支持模板填充、美化、配音动画",note:"2026-10-06 通过网页指令安装（实际装为 ppt-master-plus）"},
+  {name:"brag",cn:"发布宣传片",cat:"视频制作",tags:["视频生成", "自动化"],status:"未安装",backup:"未备份",hot:13068,source:"https://skilld.dev/gh/latent-spaces/brag",biz:["口播视频", "内容创作"],last:null,score:null,desc:"用Hyperframes把项目网站自动做成可分享的发布/宣传短片",note:"2026-10-03 推荐（skilld十月榜，配合已装hyperframes）"},
+  {name:"show-me",cn:"视觉图解",cat:"效率工具",tags:["可视化"],status:"未安装",backup:"未备份",hot:4839,source:"https://skilld.dev/gh/humanlayer/skills/show-me",biz:["题目解析", "教学备课"],last:null,score:null,desc:"把复杂主题转成简明图解/代码草图/聚焦的HTML可视化",note:"2026-10-03 推荐（skilld十月榜，与visual-explainer互补）"},
+  {name:"lemo-opuscar",cn:"艺术短片引擎",cat:"视频制作",tags:["视频生成"],status:"未安装",backup:"未备份",hot:800,source:"https://skilld.dev/gh/lemomo-ai/lemo-opuscar",biz:["口播视频", "教学备课"],last:null,score:null,desc:"纯代码生成短片：油画厚涂/水彩/水墨/白板讲解等艺术风格",note:"2026-10-03 推荐（skilld十月榜新锐，数学可用白板讲解风）"},
+  {name:"ljg-map",cn:"知识地图",cat:"教学与教研",tags:["可视化", "教学讲解"],status:"已安装",backup:"已备份",hot:7435,source:"https://skilld.dev/gh/lijigang/ljg-skills/ljg-map",biz:["教学备课", "题目解析"],last:null,score:null,desc:"把讲义/文稿提炼概念与联结，画成通俗的形式化知识地图",note:"2026-10-05 网页指令安装 lijigang/ljg-skills@ljg-map"},
+  {name:"security-audit",cn:"安全审计",cat:"AI开发",tags:["自动化"],status:"未安装",backup:"未备份",hot:null,source:"https://skilld.dev/gh/cloudflare/security-audit-skill",biz:["效率管理"],last:null,score:null,desc:"代码库/API/网页的安全审计与漏洞评审，公开发布内容前做安全自查",note:"2026-10-07 轮询卸载（用户标记不感兴趣）"},
+  {name:"planning-with-files",cn:"文件化规划",cat:"效率工具",tags:["自动化"],status:"未安装",backup:"未备份",hot:null,source:"https://skilld.dev/gh/othmanadi/planning-with-files/planning-with-files",biz:["教学备课", "效率管理"],last:null,score:null,desc:"把长任务拆成task_plan/findings/progress三文件持久规划，断点自动恢复上下文",note:"2026-10-04 推荐（skilld十月榜）"},
+  {name:"playwright-cli",cn:"浏览器自动化",cat:"效率工具",tags:["调研检索", "自动化"],status:"未安装",backup:"未备份",hot:null,source:"https://skilld.dev/gh/microsoft/playwright-cli/playwright-cli",biz:["家长答疑", "内容创作"],last:null,score:null,desc:"Playwright浏览器自动化操作与网页测试，可批量采集家长问题素材、验证自己发布的网页",note:"2026-10-04 推荐（Microsoft官方）"},
+  {name:"teach-impeccable",cn:"输出质量准则",cat:"内容创作",tags:["写作润色"],status:"未安装",backup:"未备份",hot:null,source:"https://skills.sh/pbakaus/impeccable/teach-impeccable",biz:["家长答疑", "内容创作"],last:null,score:null,desc:"给Agent注入高质量输出标准，代写家长回复/内容创作质量更稳",note:"2026-10-04 推荐（skills.sh 51.6K安装量）"},
+  {name:"recipe-create-classroom-course",cn:"课堂一键建课",cat:"教学与教研",tags:["自动化"],status:"未安装",backup:"未备份",hot:null,source:"https://skills.sh/googleworkspace/cli/recipe-create-classroom-course",biz:["教学备课"],last:null,score:null,desc:"Google官方：一键创建Google Classroom课程，批量生成班级/作业/材料",note:"2026-10-04 推荐（skills.sh 28.3K安装量）"},
+  {name:"ai-video-generation",cn:"AI视频生成",cat:"视频制作",tags:["视频生成", "自动化"],status:"未安装",backup:"未备份",hot:null,source:"https://skills.sh/101-skills/superpowers/ai-video-generation",biz:["口播视频", "内容创作"],last:null,score:null,desc:"Superpowers生态AI视频生成子技能，从提示词到成片的一站式视频制作规范",note:"2026-10-05 推荐（skills.sh 659K安装量）"},
+  {name:"scaffold-exercises",cn:"出题脚手架",cat:"教学与教研",tags:["自动化", "教学讲解"],status:"未安装",backup:"未备份",hot:null,source:"https://skills.sh/mattpocock/skills/scaffold-exercises",biz:["教学备课", "题目解析"],last:null,score:null,desc:"Matt Pocock工程技能集：生成分层练习脚手架，从易到难自动搭题",note:"2026-10-05 推荐（skills.sh 411.9K安装量）"},
+  {name:"writing-shape",cn:"写作结构",cat:"内容创作",tags:["写作润色"],status:"已安装",backup:"已备份",hot:null,source:"https://skills.sh/mattpocock/skills/writing-shape",biz:["内容创作", "家长答疑"],last:null,score:null,desc:"写作结构框架：先定文章骨架再填充，告别流水账式AI文案",note:"2026-10-05 网页指令安装 mattpocock/skills@writing-shape"},
+  {name:"doc-coauthoring",cn:"文档协作",cat:"文档办公",tags:["自动化"],status:"未安装",backup:"未备份",hot:null,source:"https://skills.sh/anthropics/skills/doc-coauthoring",biz:["教学备课", "效率管理"],last:null,score:null,desc:"Anthropic官方文档协作技能：多轮迭代编写教案/讲义/知识库文档最佳实践",note:"2026-10-05 推荐（skills.sh 88.5K安装量）"},
+  {name:"code-mate-minimax-code",cn:"MiniMax代码自动化",cat:"AI开发",tags:["自动化", "代码开发"],status:"未安装",backup:"未备份",hot:null,source:"https://www.openagentskill.com/blog",biz:["内容创作", "效率管理"],last:null,score:null,desc:"无头运行MiniMax Code做仓库分析与编码任务，MiniMax生态自动化入口",note:"2026-10-05 推荐（openagentskill 52K★）"},
+  {name:"writing-beats",cn:"写作节奏",cat:"内容创作",tags:["写作润色"],status:"已安装",backup:"已备份",hot:null,source:"https://skills.sh/mattpocock/skills/writing-beats",biz:["内容创作", "家长答疑"],last:null,score:null,desc:"Matt Pocock写作节奏技能：控制段落起伏与节奏，让文案有呼吸感",note:"2026-10-06 通过网页指令安装"},
+  {name:"baoyu-comic",cn:"漫画生成",cat:"内容创作",tags:["图片生成"],status:"已安装",backup:"已备份",hot:null,source:"https://skills.sh/jimliu/baoyu-skills/baoyu-comic",biz:["内容创作", "教学备课"],last:null,score:null,desc:"把知识点/题目内容转成漫画分镜与配图，教学素材更生动",note:"2026-10-06 通过网页指令安装"},
+  {name:"content-strategy",cn:"内容策略",cat:"内容创作",tags:["写作润色"],status:"已安装",backup:"已备份",hot:null,source:"https://skills.sh/coreyhaines31/marketingskills/content-strategy",biz:["内容创作"],last:null,score:null,desc:"Marketingskills内容策略子技能：选题规划、内容日历、排期落地",note:"2026-10-06 通过网页指令安装"},
+  {name:"documentation-writer",cn:"文档写作",cat:"文档办公",tags:["写作润色"],status:"未安装",backup:"未备份",hot:null,source:"https://skills.sh/github/awesome-copilot/documentation-writer",biz:["教学备课", "效率管理"],last:null,score:null,desc:"GitHub官方文档写作规范：结构化输出教案/讲义/知识库文档",note:"2026-10-06 推荐（skills.sh 27.3K安装量）"},
+  {name:"webapp-testing",cn:"网页测试",cat:"效率工具",tags:["自动化"],status:"未安装",backup:"未备份",hot:null,source:"https://skills.sh/anthropics/skills/webapp-testing",biz:["效率管理", "内容创作"],last:null,score:null,desc:"Anthropic官方网页应用测试：自动巡检自己发布的网页是否正常",note:"2026-10-06 推荐（skills.sh 170.3K安装量）"},
+  {name:"math-teacher",cn:"数学互动教学",cat:"教学与教研",tags:["教学讲解"],status:"未安装",backup:"未备份",hot:null,source:"https://agskills.dev/jamesrochabrun/skills/math-teacher",biz:["教学备课", "题目解析"],last:null,score:null,desc:"互动式数学学习技能，游戏化机制拆解知识点，直接可用于初中数学辅导场景",note:"2026-10-06 为你推荐（agskills.dev 教育类市场收录 2026-09）"},
+  {name:"learn-faster-kit",cn:"学习方法教练",cat:"效率工具",tags:["教学讲解", "自动化"],status:"未安装",backup:"未备份",hot:null,source:"https://felloai.com/the-30-best-claude-code-skills-to-add-picked-by-use-case/",biz:["家长答疑", "内容创作"],last:null,score:null,desc:"基于FASTER方法论生成个性化学习计划、间隔复习与自动出题，可帮学生做学习规划",note:"2026-10-06 为你推荐（Fello AI 30佳榜单 2026-08）"},
+  {name:"seedance-2.0-prompt-writing",cn:"视频提示词写作",cat:"视频制作",tags:["视频生成"],status:"未安装",backup:"未备份",hot:null,source:"https://www.openagentskill.com/best/content-automation",biz:["口播视频"],last:null,score:null,desc:"为Seedance 2.0写精准视频提示词（运镜/剪辑/音乐/产品叙事），口播短视频分镜提效",note:"2026-10-06 为你推荐（openagentskill 4.2K★）"},
+  {name:"agent-reach",cn:"全网平台搜索",cat:"效率工具",tags:["调研检索"],status:"已安装",backup:"已备份",hot:null,source:"https://lobehub.com/skills",biz:["内容创作", "家长答疑"],last:null,score:null,desc:"让Agent直读16个平台（含小红书/抖音/B站/微信文章），选题调研与家长问题洞察一网打尽",note:"2026-10-07 轮询安装（panniantong/agent-reach）"},
+  {name:"frontend-design",cn:"前端设计强化",cat:"AI开发",tags:["代码开发", "自动化"],status:"已安装",backup:"已备份",hot:null,source:"https://top-agent-skills.com/",biz:["效率管理"],last:null,score:null,desc:"写代码前强制输出鲜明的设计方向，逃离AI通用UI——正好用于Skill管理中心等网页改版",note:"2026-10-06 通过网页指令安装"},
+  {name:"mattpocock-skills",cn:"Matt Pocock技能集",cat:"AI开发",tags:["代码开发"],status:"已安装",backup:"已备份",hot:null,source:"https://blog.csdn.net/giszz/article/details/166995902",biz:["效率管理"],last:null,score:null,desc:"TypeScript名师Matt Pocock的生产级Claude Code技能集合，全网最火的agent skills仓库之一",note:"2026-10-06 通过网页指令安装（skills.sh: setup-matt-pocock-skills 技能集）"},
+  {name:"karpathy-skills",cn:"Karpathy编码避坑",cat:"AI开发",tags:["代码开发"],status:"未安装",backup:"未备份",hot:null,source:"https://agentconn.com/skills/",biz:["效率管理"],last:null,score:null,desc:"基于Karpathy LLM编码陷阱观察的70行CLAUDE.md，曾连续28天GitHub Trending第一",note:"2026-10-06 全网热门（174K★）"},
+  {name:"ponytail",cn:"高级工程师思维",cat:"AI开发",tags:["代码开发", "自动化"],status:"未安装",backup:"未备份",hot:null,source:"https://blog.csdn.net/giszz/article/details/166995902",biz:["效率管理"],last:null,score:null,desc:"让AI像最懒的高级工程师一样思考，极简高效的编码行为模式",note:"2026-10-06 全网热门（150K★，单日+1,194）"},
+  {name:"addyosmani-agent-skills",cn:"Addy Osmani工程技能",cat:"AI开发",tags:["代码开发"],status:"未安装",backup:"未备份",hot:null,source:"https://dev.to/sarantoon/30-github-repos-ai-aela-agentic-ai-thiikamlangepn-trend-singhaakhm-2026-18h2",biz:["效率管理"],last:null,score:null,desc:"Google Addy Osmani的生产级工程技能集，经真实项目验证",note:"2026-10-06 全网热门（85K★）"},
+  {name:"nvidia-openshell",cn:"NVIDIA安全沙箱",cat:"AI开发",tags:["代码开发", "自动化"],status:"未安装",backup:"未备份",hot:null,source:"https://blog.csdn.net/giszz/article/details/166995902",biz:["效率管理"],last:null,score:null,desc:"AI智能体安全沙箱运行时，隔离执行agent代码与工具调用",note:"2026-10-06 全网热门（14K★）"},
+  {name:"HowToLiveBetter",cn:"高性价比人生指南",cat:"内容创作",tags:["调研检索"],status:"已安装",backup:"已备份",hot:37000,source:"https://github.com/eternity4719/HowToLiveBetter",biz:["内容创作"],last:null,score:null,desc:"600+条循证人生建议库，每条写清成本/收益/证据等级，按性价比排序，可作内容素材与生活决策参考",note:"2026-10-06 通过网页指令安装（skills.sh: life-decision-guide）"},
+  {name:"colleague-skill",cn:"同事蒸馏",cat:"AI开发",tags:["自动化"],status:"已安装",backup:"已备份",hot:14000,source:"https://github.com/titanwings/colleague-skill",biz:["家长答疑"],last:null,score:null,desc:"把个人经验、表达风格蒸馏成 AI Skill",note:"2026-10-07 轮询安装（仓库技能名 distilly）"},
+  {name:"hermes-edu-skills",cn:"教育技能包",cat:"教学与教研",tags:["教学讲解"],status:"未安装",backup:"未备份",hot:null,source:"https://blog.csdn.net/porschev/article/details/161344503",biz:["教学备课"],last:null,score:null,desc:"中文教育场景 Agent Skill Pack：备课/答疑/家校沟通等",note:"2026-07 作者开源，暂无公开 star 数据"},
+  {name:"deeptutor",cn:"深度辅导",cat:"教学与教研",tags:["教学讲解"],status:"已安装",backup:"已备份",hot:20000,source:"https://blog.brightcoding.dev/2026/06/12/stop-building-chatbots-deeptutor-is-the-agent-native-tutor-you-actually-need",biz:["教学备课"],last:null,score:null,desc:"HKU 港大 agent-native 个性化辅导系统",note:"2026-10-07 轮询安装（HKUDS/DeepTutor 浅克隆）"},
+  {name:"math-to-manim",cn:"数学动画",cat:"视频制作",tags:["视频生成"],status:"已安装",backup:"已备份",hot:null,source:"https://www.ailinklab.com/en/opensource/math-to-manim/",biz:["口播视频"],last:null,score:null,desc:"数学题直出电影级 Manim 动画（六阶段推理链）",note:"2026-10-07 轮询安装（仓库技能名 hermes-learns-manim）"},
+  {name:"money-printer-turbo",cn:"出片印钞机",cat:"视频制作",tags:["视频生成"],status:"未安装",backup:"未备份",hot:null,source:"https://www.iesdouyin.com/share/video/7688601528101375241",biz:["口播视频"],last:null,score:null,desc:"输入主题自动出片：脚本/配音/字幕/配乐全自动",note:"2026-09 抖音十大自媒体 skill 榜首，无公开 star"},
+  {name:"self-improving-agent",cn:"自我进化",cat:"效率工具",tags:["自动化"],status:"已安装",backup:"已备份",hot:null,source:"https://agentskillslist.com/top/",biz:["效率管理"],last:null,score:null,desc:"自动沉淀经验教训并复用，越用越聪明",note:"2026-10-07 轮询安装（peterskoett/self-improving-agent）"},
+  {name:"anthropic-brand-guidelines",cn:"品牌规范",cat:"AI开发",tags:["自动化"],status:"未安装",backup:"未备份",hot:179000,source:"https://www.openagentskill.com/best/open-source-ai-agent-skills",biz:["内容创作"],last:null,score:null,desc:"Anthropic 官方品牌规范 Skill（配色/字体/视觉标准）",note:"OpenAgentSkill 2026-10-04 快照 179K 星"}
+];
+const RECOMMEND_RECS = [
+  {batch:"2026-09-28 超级技能框架",date:"2026-09-28",skill:"superpowers",inst:"未安装",tried:"未试用",effect:"未试用",hot:"⭐208K+ stars",why:"agentic coding 方法论框架，20+ 子技能；可支撑教学效率自动化",type:"for_you"},
+  {batch:"2026-09-29 archify",date:"2026-09-29",skill:"archify",inst:"已安装",tried:"已试用",effect:"很好",hot:"⭐75,228（skilld.dev 周榜第1）",why:"JSON 生成架构/流程图，已做一元二次方程解法流程图案例，题目解析可视化利器",type:"for_you"},
+  {batch:"2026-09-29 openmaic",date:"2026-09-29",skill:"openmaic",inst:"已安装",tried:"未试用",effect:"未试用",hot:"⭐39,631",why:"多 AI 互动课堂生成，可做线上教学场景",type:"for_you"},
+  {batch:"2026-10-01 marketingskills",date:"2026-10-01",skill:"marketingskills",inst:"已安装",tried:"未试用",effect:"未试用",hot:"⭐51,959",why:"49 个营销子技能，内容创作选题/文案提效",type:"for_you"},
+  {batch:"2026-10-01 book-to-skill",date:"2026-10-01",skill:"book-to-skill",inst:"已安装",tried:"未试用",effect:"未试用",hot:"⭐33,069",why:"把教辅 PDF 转成可复用技能，教学备课自动化",type:"for_you"},
+  {batch:"2026-10-01 last30days",date:"2026-10-01",skill:"last30days",inst:"已安装",tried:"已试用",effect:"很好",hot:"⭐63,179",why:"近30天社区调研，已跑初中生家长数学问题，内容选题直接可用",type:"for_you"},
+  {batch:"2026-10-02 visual-explainer",date:"2026-10-02",skill:"visual-explainer",inst:"已安装",tried:"未试用",effect:"未试用",hot:"⭐9,955",why:"复杂知识点生成精美图解页，适合几何/函数专题讲解",type:"for_you"},
+  {batch:"2026-10-02 typesafe-ai",date:"2026-10-02",skill:"typesafe-ai",inst:"已安装",tried:"未试用",effect:"未试用",hot:"⭐2,475（skilld.dev 周榜第1）",why:"类型化决策模型：内容选题打分、学生分层、家长回复分流",type:"for_you"},
+  {batch:"2026-10-03 推荐",date:"2026-10-03",skill:"ppt-master",inst:"已安装",tried:"未试用",effect:"未试用",hot:"57,372 ★（GitHub）",why:"AI演示工作流生成可编辑PPTX课件，做教研课件/家长会讲义可一次成型",type:"for_you"},
+  {batch:"2026-10-03 推荐",date:"2026-10-03",skill:"brag",inst:"待定",tried:"未试用",effect:"未试用",hot:"13,068 ★（+11,194/17天）",why:"用Hyperframes把你的技能中心/作品自动做成宣传短片，做号引流可用",type:"for_you"},
+  {batch:"2026-10-03 推荐",date:"2026-10-03",skill:"show-me",inst:"待定",tried:"未试用",effect:"未试用",hot:"4,839 ★（+4,021/29天）",why:"复杂题目一键转图解/HTML可视化，几何辅助线、函数图像讲解直接出图",type:"for_you"},
+  {batch:"2026-10-03 推荐",date:"2026-10-03",skill:"lemo-opuscar",inst:"待定",tried:"未试用",effect:"未试用",hot:"800 ★（新锐+118/1天）",why:"代码生成白板讲解风短片，数学概念讲解可做差异化口播视频",type:"for_you"},
+  {batch:"2026-10-03 推荐",date:"2026-10-03",skill:"ljg-map",inst:"已安装",tried:"未试用",effect:"未试用",hot:"7,435 ★",why:"把讲义/错题提炼成概念知识地图，给学生做章节复习结构图",type:"for_you"},
+  {batch:"2026-10-04 推荐",date:"2026-10-04",skill:"security-audit",inst:"已安装",tried:"未试用",effect:"未试用",hot:"23,773 ★（+20,562/30天）",why:"你公开的Skill中心/网页内容可做安全自查，避免素材链接或代码泄露风险",type:"for_you"},
+  {batch:"2026-10-04 推荐",date:"2026-10-04",skill:"planning-with-files",inst:"待定",tried:"未试用",effect:"未试用",hot:"27,253 ★",why:"月度内容规划、教研方案这类长任务拆成计划文件持久跟进，断了也能恢复",type:"for_you"},
+  {batch:"2026-10-04 推荐",date:"2026-10-04",skill:"playwright-cli",inst:"待定",tried:"未试用",effect:"未试用",hot:"13,721 ★",why:"批量采集家长高频问题素材、自动巡检自己发布的网页是否正常",type:"for_you"},
+  {batch:"2026-10-04 推荐",date:"2026-10-04",skill:"teach-impeccable",inst:"待定",tried:"未试用",effect:"未试用",hot:"51.6K 安装量（skills.sh）",why:"给代写回复注入质量基准，家长沟通文案更专业、更少AI味",type:"for_you"},
+  {batch:"2026-10-04 推荐",date:"2026-10-04",skill:"recipe-create-classroom-course",inst:"待定",tried:"未试用",effect:"未试用",hot:"28.3K 安装量（skills.sh）",why:"若用Google Classroom带班，一条指令批量建课建作业，备课提速",type:"for_you"},
+  {batch:"2026-10-05 推荐",date:"2026-10-05",skill:"ai-video-generation",inst:"待定",tried:"未试用",effect:"未试用",hot:"659K 安装量（skills.sh）",why:"口播视频从脚本到成片一站提效，和已装superpowers框架搭配",type:"for_you"},
+  {batch:"2026-10-05 推荐",date:"2026-10-05",skill:"scaffold-exercises",inst:"待定",tried:"未试用",effect:"未试用",hot:"411.9K 安装量（skills.sh）",why:"分层练习题自动生成，备课出题从易到难一次成型",type:"for_you"},
+  {batch:"2026-10-05 推荐",date:"2026-10-05",skill:"writing-shape",inst:"已安装",tried:"未试用",effect:"未试用",hot:"412.4K 安装量（skills.sh）",why:"先定结构再填充，公众号/小红书文章不再流水账",type:"for_you"},
+  {batch:"2026-10-05 推荐",date:"2026-10-05",skill:"doc-coauthoring",inst:"待定",tried:"未试用",effect:"未试用",hot:"88.5K 安装量（skills.sh）",why:"官方文档协作规范，写教案/讲义/知识库文档更专业",type:"for_you"},
+  {batch:"2026-10-05 推荐",date:"2026-10-05",skill:"code-mate-minimax-code",inst:"待定",tried:"未试用",effect:"未试用",hot:"52,000 ★",why:"MiniMax生态自动化入口，为MiniMax Design短视频流程铺路",type:"for_you"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"writing-beats",inst:"已安装",tried:"未试用",effect:"未试用",hot:"412.8K 安装量（skills.sh）",why:"控制文案节奏段落起伏，代写回复/公众号文更有呼吸感，配writing-shape用",type:"for_you"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"baoyu-comic",inst:"已安装",tried:"未试用",effect:"未试用",hot:"29.5K 安装量（skills.sh）",why:"知识点转漫画分镜配图，给学生的素材更生动，和archify图解互补",type:"for_you"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"content-strategy",inst:"已安装",tried:"未试用",effect:"未试用",hot:"151.3K 安装量（skills.sh）",why:"做内容日历和选题规划，口播视频/公众号排期一次成型",type:"for_you"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"documentation-writer",inst:"待定",tried:"未试用",effect:"未试用",hot:"27.3K 安装量（skills.sh）",why:"GitHub官方文档规范，写教案/讲义结构更清晰",type:"for_you"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"webapp-testing",inst:"待定",tried:"未试用",effect:"未试用",hot:"170.3K 安装量（skills.sh）",why:"自动测试你发布的Skill中心网页，和playwright-cli互补",type:"for_you"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"math-teacher",inst:"待定",tried:"未试用",effect:"未试用",hot:"教育类市场新收录（2026-09）",why:"互动式数学教学，游戏化拆解知识点，可先用它批量出趣味练习再人工把关",type:"for_you"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"learn-faster-kit",inst:"待定",tried:"未试用",effect:"未试用",hot:"Fello AI 30佳榜单收录（2026-08）",why:"FASTER学习法自动排计划+出题，可直接用来给学生做学习规划，减轻答疑负担",type:"for_you"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"seedance-2.0-prompt-writing",inst:"待定",tried:"未试用",effect:"未试用",hot:"4.2K★（openagentskill）",why:"口播短视频分镜提示词提效，做数学方法类视频时可直接套运镜/字幕模板",type:"for_you"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"agent-reach",inst:"待定",tried:"未试用",effect:"未试用",hot:"LobeHub 评分4.4",why:"一键搜小红书/抖音/B站家长问题，选题和答疑素材来源不再靠手动翻",type:"for_you"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"frontend-design",inst:"待定",tried:"未试用",effect:"未试用",hot:"top-agent-skills Trending #1",why:"网页改版前先定设计方向，Skill管理中心这类自建页面能摆脱通用AI模板感",type:"for_you"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"mattpocock-skills",inst:"待定",tried:"未试用",effect:"未试用",hot:"274K★（2026-10-02）",why:"全网最火的技能包之一，工程类通用提效，可挑其中教学相关子技能用",type:"trending"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"karpathy-skills",inst:"待定",tried:"未试用",effect:"未试用",hot:"174K★（连续28天Trending第一）",why:"Karpathy编码避坑清单，通用工程习惯养成，对你管理HTML/脚本这类活有直接帮助",type:"trending"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"ponytail",inst:"待定",tried:"未试用",effect:"未试用",hot:"150K★（单日+1,194）",why:"让AI以高级工程师思维方式干活，日常脚本/自动化更稳更省事",type:"trending"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"addyosmani-agent-skills",inst:"待定",tried:"未试用",effect:"未试用",hot:"85K★（2026-09）",why:"Google工程师的生产级技能集，网页与脚本质量把关可参考其规范",type:"trending"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"nvidia-openshell",inst:"待定",tried:"未试用",effect:"未试用",hot:"14K★（2026-10-02）",why:"Agent安全沙箱运行时，跑第三方skill时隔离风险，属于防坑必备",type:"trending"},
+  {batch:"2026-10-06 推荐",date:"2026-10-06",skill:"HowToLiveBetter",inst:"待定",tried:"未试用",effect:"未试用",hot:"GitHub 约3.7万 star（2026-10-04 报道）",why:"全网爆款补充：600+循证人生建议，可做口播视频/家长沟通内容素材库，建议收藏在线检索页按需取用",type:"trending"},
+  {batch:"2026-10-07 推荐",date:"2026-10-07",skill:"colleague-skill",inst:"待定",tried:"未试用",effect:"未试用",hot:"1.4万★（GitHub，2026-05 报道 3 周）",why:"把您的答疑风格与解题方法蒸馏成 Skill，代写家长回复更有人味",type:"for_you"},
+  {batch:"2026-10-07 推荐",date:"2026-10-07",skill:"hermes-edu-skills",inst:"待定",tried:"未试用",effect:"未试用",hot:"开源教育技能包（2026-07 发布，暂无公开 star）",why:"覆盖备课/拍照答疑/错题复盘/家校沟通的中文教育技能包，拿来即用",type:"for_you"},
+  {batch:"2026-10-07 推荐",date:"2026-10-07",skill:"deeptutor",inst:"待定",tried:"未试用",effect:"未试用",hot:"2 万★（111 天达成，2026-06 报道）",why:"agent-native 辅导架构值得借鉴，可参考其 TutorBot 思路做学生个性化答疑",type:"for_you"},
+  {batch:"2026-10-07 推荐",date:"2026-10-07",skill:"math-to-manim",inst:"待定",tried:"未试用",effect:"未试用",hot:"2026-06 发布（暂无公开 star）",why:"数学题直出电影级 Manim 动画，六阶段推理链可补强现有 manimate 的成片质量",type:"for_you"},
+  {batch:"2026-10-07 推荐",date:"2026-10-07",skill:"money-printer-turbo",inst:"待定",tried:"未试用",effect:"未试用",hot:"2026-09 抖音十大自媒体 Skill 榜首（无公开 star）",why:"口播短视频全自动出片，选题到发布一条龙，适合批量测数学学习方法选题",type:"for_you"},
+  {batch:"2026-10-07 推荐",date:"2026-10-07",skill:"ponytail",inst:"待定",tried:"未试用",effect:"未试用",hot:"约 15 万★（2026-10-02 报道）",why:"全网爆款，让 AI 少写不必要的东西——做脚本/回复时输出更克制精简",type:"trending"},
+  {batch:"2026-10-07 推荐",date:"2026-10-07",skill:"security-audit",inst:"待定",tried:"未试用",effect:"未试用",hot:"2.5 万★（skilld 榜单，2026-10）",why:"Cloudflare 开源多阶段安全审计，本机已装，可复用于检查网页/脚本安全性",type:"trending"},
+  {batch:"2026-10-07 推荐",date:"2026-10-07",skill:"nvidia-openshell",inst:"待定",tried:"未试用",effect:"未试用",hot:"约 1.4 万★（2026-10-02 报道）",why:"AI 智能体安全沙箱运行时，跑自动化任务更可控更放心",type:"trending"},
+  {batch:"2026-10-07 推荐",date:"2026-10-07",skill:"self-improving-agent",inst:"待定",tried:"未试用",effect:"未试用",hot:"ClawHub 下载 482.6K（榜单 #1，2026-10-05 快照）",why:"自动把踩过的坑沉淀成经验并复用，越用越聪明的通用型技能",type:"trending"},
+  {batch:"2026-10-07 推荐",date:"2026-10-07",skill:"anthropic-brand-guidelines",inst:"待定",tried:"未试用",effect:"未试用",hot:"17.9 万★（OpenAgentSkill 2026-10-04 快照）",why:"Anthropic 官方品牌规范，做封面/物料设计时配色字体有据可依",type:"trending"}
+];
+const CASE_LEDGER = [
+  {name:"勾股定理证明动画",skill:"manimate",scene:"口播视频",date:"2026-09-25",effect:"很好",link:"https://aka.doubaocdn.com/s/OWUVWvYvMJ",steps:"自然语言描述几何证明思路，manimate 生成 Manim 动画 MP4，交付后可嵌入讲解视频",note:"几何定理可视化利器，学生直观看到面积拼补过程",cover:"https://aka.doubaocdn.com/s/n3gUVr8Jmw"},
+  {name:"逆等线模型讲解动画",skill:"manimate",scene:"题目解析",date:"2026-09-25",effect:"很好",link:"https://aka.doubaocdn.com/s/uMeaBS6vVV",steps:"输入逆等线模型讲解需求，manimate 分步生成动画",note:"中考几何模型讲解，动画辅助理解线段关系",cover:"https://aka.doubaocdn.com/s/NM4Hxa77jp"},
+  {name:"代数式概念讲解视频",skill:"hyperframes",scene:"口播视频",date:"2026-09-28",effect:"很好",link:"https://aka.doubaocdn.com/s/ZaAiVA9SE5",steps:"hyperframes faceless-explainer 全流水线：脚本→7帧分镜→配音→并行构建→渲染 MP4",note:"无脸讲解视频，字幕用整句 cue 避免中文乱码",cover:"https://aka.doubaocdn.com/s/YXepps4qtd"},
+  {name:"一元二次方程解法流程图",skill:"archify",scene:"题目解析",date:"2026-09-29",effect:"很好",link:"https://aka.doubaocdn.com/s/Jczf7rEuku",steps:"JSON 描述解法分支，archify 生成流程图，随改随更新",note:"配家长答疑可直接用，改 JSON 即改图",cover:"https://aka.doubaocdn.com/s/t6UUJVEfKK"},
+  {name:"几何辅助线三图",skill:"archify",scene:"题目解析",date:"2026-09-29",effect:"很好",link:"https://aka.doubaocdn.com/s/pirXejvVKW",steps:"JSON 构造三个辅助线场景，archify 生成示意图",note:"辅助线添加方法一目了然",cover:"https://aka.doubaocdn.com/s/beO1rxflNT"},
+  {name:"初中生家长数学问题调研",skill:"last30days",scene:"内容创作",date:"2026-10-01",effect:"很好",link:"https://aka.doubaocdn.com/s/nFzmi2pCMJ",steps:"last30days 引擎抓取近30天社区讨论+公开报道补充，产出7条家长关切与选题建议",note:"选题直接转化为内容创作素材",cover:"https://aka.doubaocdn.com/s/j8Vg8PrRAU"},
+  {name:"家长答疑回复去 AI 味",skill:"humanizer-zh",scene:"家长答疑",date:"2026-09-29",effect:"一般",link:"",steps:"humanizer-zh 对草稿中文润色，去模板化表达",note:"适合长文回复，短句场景人工微调更佳",cover:"https://aka.doubaocdn.com/s/VVtT2Mwop5"},
+  {name:"久坐+熬夜老师的高性价比健康方案",skill:"HowToLiveBetter",scene:"效率管理",date:"2026-10-07",effect:"很好",link:"https://github.com/eternity4719/HowToLiveBetter",steps:"用 life-decision-guide 查《高性价比人生指南》：输入真实场景「久坐备课+熬夜的初中老师」，skill 自动定位第 2 节（久坐/熬夜/运动）与第 3 节（精力/睡眠）相关条目，按 成本(钱/时间/毅力)×收益×证据等级 排序。输出 4 条零成本高性价比建议：1) 别久坐，起身动一动（坐最久者死亡风险 2.6 倍，每天 60-75 分钟活动可抵消）2) 爬楼梯/快走攒到每天 4-5 分钟（死亡风险低约四成）3) 熬夜当晚补觉别攒周末（少睡不补风险高约 42%）4) 下午 2 点后别碰咖啡因（少睡 1 小时+）。每条注明第几节第几条可溯源。结论：先做不花钱不挤时间的，再谈长期坚持。",note:"示范案例：验证 skill 核心价值——可溯源、不编数据、按性价比排序。可作为家长答疑/口播视频的素材模板。",cover:"https://aka.doubaocdn.com/s/PVxY63Sxmt"}
+];
+const RATING_MAP = {"manimate":"好用","hyperframes":"好用","archify":"好用","openmaic":"未评价","last30days":"好用","humanizer-zh":"好用","book-to-skill":"未评价","marketingskills":"未评价","superpowers":"未评价","visual-explainer":"未评价","typesafe-ai":"未评价","manim-video":"好用","remotion-best-practices":"未评价","ppt-master":"未评价","brag":"未评价","show-me":"未评价","lemo-opuscar":"未评价","ljg-map":"未评价","security-audit":"未评价","planning-with-files":"未评价","playwright-cli":"未评价","teach-impeccable":"未评价","recipe-create-classroom-course":"没用","ai-video-generation":"未评价","scaffold-exercises":"未评价","writing-shape":"未评价","doc-coauthoring":"未评价","code-mate-minimax-code":"没用","writing-beats":"好用","baoyu-comic":"好用","content-strategy":"未评价","documentation-writer":"未评价","webapp-testing":"没用","math-teacher":"未评价","learn-faster-kit":"未评价","seedance-2.0-prompt-writing":"未评价","agent-reach":"未评价","frontend-design":"未评价","mattpocock-skills":"未评价","karpathy-skills":"未评价","ponytail":"未评价","addyosmani-agent-skills":"未评价","nvidia-openshell":"未评价","HowToLiveBetter":"好用","colleague-skill":"未评价","hermes-edu-skills":"未评价","deeptutor":"未评价","math-to-manim":"未评价","money-printer-turbo":"未评价","self-improving-agent":"未评价","anthropic-brand-guidelines":"未评价"};
+let WORKER_URL="https://skill-center-api.ustchfut-b.workers.dev"; // 后端代理已启用：按钮点击直接写飞书 Base（免表单）；留空则回退页内 iframe 面板
+/* 意向映射（sync 从反馈表生成）：技能 -> 感兴趣 | 不感兴趣 */
+const INTEREST_MAP = {"mattpocock-skills":"感兴趣","webapp-testing":"不感兴趣","HowToLiveBetter":"感兴趣","writing-beats":"感兴趣","frontend-design":"感兴趣","nvidia-openshell":"不感兴趣","addyosmani-agent-skills":"不感兴趣","documentation-writer":"不感兴趣","baoyu-comic":"感兴趣","agent-reach":"感兴趣","colleague-skill":"感兴趣","math-to-manim":"感兴趣","deeptutor":"感兴趣","security-audit":"不感兴趣","self-improving-agent":"感兴趣"};
+let interestLocal={};
+try{ interestLocal=JSON.parse(localStorage.getItem("skillInterest")||"{}"); }catch(e){}
+function saveInterest(){ try{ localStorage.setItem("skillInterest",JSON.stringify(interestLocal)); }catch(e){} }
+function interestOf(name){
+  if(INTEREST_MAP[name]) return INTEREST_MAP[name];
+  if(interestLocal[name]) return interestLocal[name];
+  if(disLike[name]) return "不感兴趣";   /* 兼容旧本地标记 */
+  return "";
+}
+let DATA_UPDATED = "2026-10-07 09:42";
+
+/* ===== 工具 ===== */
+const $=id=>document.getElementById(id);
+const CN_OF={}; SKILL_LEDGER.forEach(s=>CN_OF[s.name]=s.cn||s.name);
+const SCENE_ORDER=["口播视频","题目解析","内容创作","家长答疑","教研备课","效率工具"];
+const BIZ_SCENE={"口播视频":"口播视频","题目解析":"题目解析","内容创作":"内容创作","家长答疑":"家长答疑","教学备课":"教研备课","效率管理":"效率工具"};
+const SCENE_LABELS={"口播视频":"口播视频","题目解析":"题目解析","内容创作":"内容创作","家长答疑":"家长答疑","教学备课":"教研备课","效率管理":"效率工具"};
+
+function instState(s){ return s.status==="被环境清除"?"recover":(s.status==="已安装"?"inst":"missing"); }
+function myRating(name){ return RATING_MAP[name]||"未评价"; }
+function sceneOf(s){
+  const b=s.biz||[];
+  for(const x of b){ if(BIZ_SCENE[x]) return BIZ_SCENE[x]; }
+  return "效率工具";
+}
+function bizTags(s,scene){
+  const seen=new Set();
+  return (s.biz||[]).map(x=>BIZ_SCENE[x]).filter(x=>x&&x!==scene&&!seen.has(x)&&(seen.add(x),true));
+}
+function actUrl(name,act){
+  const base="https://my.feishu.cn/share/base/shrcnlCvdtPBuwfLgJjpcvg2pOf";
+  return base+"?prefill_技能名称="+encodeURIComponent(name)+"&prefill_动作="+encodeURIComponent(act);
+}
+function fbUrl(name,type){
+  const base="https://my.feishu.cn/share/base/shrcn10YGgFtyvXTdQYUc5rZpVc";
+  return base+"?prefill_技能名称="+encodeURIComponent(name)+"&prefill_反馈类型="+encodeURIComponent(type);
+}
+/* 热度格式化：数字 -> 万 */
+function fmtNum(n){
+  if(n==null||n===""||isNaN(n)) return "";
+  const x=+n;
+  if(x>=10000) return (x/10000).toFixed(1).replace(/\.0$/,"")+"万";
+  return x.toLocaleString();
+}
+/* 解析 skills.sh 安装量字符串 -> 数值 */
+function parseInstall(str){
+  if(!str) return null;
+  const m=String(str).match(/([\d.]+)\s*K/);
+  if(m) return Math.round(parseFloat(m[1])*1000);
+  const n=String(str).replace(/[^\d]/g,"");
+  return n?+n:null;
+}
+/* 解析增长字符串 */
+function parseGrowth(str){
+  const m=String(str||"").match(/\+\s*([\d,]+)\s*\/\s*(\d+)天/);
+  if(m) return {add:+m[1].replace(/,/g,""),days:+m[2]};
+  return null;
+}
+
+/* ===== 已提交本地标记（仅当 data.json 同步时间晚于点击时间才清除）===== */
+function updatedTs(){
+  const t=DATA_UPDATED?new Date(DATA_UPDATED.replace(" ","T")+":00").getTime():0;
+  return isNaN(t)?0:t;
+}
+/* 同一技能只保留最新一条反馈：点「没用」会覆盖之前的「有用」，不会两个并存 */
+let fbLatest={};
+try{ fbLatest=JSON.parse(localStorage.getItem("fbLatest")||"{}"); }catch(e){}
+function saveLatest(){ try{ localStorage.setItem("fbLatest",JSON.stringify(fbLatest)); }catch(e){} }
+function latestOf(skill){
+  const v=fbLatest[skill]; if(!v) return null;
+  const ut=updatedTs();
+  if(ut>0 && ut>(+v.ts)){ delete fbLatest[skill]; saveLatest(); return null; }
+  return v;
+}
+function isSubmitted(skill,act){
+  /* 当前评价锁定 ✓（读统一评价源 RATING_MAP：服务端同步 + 本地乐观更新）；另一个按钮保留可点 = 改评切换 */
+  const rt=RATING_MAP[skill]; if(!rt) return false;
+  if(act==="有用") return rt==="好用";
+  if(act==="没用") return rt==="没用";
+  if(act==="一般") return rt==="一般";
+  return false;
+}
+function markSubmitted(skill,act){ /* 已退役：反馈直写成功，乐观更新即时生效，不再做本地提交标记 */ }
+function submitMark(el,skill,act){
+  /* 反馈提交成功即真实写入（Worker 直写 Base）：本地乐观更新评价并重绘，按钮恢复可点（可改评），不再卡"等待同步" */
+  if(["有用","没用","一般"].includes(act)){
+    RATING_MAP[skill]=act==="有用"?"好用":act==="没用"?"没用":"一般";
+  }
+  if(act==="感兴趣"||act==="不感兴趣"){
+    interestLocal[skill]=act; saveInterest(); INTEREST_MAP[skill]=act;
+  }
+  if(el&&el.isConnected){ el.disabled=false; el.classList.remove("pending"); }
+  renderFeed(); renderInbox(); renderToolbox(); renderStats(); renderCases();
+  /* 抽屉若打开则重渲染：同组按钮互斥态（✓锁定 / 另一可点）即时更新 */
+  const dr=$("drawer");
+  if(dr&&dr.classList.contains("open")) openDrawer(skill);
+}
+/* ===== 提交入口：有后端直写，无后端回退页内面板 =====
+   组级并发锁：评价组（好用/没用）与意向组（感兴趣/不感兴趣）是两个独立维度，互不干扰；
+   提交只锁定同组按钮（组内互斥），组外按钮保持可点；fetch 带 12s 超时，失败/超时统一恢复 */
+const __pendingSkills=new Set();
+function openAction(el,kind,skill,act){
+  if(event&&event.stopPropagation) event.stopPropagation();  /* 卡片/行内按钮点击不冒泡到详情 */
+  if(!el||el.disabled) return;              /* 防连点：提交中禁止再次点击 */
+  /* 按动作分组：评价组与意向组各自独立锁，组间互不影响 */
+  const GROUPS={"有用":["有用","没用"],"没用":["有用","没用"],"感兴趣":["感兴趣","不感兴趣"],"不感兴趣":["感兴趣","不感兴趣"]};
+  const g=GROUPS[act]||[act];
+  const key=skill+"|"+g.join("|");
+  if(__pendingSkills.has(key)) return;      /* 同组已有请求在途，忽略二次点击 */
+  __pendingSkills.add(key);
+  /* 只锁定同组按钮；其他组（如评价 vs 意向）保持可点 */
+  const locked=[], saved=new Map();
+  document.querySelectorAll('button[data-skill="'+skill+'"]').forEach(b=>{
+    if(!g.includes(b.getAttribute("data-act"))) return;
+    if(b.disabled) return;
+    locked.push(b); saved.set(b,b.innerHTML);
+    b.disabled=true; b.classList.add("pending"); b.textContent="提交中…";
+  });
+  const restoreAll=()=>{ locked.forEach(b=>{ if(b.isConnected){ b.disabled=false; b.classList.remove("pending"); b.innerHTML=saved.get(b); } }); };
+  const done=()=>{ __pendingSkills.delete(key); };
+  const ctl=new AbortController();
+  const timer=setTimeout(()=>ctl.abort(),12000);  /* 12s 超时：fetch 黑洞也不会永久卡死 */
+  if(WORKER_URL){
+    const url=WORKER_URL.replace(/\/$/,"")+(kind==="act"?"/action":"/feedback");
+    fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({skill,act}),signal:ctl.signal})
+      .then(r=>r.json())
+      .then(d=>{
+        clearTimeout(timer); done();
+        if(d.ok){ submitMark(el,skill,act); }           /* 成功：乐观更新+重绘（新按钮已含 ✓ 态，旧按钮已替换） */
+        else if(d.needAuth){ restoreAll(); alert("首次使用需要飞书授权一次，正在跳转…授权完成后回来再点一次即可"); location.href=WORKER_URL.replace(/\/$/,"")+"/auth"; }
+        else { restoreAll(); alert("提交失败："+(d.error||"未知错误")); }
+      })
+      .catch(err=>{
+        clearTimeout(timer); done(); restoreAll();
+        alert(err&&err.name==="AbortError"?"提交超时，请稍后重试":"提交失败：网络异常，请稍后再试");
+      });
+  } else {
+    clearTimeout(timer); done(); restoreAll(); openPanel(el,kind,skill,act);
+  }
+}
+/* ===== 页内面板：iframe 表单，提交成功自动确认 ===== */
+let fbTrigger=null, fbLoads=0;
+function openPanel(el,kind,skill,act){
+  const url=kind==="act"?actUrl(skill,act):fbUrl(skill,act);
+  fbTrigger=el; fbLoads=0;
+  $("fbTitle").textContent=kind==="act"?(act==="卸载"?"卸载技能":act==="恢复"?"恢复技能":"安装技能"):"提交反馈";
+  $("fbTip").className="fb-tip"; $("fbTip").textContent="在表单中完成填写并提交，成功后本面板自动确认。";
+  $("fbFrame").src=url;
+  $("fbPanel").classList.add("open"); $("mask").classList.add("show");
+  lockScroll();
+  document.querySelectorAll(".kebab.open").forEach(k=>k.classList.remove("open"));
+  requestAnimationFrame(()=>{ const c=$("fbPanel").querySelector(".drawer-close"); if(c) c.focus(); });
+}
+function closeFbPanel(){
+  $("fbPanel").classList.remove("open"); $("mask").classList.remove("show");
+  unlockScroll();
+  $("fbFrame").src="about:blank";
+  if(fbTrigger&&fbTrigger.focus) fbTrigger.focus();
+  fbTrigger=null;
+}
+$("fbFrame").addEventListener("load",()=>{
+  if(!$("fbPanel").classList.contains("open")) return;
+  fbLoads++;
+  /* 首次加载是表单页；再次加载视为提交成功跳转 */
+  if(fbLoads>=2){
+    if(fbTrigger){
+      const skill=fbTrigger.getAttribute("data-skill"), act=fbTrigger.getAttribute("data-act");
+      if(skill&&act){ submitMark(fbTrigger,skill,act); }
+    }
+    $("fbTip").className="fb-tip done"; $("fbTip").textContent="已提交 ✓ 本面板可关闭。";
+    setTimeout(closeFbPanel,1200);
+  }
+});
+$("mask").addEventListener("click",closeFbPanel);
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ const ok=document.querySelector(".kebab.open"); if(ok){ const b=ok.querySelector(".kebab-btn"); ok.classList.remove("open"); if(b&&b.focus) b.focus(); return; } if($("fbPanel").classList.contains("open")) closeFbPanel(); } });
+function doneBtn(skill,act,label){
+  if(isSubmitted(skill,act)) return `<span class="btn done" title="已跳转表单，数据同步后自动恢复">已提交，等待同步</span>`;
+  return `<button class="btn primary" data-skill="${skill.replace(/'/g,"&apos;")}" data-act="${act}" onclick="openAction(this,'act','${skill.replace(/'/g,"\\'")}','${act}')">${label}</button>`;
+}
+function fbBtn(skill,type,label){
+  if(isSubmitted(skill,type)) return `<span class="btn sub done" title="当前评价：${label}（点另一个可改评）">${label}✓</span>`;
+  return `<button class="btn sub" data-skill="${skill.replace(/'/g,"&apos;")}" data-act="${type}" onclick="openAction(this,'fb','${skill.replace(/'/g,"\\'")}','${type}')">${label}</button>`;
+}
+/* 感兴趣 / 不感兴趣：意向直写反馈表，二选一并列；感兴趣进资产库（待装），不感兴趣不进 */
+/* 已表态的按钮锁定为 ✓ 态（防重复提交）；另一个按钮保留可点 = 反悔切换
+   意向通用：未安装点「感兴趣」= 待安装；已安装点「不感兴趣」= 待卸载 */
+function interestBtn(skill,cn){
+  const nm=skill.replace(/'/g,"\\'");
+  if(interestOf(skill)==="感兴趣") return `<button type="button" class="btn done" disabled title="已表态：感兴趣（点右侧可切换）">感兴趣 ✓</button>`;
+  return `<button type="button" class="btn primary" data-skill="${skill}" data-act="感兴趣" onclick="openAction(this,'fb','${nm}','感兴趣')">感兴趣</button>`;
+}
+function noInterestBtn(skill,cn){
+  const nm=skill.replace(/'/g,"\\'");
+  const inst=!!SKILL_LEDGER.find(x=>x.name===skill&&instState(x)==="inst");
+  /* 已安装：文案「卸载」（点击=标记待卸载，写库仍是不感兴趣意向）；未安装：不感兴趣 */
+  const label=inst?"卸载":"不感兴趣";
+  if(interestOf(skill)==="不感兴趣") return `<button type="button" class="btn done" disabled title="已标记：${inst?"待卸载":"不感兴趣"}（点左侧可切换）">${label} ✓</button>`;
+  return `<button type="button" class="btn sub" data-skill="${skill}" data-act="不感兴趣" onclick="openAction(this,'fb','${nm}','不感兴趣')">${label}</button>`;
+}
+/* ===== 不感兴趣：未安装技能的独立可逆标记（本地持久化，不写反馈表；可随时取消）===== */
+let disLike={};
+try{ disLike=JSON.parse(localStorage.getItem("skillDislike")||"{}"); }catch(e){}
+function saveDislike(){ try{ localStorage.setItem("skillDislike",JSON.stringify(disLike)); }catch(e){} }
+function saveDislike(){ try{ localStorage.setItem("skillDislike",JSON.stringify(disLike)); }catch(e){} }
+/* 评价标签：仅已安装技能显示 好用/没用/一般（评价=用过之后的反馈，未安装/需恢复不出评价标签）；
+   意向状态（感兴趣/不感兴趣/待卸载）由按钮 ✓ 锁定表达，不再重复出标签 */
+function ratingChip(name){
+  const s=SKILL_LEDGER.find(x=>x.name===name); if(!s) return "";
+  if(instState(s)!=="inst") return "";
+  const rt=myRating(name);
+  if(rt==="未评价") return "";
+  return `<span class="chip rate-${rt==="好用"?"good":rt==="一般"?"mid":"bad"}">${esc(rt)}</span>`;
+}
+
+/* ===== 状态 -> 主按钮 ===== */
+function unmarkBtn(skill,cn){
+  const nm=skill.replace(/'/g,"\\'");
+  return `<button type="button" class="btn sub" data-skill="${skill}" data-act="感兴趣" onclick="openAction(this,'fb','${nm}','感兴趣')">取消待卸载</button>`;
+}
+function mainActs(s){
+  const st=instState(s), rt=myRating(s.name);
+  /* 方案C：安装/卸载/恢复只走对话，网页不提供入口；未安装/需恢复时操作区留空 */
+  if(st!=="inst") return "";
+  /* 已安装：表层只留意向（不感兴趣=待卸载 / 取消待卸载）；好用/没用 评价已下沉到详情抽屉 */
+  if(interestOf(s.name)==="不感兴趣") return unmarkBtn(s.name,CN_OF[s.name]);
+  return noInterestBtn(s.name,CN_OF[s.name]);
+}
+
+/* ===== 顶栏 / 更新 ===== */
+function renderUpdated(){ $("updText").textContent=(DATA_UPDATED||"—").slice(5,16); }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ===== 今日推荐 ===== */
+function todayRecs(){
+  const q=(params.get("q")||"").toLowerCase();
+  const today=new Date().toISOString().slice(0,10);
+  let list=RECOMMEND_RECS.filter(r=>r.date===today && r.skill && SKILL_LEDGER.some(s=>s.name===r.skill));
+  let subMsg="";
+  if(!list.length){
+    const dates=[...new Set(RECOMMEND_RECS.filter(r=>r.skill&&SKILL_LEDGER.some(s=>s.name===r.skill)).map(r=>r.date))].filter(Boolean).sort().reverse();
+    const last=dates[0];
+    list=last?RECOMMEND_RECS.filter(r=>r.date===last):[];
+    if(list.length) subMsg="今天还没有新推荐，这是最近一次推荐（"+last.slice(5)+"）";
+    else subMsg="暂无推荐记录";
+  }
+  if(q){
+    list=list.filter(r=>{const s=SKILL_LEDGER.find(x=>x.name===r.skill);return s&&(s.name.toLowerCase().includes(q)||(s.cn||"").toLowerCase().includes(q)||(s.desc||"").toLowerCase().includes(q));});
+    if(!list.length) subMsg=`没有找到"${q}"`;
+  }
+  return {list, fy:list.filter(r=>r.type!=="trending"), tr:list.filter(r=>r.type==="trending"), subMsg};
+}
+function feedCardHtml(r){
+  const s=SKILL_LEDGER.find(x=>x.name===r.skill); if(!s) return "";
+  const st=instState(s);
+  const chip=st==="recover"?'<span class="chip recover">需恢复</span>':st==="inst"?'<span class="chip inst">已安装</span>':'<span class="chip missing">未安装</span>';
+  const heat=r.hot?`<span class="heat-tag">${esc(r.hot)}</span>`:"";
+  return `<div class="card feed-card" role="button" tabindex="0" style="cursor:pointer" onclick="openDrawer('${r.skill.replace(/'/g,"\\'")}')" onkeydown="if(event.key==='Enter')openDrawer('${r.skill.replace(/'/g,"\\'")}')">
+    <div class="fc-top">
+      <div style="flex:1;min-width:0">
+        <div class="fc-name">${esc(CN_OF[r.skill]||r.skill)}<span class="fc-en">${esc(r.skill)}</span></div>
+      </div>
+      ${chip}
+    </div>
+    <div class="fc-why">${esc(r.why||"")}</div>
+    <div class="fc-meta">${heat}${ratingChip(r.skill)}</div>
+    <div class="fc-acts">
+      ${mainActs(s)}
+      ${st==="missing"?interestBtn(r.skill,CN_OF[r.skill]):""}
+      ${st==="missing"?noInterestBtn(r.skill,CN_OF[r.skill]):""}
+    </div>
+  </div>`;
+}
+function renderFeed(){
+  const {list,fy,tr,subMsg}=todayRecs();
+  $("feedSub").textContent=subMsg;
+  if(!list.length){ $("feedRow").innerHTML=`<div class="empty">${(params.get("q")||"").trim()?`没有找到"${esc(params.get("q"))}"`:"还没有推荐记录，等明早 9 点的每日推荐吧。"}</div>`; return; }
+  $("feedTitle").textContent=`今天推荐了 ${list.length} 个`;
+  if(!subMsg) $("feedSub").textContent=`为你推荐 ${fy.length} · 全网热门 ${tr.length} · 评价立即生效，可随时改评`;
+  const sec=(tt,sub,arr)=>`<div class="feed-sec">
+    <div class="feed-sec-head"><span class="feed-sec-tt">${tt}</span><span class="feed-sec-sub">${sub}</span></div>
+    <div class="feed-grid">${arr.map(feedCardHtml).join("")||`<div class="feed-empty">${tt==="全网热门"?"全网热门档随每日推荐同步推送 Top5":"这个档位暂时没有内容"}</div>`}</div>
+  </div>`;
+  $("feedRow").innerHTML=sec("为你推荐","结合你的画像筛选",fy)+sec("全网热门","全网最火，不设相关筛选",tr);
+}
+
+/* ===== 待我决定 ===== */
+function typeChip(r){
+  const t=r.type==="trending"?"全网":"业务";
+  return `<span class="chip t-chip" title="${r.type==="trending"?"全网热门档推荐":"为你推荐（贴合业务画像）"}">${t}</span>`;
+}
+function renderInbox(){
+  const q=(params.get("q")||"").toLowerCase();
+  const pending=RECOMMEND_RECS.filter(r=>{
+    const s=r.skill&&SKILL_LEDGER.find(x=>x.name===r.skill);
+    if(!s) return false;
+    if(q && !(s.name.toLowerCase().includes(q)||(s.cn||"").toLowerCase().includes(q)||(s.desc||"").toLowerCase().includes(q))) return false;
+    return instState(s)==="missing" && myRating(s.name)==="未评价" && !interestOf(s.name);
+  }).sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  $("inboxList").innerHTML=pending.length?`<div class="inbox-list">${pending.map(r=>{
+    const s=SKILL_LEDGER.find(x=>x.name===r.skill);
+    return `<div class="inbox-row">
+      <span class="inbox-date">${(r.date||"").slice(5)}</span>
+      <span class="inbox-name" role="button" tabindex="0" style="cursor:pointer" onclick="openDrawer('${r.skill.replace(/'/g,"\\'")}')">${esc(CN_OF[r.skill]||r.skill)}<em>${esc(r.skill)}</em></span>
+      ${typeChip(r)}
+      <span class="inbox-why">${esc(r.why||"")}</span>
+      <span class="inbox-acts">
+        ${interestBtn(r.skill,CN_OF[r.skill])}
+        ${noInterestBtn(r.skill,CN_OF[r.skill])}
+      </span>
+    </div>`;
+  }).join("")}</div>`:(q?`<div class="empty">没有找到"${esc(q)}"</div>`:`<div class="empty">收件箱空了：所有推荐都处理完了。👍</div>`);
+  /* 推荐历史：已处理（已安装/已评价/需恢复）按日期分组 */
+  const done=RECOMMEND_RECS.filter(r=>{
+    const s=r.skill&&SKILL_LEDGER.find(x=>x.name===r.skill);
+    if(!s) return false;
+    if(q && !(s.name.toLowerCase().includes(q)||(s.cn||"").toLowerCase().includes(q))) return false;
+    return instState(s)!=="missing" || myRating(s.name)!=="未评价" || !!interestOf(s.name);
+  }).sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  const groups={};
+  done.forEach(r=>{ const d=(r.date||"未知").slice(0,7); (groups[d]=groups[d]||[]).push(r); });
+  const days=Object.keys(groups).sort().reverse();
+  $("historyList").innerHTML=days.map(d=>`
+    <div class="hist-group" style="margin-bottom:6px">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--dim);padding:8px 18px 2px">${d} · ${groups[d].length} 条</div>
+      ${groups[d].map(r=>{const s=SKILL_LEDGER.find(x=>x.name===r.skill);if(!s)return "";const st=instState(s);return `<div class="hist-row"><span class="d">${(r.date||"").slice(5)}</span><span class="n" role="button" tabindex="0" style="cursor:pointer" onclick="openDrawer('${r.skill.replace(/'/g,"\\'")}')">${esc(CN_OF[r.skill]||r.skill)}</span>${typeChip(r)}<span class="chip ${st}">${st==="inst"?"已安装":st==="recover"?"需恢复":"未安装"}</span><span class="w">${esc(r.why||"")}</span></div>`;}).join("")}
+    </div>`).join("")||`<div class="hist-row">还没有已处理的推荐</div>`;
+  $("historySummary").textContent=`推荐历史（${done.length}）`;
+}
+
+/* ===== 工具箱 ===== */
+function renderToolFilters(){
+  const cur=params.get("filter")||"all";
+  const opts=[["all","全部"],["inst","已安装"],["missing","待装"],["recover","需恢复"]];
+  $("toolFilters").innerHTML=opts.map(([k,label])=>`<button class="btn ${cur===k?"on":""}" onclick="setToolFilter('${k}')">${label}</button>`).join("");
+}
+function setToolFilter(k){
+  params.set("view","toolbox");
+  if(k==="all") params.delete("filter"); else params.set("filter",k);
+  history.replaceState(null,"","?"+params.toString());
+  renderToolFilters(); renderToolbox();
+}
+function renderToolbox(){
+  const q=(params.get("q")||"").toLowerCase();
+  const cur=params.get("filter")||"all";
+  const curScene=params.get("scene")||"";
+  const sceneGroups={};
+  SCENE_ORDER.forEach(sc=>sceneGroups[sc]=[]);
+  SKILL_LEDGER.forEach(s=>{
+    if(q && !(s.name.toLowerCase().includes(q)||(s.cn||"").toLowerCase().includes(q)||(s.desc||"").toLowerCase().includes(q))) return;
+    if(instState(s)==="missing" && interestOf(s.name)!=="感兴趣") return;  /* 未表态/不感兴趣不进资产库 */
+    if(cur==="inst"&&instState(s)!=="inst") return;
+    if(cur==="missing"&&instState(s)!=="missing") return;
+    if(cur==="recover"&&instState(s)!=="recover") return;
+    sceneGroups[sceneOf(s)].push(s);
+  });
+  $("sceneGroups").innerHTML=SCENE_ORDER.map(sc=>{
+    const arr=sceneGroups[sc];
+    if(curScene && sc!==curScene) return "";
+    if(!arr.length && (cur!=="all"||q)) return "";
+    const instN=arr.filter(s=>instState(s)==="inst").length;
+    return `<div class="scene-group" id="scene-${sc}">
+      <h3 class="scene-title">${sc}<span class="scene-cnt">已装 ${instN} / 共 ${arr.length}</span></h3>
+      ${arr.length?`<div class="tool-list">${arr.map(s=>{
+        const st=instState(s), rt=myRating(s.name);
+        const casesN=CASE_LEDGER.filter(c=>c.skill===s.name).length;
+        const tags=bizTags(s,sc).map(t=>`<span class="heat-tag">${esc(t)}</span>`).join("");
+        return `<div class="tool-row">
+          <span class="dot ${st}"></span>
+          <span class="tool-name" role="button" tabindex="0" style="cursor:pointer" onclick="openDrawer('${s.name.replace(/'/g,"\\'")}')">${esc(CN_OF[s.name]||s.name)}<em>${esc(s.name)}</em></span>
+          <span class="tool-tags">${tags}</span>
+          ${ratingChip(s.name)}
+          <span class="tool-cases">${casesN?`<span class="case-pill"><b>${casesN}</b> 个案例</span>`:""}</span>
+          <span class="tool-right">
+            <span class="kebab" id="kebab-${s.name}" onclick="event.stopPropagation()">
+              <button type="button" class="kebab-btn" aria-label="更多操作" aria-haspopup="menu" onclick="toggleKebab('${s.name.replace(/'/g,"\\'")}',this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+              </button>
+              ${kebabMenuHtml(s,st)}
+            </span>
+          </span>
+        </div>`;
+      }).join("")}</div>`:`<div class="empty">这个场景还没有技能${cur!=="all"?"（当前筛选）":""}，去<a href="#sec-heat" style="color:var(--accent);text-decoration:underline">热度参考</a>看看</div>`}
+    </div>`;
+  }).join("");
+  const shown=Object.values(sceneGroups).reduce((a,b)=>a+b.length,0);
+  if(!shown&&(q||cur!=="all")){
+    $("sceneGroups").innerHTML=q?`<div class="empty">没有找到"${esc(q)}"</div>`:`<div class="empty">当前筛选下没有匹配的技能。</div>`;
+  }
+}
+const K_ICON_EYE='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const K_ICON_TRASH='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/></svg>';
+const K_ICON_X='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>';
+const K_ICON_CHECK='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+function kebabMenuHtml(s,st){
+  const nm=s.name.replace(/'/g,"\\'");
+  let body=`<button type="button" class="mi" tabindex="-1" onclick="openDrawer('${nm}')">${K_ICON_EYE}<span>查看详情</span></button>`;
+  /* 已安装：查看详情 / ─ / 不感兴趣(=待卸载,红) 或 取消待卸载；未安装：查看详情 / 不感兴趣 */
+  if(st==="inst"){
+    body+=`<hr class="mi-sep">`;
+    if(interestOf(s.name)==="不感兴趣"){
+      body+=`<button type="button" class="mi" tabindex="-1" data-skill="${s.name}" data-act="感兴趣" onclick="openAction(this,'fb','${nm}','感兴趣')">${K_ICON_CHECK}<span>取消待卸载</span></button>`;
+    }else{
+      body+=`<button type="button" class="mi danger" tabindex="-1" data-skill="${s.name}" data-act="不感兴趣" onclick="openAction(this,'fb','${nm}','不感兴趣')">${K_ICON_X}<span>卸载</span></button>`;
+    }
+  }
+  if(st==="missing"){
+    body+=`<button type="button" class="mi danger" tabindex="-1" data-skill="${s.name}" data-act="不感兴趣" onclick="openAction(this,'fb','${nm}','不感兴趣')">${K_ICON_X}<span>不感兴趣</span></button>`;
+  }
+  return `<div class="kebab-menu">${body}</div>`;
+}
+function toggleKebab(name,btn){
+  const el=$("kebab-"+name);
+  if(!el) return;
+  document.querySelectorAll(".kebab.open").forEach(k=>{ if(k!==el) k.classList.remove("open"); });
+  const willOpen=!el.classList.contains("open");
+  el.classList.toggle("open");
+  if(!willOpen){ if(btn&&btn.focus) btn.focus(); return; }
+  const menu=el.querySelector(".kebab-menu");
+  const r=menu.getBoundingClientRect(), vh=window.innerHeight;
+  if(r.bottom>vh-8){ menu.style.top="auto"; menu.style.bottom="32px"; if(r.height>vh-48){ menu.style.maxHeight=(vh-48)+"px"; menu.style.overflowY="auto"; } }
+  else { menu.style.top="32px"; menu.style.bottom="auto"; menu.style.maxHeight=""; menu.style.overflowY=""; }
+  menu.setAttribute("tabindex","-1");
+  menu.focus({preventScroll:true});
+  const items=[...menu.querySelectorAll(".mi")];
+  let idx=-1;
+  const clear=()=>items.forEach(x=>x.removeAttribute("aria-selected"));
+  const focusItem=i=>{ if(!items.length) return; idx=(i+items.length)%items.length; clear(); items[idx].setAttribute("aria-selected","true"); items[idx].focus({preventScroll:true}); };
+  menu.onkeydown=e=>{
+    if(e.key==="ArrowDown"){ e.preventDefault(); focusItem(idx+1); }
+    else if(e.key==="ArrowUp"){ e.preventDefault(); focusItem(idx-1); }
+    else if(e.key==="Enter"){ e.preventDefault(); if(idx>=0&&items[idx]) items[idx].click(); }
+    else if(e.key==="Escape"){ el.classList.remove("open"); if(btn&&btn.focus) btn.focus(); }
+  };
+}
+function confirmUnload(name){
+  return new Promise(res=>{
+    const mask=document.createElement("div"); mask.className="cf-mask";
+    mask.innerHTML=`<div class="cf-box"><div class="cf-title">确定卸载 ${esc(name)}？</div><div class="cf-sub">卸载后本机不再保留该技能，备份与历史记录不受影响。</div><div class="cf-actions"><button type="button" class="cf-btn" data-v="0">取消</button><button type="button" class="cf-btn danger" data-v="1">卸载</button></div></div>`;
+    document.body.appendChild(mask);
+    const close=v=>{ document.body.removeChild(mask); res(v); };
+    mask.addEventListener("click",e=>{ if(e.target===mask) close(false); });
+    mask.querySelector('[data-v="0"]').addEventListener("click",()=>close(false));
+    mask.querySelector('[data-v="1"]').addEventListener("click",()=>close(true));
+    mask.querySelector('[data-v="0"]').focus();
+  });
+}
+async function unloadSkill(el,name,cn){
+  const ok=await confirmUnload(cn||name);
+  if(!ok) return;
+  openAction(el,"act",name,"卸载");
+}
+document.addEventListener("click",e=>{ if(!e.target.closest(".kebab")) document.querySelectorAll(".kebab.open").forEach(k=>k.classList.remove("open")); });
+
+/* ===== 用法案例 ===== */
+function renderCaseFilters(){
+  const cur=params.get("scene")||"all";
+  const scenes=["all",...SCENE_ORDER];
+  $("caseFilters").innerHTML=scenes.map(sc=>`<button class="btn ${cur===sc?"on":""}" onclick="setCaseFilter('${sc}')">${sc==="all"?"全部":sc}</button>`).join("");
+}
+function setCaseFilter(sc){
+  params.set("view","cases");
+  if(sc==="all") params.delete("scene"); else params.set("scene",sc);
+  history.replaceState(null,"","?"+params.toString());
+  renderCaseFilters(); renderCases();
+}
+function renderCases(){
+  const cur=params.get("scene")||"all";
+  const q=(params.get("q")||"").toLowerCase();
+  const list=CASE_LEDGER.filter(c=>{
+    if(!c.skill || !SKILL_LEDGER.some(s=>s.name===c.skill)) return false;
+    if(cur!=="all" && c.scene!==cur) return false;
+    if(q && !((c.name||"").toLowerCase().includes(q)||(c.steps||"").toLowerCase().includes(q))) return false;
+    return true;
+  });
+  $("caseGrid").innerHTML=list.length?list.map(c=>{
+    const s=SKILL_LEDGER.find(x=>x.name===c.skill);
+    return `<div class="card case-card">
+      <div class="case-top"><b>${esc(c.name)}</b><span class="chip ${c.effect==="很好"?"inst":c.effect==="一般"?"missing":"rate-none"}">${esc(c.effect||"未验收")}</span></div>
+      <div class="case-meta">
+        <span class="skill-link" role="button" tabindex="0" onclick="openDrawer('${c.skill.replace(/'/g,"\\'")}')">${esc(CN_OF[c.skill]||c.skill)}</span>
+        <span>·</span><span>${esc(c.scene||"")}</span><span>·</span><span class="mono">${(c.date||"").slice(0,10)}</span>
+      </div>
+      <div class="case-steps">${esc(c.steps||"")}</div>
+      ${c.effect==="一般"&&c.note?`<div class="case-note">局限：${esc(c.note)}</div>`:""}
+      <div class="case-foot">
+        <span style="font-size:12px;color:var(--dim)">${s?esc(s.desc||""):""}</span>
+        ${c.link?`<a class="btn sub" href="${c.link}" target="_blank" rel="noopener">查看产物 ↗</a>`:""}
+      </div>
+    </div>`;
+  }).join(""):`<div class="empty" style="grid-column:1/-1">${q?`没有找到"${esc(q)}"`:"这个场景还没有案例。"}</div>`;
+}
+
+/* ===== 热度参考 ===== */
+function renderHeat(){
+  const miss=SKILL_LEDGER.filter(s=>instState(s)==="missing");
+  /* GitHub 榜（台账 hot 数字） */
+  const gh=miss.filter(s=>s.hot).sort((a,b)=>b.hot-a.hot).slice(0,8);
+  $("heatGithub").innerHTML=`<h3>★ GitHub Star</h3>`+(gh.length?gh.map((s,i)=>`
+    <div class="heat-row" role="button" tabindex="0" style="cursor:pointer" onclick="openDrawer('${s.name.replace(/'/g,"\\'")}')">
+      <span class="n">${i+1}</span><span class="nm">${esc(CN_OF[s.name]||s.name)}<em>${esc(s.name)}</em></span>
+      <span class="v">${fmtNum(s.hot)}★</span>
+    </div>`).join(""):`<div style="font-size:13px;color:var(--dim)">暂无</div>`);
+  /* skills.sh 榜（推荐记录 hot 字符串含安装量） */
+  const seen={};
+  const ss=[];
+  RECOMMEND_RECS.forEach(r=>{
+    const s=r.skill&&SKILL_LEDGER.find(x=>x.name===r.skill);
+    if(!s || instState(s)!=="missing") return;
+    if(!/安装量/.test(r.hot||"")) return;
+    if(seen[r.skill]) return; seen[r.skill]=true;
+    ss.push({s:r, v:parseInstall(r.hot), raw:r.hot, g:parseGrowth(r.hot)});
+  });
+  ss.sort((a,b)=>(b.v||0)-(a.v||0));
+  $("heatSkills").innerHTML=`<h3>↓ skills.sh 安装量</h3>`+(ss.length?ss.slice(0,8).map((x,i)=>`
+    <div class="heat-row" style="cursor:pointer" onclick="openDrawer('${x.s.skill.replace(/'/g,"\\'")}')">
+      <span class="n">${i+1}</span><span class="nm">${esc(CN_OF[x.s.skill]||x.s.skill)}<em>${esc(x.s.skill)}</em></span>
+      ${x.g?`<span class="growth">+${fmtNum(x.g.add)}/${x.g.days}天</span>`:""}
+      <span class="v">${fmtNum(x.v)}↓</span>
+    </div>`).join(""):`<div style="font-size:13px;color:var(--dim)">暂无</div>`);
+}
+
+/* ===== 机架状态条（纯视觉汇总，派生自现有数据，不参与任何交互）===== */
+function renderRack(){
+  const rack=$("rackBar"); if(!rack) return;
+  const instN=SKILL_LEDGER.filter(s=>instState(s)==="inst").length;
+  const missN=SKILL_LEDGER.filter(s=>instState(s)==="missing"&&interestOf(s.name)==="感兴趣").length;
+  const recoverN=SKILL_LEDGER.filter(s=>instState(s)==="recover").length;
+  const today=new Date().toISOString().slice(0,10);
+  const recN=RECOMMEND_RECS.filter(r=>r.date===today&&r.skill&&SKILL_LEDGER.some(s=>s.name===r.skill)).length;
+  rack.innerHTML=`
+    <span class="seg"><i class="led g"></i>已装 <b>${instN}</b></span>
+    <span class="seg"><i class="led a"></i>待装 <b>${missN}</b></span>
+    <span class="seg"><i class="led r"></i>需恢复 <b>${recoverN}</b></span>
+    <span class="seg"><i class="led n"></i>推荐中 <b>${recN}</b></span>
+    <span class="spacer"></span>
+    <span class="lbl">SYNC ${DATA_UPDATED?"✓":"—"}</span>`;
+}
+
+/* ===== 数据面板 ===== */
+function renderStats(){
+  const recN=RECOMMEND_RECS.filter(r=>r.skill&&SKILL_LEDGER.some(s=>s.name===r.skill)).length;
+  const instN=SKILL_LEDGER.filter(s=>instState(s)==="inst").length;
+  const good=SKILL_LEDGER.filter(s=>myRating(s.name)==="好用").length;
+  const mid=SKILL_LEDGER.filter(s=>myRating(s.name)==="一般").length;
+  const bad=SKILL_LEDGER.filter(s=>instState(s)!=="missing" && myRating(s.name)==="没用").length;
+  const disN=SKILL_LEDGER.filter(s=>instState(s)==="missing" && (interestOf(s.name)==="不感兴趣"||myRating(s.name)==="没用")).length;
+  const none=SKILL_LEDGER.length-good-mid-bad;
+  $("statsBar").innerHTML=`
+    <span class="stat-pill">累计推荐 <b>${recN}</b></span>
+    <span class="stat-pill">已装 <b>${instN}</b></span>
+    <span class="stat-pill">评价好用 <b>${good}</b></span>
+    <span class="stat-pill">一般 <b>${mid}</b></span>`;
+  const total=Math.max(1,SKILL_LEDGER.length);
+  const seg=[["#2E7D5B",good],["#9A6B12",mid],["#B4412F",bad],["#D8D1C3",none]];
+  $("miniBar").innerHTML=seg.map(([c,n])=>`<i style="width:${(n/total*100).toFixed(1)}%;background:${c}" title="${n}"></i>`).join("");
+  $("miniLegend").innerHTML=`<span><i style="background:#2E7D5B"></i>好用 ${good}</span><span><i style="background:#9A6B12"></i>一般 ${mid}</span><span><i style="background:#B4412F"></i>没用 ${bad}</span><span><i style="background:#D8D1C3"></i>未评价 ${none-disN}</span><span><i style="background:#8A8F98"></i>不感兴趣 ${disN}</span>`;
+}
+
+/* ===== 详情抽屉 ===== */
+let drawerLastFocus=null;
+/* ===== 背景滚动锁：抽屉/弹窗打开时锁定，双面板计数释放 ===== */
+let bodyLock=0;
+function lockScroll(){ bodyLock++; document.body.classList.add("drawer-lock"); }
+function unlockScroll(){ if(bodyLock>0) bodyLock--; if(bodyLock===0) document.body.classList.remove("drawer-lock"); }
+
+function openDrawer(name){
+  const s=SKILL_LEDGER.find(x=>x.name===name); if(!s) return;
+  drawerLastFocus=document.activeElement;
+  const st=instState(s), rt=myRating(s.name);
+  const recs=RECOMMEND_RECS.filter(r=>r.skill===name).sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  const cases=CASE_LEDGER.filter(c=>c.skill===name);
+  const heat=s.hot?`${fmtNum(s.hot)}★（GitHub）`:(recs[0]&&recs[0].hot?recs[0].hot:"暂无热度数据");
+  $("drawerIn").innerHTML=`
+    <div class="drawer-head">
+      <div><div class="drawer-name">${esc(CN_OF[name]||name)}</div><div class="drawer-en">${esc(name)}</div></div>
+      <button class="drawer-close" onclick="closeDrawer()" aria-label="关闭">×</button>
+    </div>
+    <div class="drawer-meta">
+      <span class="chip ${st}">${st==="inst"?"已安装":st==="recover"?"需恢复":"未安装"}</span>
+      ${st==="inst"?`${ratingChip(name)||`<span class="chip rate-none">未评价</span>`}`:""}
+      <span class="chip rate-none">类别：${esc(s.cat||"")}</span>
+      ${(s.tags||[]).map(t=>`<span class="chip rate-none">${esc(t)}</span>`).join("")}
+    </div>
+    <div class="drawer-desc">${esc(s.desc||"暂无描述")}</div>
+    ${cases.length?(()=>{const hero=cases[0],hs=esc(hero.steps||""),brief=hero.steps?esc(hero.steps.slice(0,110))+(hero.steps.length>110?"…":""):"";const eff=hero.effect==="很好"?"rate-good":hero.effect==="一般"?"rate-mid":"rate-none";return `
+    <div class="case-hero">
+      <div class="ch-top">它能干什么 · 示范案例</div>
+      ${hero.cover?`<img class="case-cover" src="${esc(hero.cover)}" alt="${esc(hero.name)}" loading="lazy">`:""}
+      <div class="ch-body">
+        <div class="ch-name">${esc(hero.name)}</div>
+        <div class="ch-meta">
+          <span class="chip rate-none">场景：${esc(hero.scene||"—")}</span>
+          <span class="chip ${eff}">${esc(hero.effect||"未验收")}</span>
+          ${hero.date?`<span class="chip rate-none">${esc(hero.date)}</span>`:""}
+        </div>
+        ${brief?`<div class="ch-steps">${brief}</div>`:""}
+        ${hs?`<details class="case-details"><summary>展开完整步骤</summary><div class="full">${hs}</div></details>`:""}
+        <div class="ch-foot">${hero.link?`<a href="${esc(hero.link)}" target="_blank" rel="noopener">查看产物 ↗</a>`:""}</div>
+      </div>
+    </div>`;})():""}
+    <div class="drawer-acts">
+      ${mainActs(s)}
+      ${st==="missing"?interestBtn(name,CN_OF[name]):""}
+      ${st==="missing"?noInterestBtn(name,CN_OF[name]):""}
+    </div>
+    ${st==="inst"?`<div class="rate-sec">
+      <div class="rate-label">评价这个技能（用于优化推荐，不影响安装状态）</div>
+      <div class="rate-btns">${fbBtn(name,"有用","好用")}${fbBtn(name,"没用","没用")}</div>
+    </div>`:""}
+    <div class="drawer-block"><div class="drow"><span class="k">热度</span><span class="v heat-tag">${esc(heat)}</span></div></div>
+    <div class="drawer-block"><h4>推荐历史</h4>
+      ${recs.length?recs.map(r=>`<div class="drow"><span class="k">${(r.date||"").slice(5)}</span><span class="v">${esc(r.why||"")}</span></div>`).join(""):`<div class="drow"><span class="k">—</span><span class="v">暂无推荐记录</span></div>`}
+    </div>
+    <div class="drawer-block"><h4>案例记录（${cases.length}）</h4>
+      ${cases.map(c=>{const ce=c.effect==="很好"?"rate-good":c.effect==="一般"?"rate-mid":"rate-none";return `<div class="drow"><span class="k">${esc(c.scene||"")} ${c.cover?`<img src="${esc(c.cover)}" alt="" style="width:42px;height:24px;object-fit:cover;border-radius:4px;vertical-align:middle;border:1px solid var(--line)">`:""}</span><span class="v">${esc(c.name)} <span class="chip ${ce}" style="font-size:10.5px">${esc(c.effect||"—")}</span>${c.link?` <a href="${c.link}" target="_blank" rel="noopener" style="color:var(--accent)">查看 ↗</a>`:""}</span></div>`;}).join("")||`<div class="drow"><span class="k">—</span><span class="v">暂无案例</span></div>`}
+    </div>
+    <div class="drawer-block"><h4>其他</h4>
+      <div class="drow"><span class="k">来源</span><span class="v">${s.source?`<a href="${s.source}" target="_blank" rel="noopener" style="word-break:break-all">${esc(s.source.replace(/^https?:\/\//,""))}</a>`:"本地 / 内部"}</span></div>
+      <div class="drow"><span class="k">备份</span><span class="v">${esc(s.backup||"—")}</span></div>
+      <div class="drow"><span class="k">最近试用</span><span class="v">${esc(s.last||"未试用")}</span></div>
+      ${s.note?`<div class="drow"><span class="k">备注</span><span class="v">${esc(s.note)}</span></div>`:""}
+    </div>`;
+  $("drawer").classList.add("open");
+  $("mask").classList.add("show");
+  lockScroll();
+  requestAnimationFrame(()=>{ const c=$("drawer").querySelector(".drawer-close"); if(c) c.focus(); });
+}
+function closeDrawer(){
+  $("drawer").classList.remove("open"); $("mask").classList.remove("show");
+  unlockScroll();
+  if(drawerLastFocus&&drawerLastFocus.focus&&drawerLastFocus!==document.body) drawerLastFocus.focus();
+}
+$("mask").addEventListener("click",()=>{ closeDrawer(); closeSidebar(); });
+$("mask").addEventListener("touchmove",e=>e.preventDefault(),{passive:false});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){ closeDrawer(); closeSidebar(); }
+  if(e.key==="Enter"&&e.target&&e.target.getAttribute&&e.target.getAttribute("role")==="button") e.target.click();
+});
+
+/* ===== URL 状态 + view 切换 ===== */
+const params=new URLSearchParams(location.search);
+const VIEW_MAP={recommend:"sec-recommend",inbox:"sec-inbox",toolbox:"sec-toolbox",cases:"sec-cases",heat:"sec-heat",stats:"sec-stats"};
+function showView(v){
+  v=v||"recommend";
+  document.querySelectorAll("main > section").forEach(s=>s.classList.toggle("sec-hidden",s.id!==VIEW_MAP[v]));
+  document.querySelectorAll("#sideNav a").forEach(a=>a.classList.toggle("on",a.dataset.view===v));
+  params.set("view",v);
+  history.replaceState(null,"","?"+params.toString());
+  window.scrollTo({top:0,behavior:"instant"});
+}
+function applySearch(){
+  const q=params.get("q")||"";
+  $("searchInput").value=q;
+}
+$("searchInput").addEventListener("input",function(){
+  const v=this.value.trim();
+  if(v){ params.set("q",v); } else { params.delete("q"); }
+  params.set("view",params.get("view")||"recommend");
+  history.replaceState(null,"","?"+params.toString());
+  renderToolFilters();renderToolbox();renderCases();renderInbox();renderFeed();
+});
+$("searchInput").addEventListener("keydown",e=>{ if(e.key==="Enter") e.target.blur(); });
+
+/* ===== 启动 ===== */
+function boot(){
+  try{ localStorage.removeItem("fbLatest"); }catch(e){}
+  fbLatest={};
+  renderUpdated();
+  applySearch();
+  renderFeed();
+  renderInbox();
+  renderToolFilters();
+  renderToolbox();
+  renderCaseFilters();
+  renderCases();
+  renderHeat();
+  renderStats();
+  renderRack();
+  showView(params.get("view")||"recommend");
+}
+async function loadData(){
+  try{
+    const r=await fetch("data.json",{cache:"no-store"});
+    if(r.ok){
+      const d=await r.json();
+      if(d&&d.ledger){ SKILL_LEDGER.splice(0,SKILL_LEDGER.length,...d.ledger); }
+      if(d&&d.recs){ RECOMMEND_RECS.splice(0,RECOMMEND_RECS.length,...d.recs); }
+      if(d&&d.cases){ CASE_LEDGER.splice(0,CASE_LEDGER.length,...d.cases); }
+      if(d&&d.rating){ Object.assign(RATING_MAP,d.rating); }
+      if(d&&d.updated){ DATA_UPDATED = d.updated; }
+    }
+  }catch(e){}
+  boot();
+}
+/* ===== 滚动联动：scrollspy + 移动端收起顶栏 ===== */
+function openSidebar(){ $("sidebar").classList.add("open"); $("mask").classList.add("show"); lockScroll(); }
+function closeSidebar(){ $("sidebar").classList.remove("open"); $("mask").classList.remove("show"); unlockScroll(); }
+document.querySelectorAll("#sideNav a").forEach(a=>a.addEventListener("click",e=>{
+  e.preventDefault();
+  showView(a.dataset.view);
+  closeSidebar();
+}));
+loadData();
+</script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill 管理中心 · 改版设计方向（机房机架）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F4F6; --surface:#FFFFFF; --ink:#1B1E23; --ink-2:#5A6472; --line:#D8DCE3;
+    --blue:#2B59C3; --amber:#E09F3E; --red:#C33C2E; --green:#2F9E5B;
+    --sans:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+    --mono:'IBM Plex Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:16px}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+  /* ── 顶栏 ── */
+  .topbar{display:flex;align-items:center;gap:24px;padding:14px 28px;background:var(--surface);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600}
+  .brand .mark{width:20px;height:20px;border-radius:5px;background:var(--ink);display:grid;place-items:center}
+  .brand .mark i{width:8px;height:8px;border-radius:2px;background:var(--amber);display:block}
+  .topbar .search{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 12px;width:280px;color:var(--ink-2)}
+  .topbar .search input{border:0;background:none;font:inherit;color:var(--ink);width:100%;outline:none}
+  .topbar .search svg{flex:none;opacity:.55}
+
+  /* ── 机架状态条（唯一记忆点）── */
+  .rack{background:#17191D;color:#C9CED6;display:flex;align-items:center;gap:22px;padding:10px 28px;font-family:var(--mono);font-size:12.5px;letter-spacing:.02em}
+  .rack .lbl{color:#7D8694;margin-right:2px}
+  .rack .seg{display:flex;align-items:center;gap:7px}
+  .led{width:8px;height:8px;border-radius:50%}
+  .led.g{background:var(--green);box-shadow:0 0 0 3px rgba(47,158,91,.18)}
+  .led.a{background:var(--amber);box-shadow:0 0 0 3px rgba(224,159,62,.18)}
+  .led.r{background:var(--red);box-shadow:0 0 0 3px rgba(195,60,46,.16)}
+  .led.n{background:transparent;border:1.5px solid #4A5260}
+  .rack .spacer{flex:1}
+  .rack .sync{color:#6E7684;font-size:11.5px}
+  .rack b{color:#E6EAEF;font-weight:500}
+
+  /* ── 布局 ── */
+  .layout{display:grid;grid-template-columns:200px 1fr;min-height:calc(100vh - 97px)}
+  .nav{border-right:1px solid var(--line);padding:20px 12px;background:var(--surface)}
+  .nav a{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;color:var(--ink-2);text-decoration:none;font-size:14px;margin-bottom:2px}
+  .nav a:hover{background:var(--bg);color:var(--ink)}
+  .nav a.on{background:#E9EEF9;color:var(--blue);font-weight:600}
+  .nav a .n{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+  .nav .grp{margin:18px 10px 6px;font-size:11.5px;color:#9AA3B0;letter-spacing:.04em}
+  .main{padding:24px 28px 60px;max-width:1080px}
+
+  .h1{font-size:22px;font-weight:600;letter-spacing:-.01em}
+  .sub{color:var(--ink-2);font-size:13.5px;margin-top:2px}
+
+  /* ── 今日推荐：待插入槽 ── */
+  .recs{margin-top:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .slot{border:1.5px dashed #B9C1CC;border-radius:12px;background:var(--surface);padding:16px 18px;position:relative}
+  .slot::before{content:"";position:absolute;top:-1.5px;left:18px;right:auto;width:0;height:0;display:none}
+  .slot .tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:.05em;margin-bottom:8px}
+  .slot .tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--amber);animation:blink 1.6s ease-in-out infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  .slot .sname{font-size:16.5px;font-weight:600}
+  .slot .sen{font-family:var(--mono);font-size:12px;color:var(--ink-2);margin-top:1px}
+  .slot .swhy{font-size:13.5px;color:var(--ink-2);margin:8px 0 12px}
+  .slot .shot{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+  .slot .acts{display:flex;gap:8px;margin-top:12px}
+  .btn{border:0;border-radius:7px;padding:7px 14px;font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .btn.primary{background:var(--blue);color:#fff}
+  .btn.primary:hover{background:#2449A3}
+  .btn.ghost{background:none;border:1px solid var(--line);color:var(--ink-2)}
+  .btn.ghost:hover{border-color:var(--ink-2);color:var(--ink)}
+
+  /* ── 工具箱：模块行 ── */
+  .sec{margin-top:36px;display:flex;align-items:baseline;gap:10px}
+  .sec h2{font-size:17px;font-weight:600}
+  .sec .cnt{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+  .filters{display:flex;gap:8px;margin:14px 0 16px;flex-wrap:wrap}
+  .filters .f{padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:13px;color:var(--ink-2);cursor:pointer}
+  .filters .f.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .rows{border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+  .row{display:grid;grid-template-columns:14px 46px 1fr auto;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:0}
+  .row:hover{background:#F8F9FB}
+  .row .no{font-family:var(--mono);font-size:11.5px;color:#9AA3B0;text-align:right}
+  .row .nm{display:flex;align-items:baseline;gap:9px;min-width:0}
+  .row .nm b{font-size:14.5px;font-weight:600;white-space:nowrap}
+  .row .nm em{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);font-style:normal}
+  .row .tags{display:flex;gap:6px;align-items:center}
+  .tagc{font-size:11.5px;padding:2px 8px;border-radius:999px;background:#EEF0F3;color:var(--ink-2);white-space:nowrap}
+  .tagc.biz{background:#E7ECF7;color:#2B4A8F}
+  .tagc.rate{background:#EAF4EE;color:#1F7A45}
+  .row .meta{display:flex;align-items:center;gap:14px;color:var(--ink-2);font-size:12.5px}
+  .row .meta .cases{font-family:var(--mono);font-size:11.5px}
+  .kebab{width:28px;height:28px;border:0;border-radius:6px;background:none;color:var(--ink-2);cursor:pointer;display:grid;place-items:center}
+  .kebab:hover{background:#EEF0F3;color:var(--ink)}
+
+  .footnote{margin-top:26px;font-family:var(--mono);font-size:11.5px;color:#9AA3B0}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="mark"><i></i></span>Skill 管理中心</div>
+  <div class="search">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input placeholder="搜索技能、场景、案例…" aria-label="搜索">
+  </div>
+</header>
+
+<div class="rack" aria-label="机架状态">
+  <span class="seg"><i class="led g"></i>已装 <b>44</b></span>
+  <span class="seg"><i class="led a"></i>待装 <b>3</b></span>
+  <span class="seg"><i class="led r"></i>需恢复 <b>0</b></span>
+  <span class="seg"><i class="led n"></i>推荐中 <b>5</b></span>
+  <span class="spacer"></span>
+  <span class="sync">SYNC 2026-10-06 23:58</span>
+</div>
+
+<div class="layout">
+  <nav class="nav" aria-label="主导航">
+    <a class="on">今日推荐<span class="n">5</span></a>
+    <a>待我决定<span class="n">2</span></a>
+    <a>工具箱<span class="n">44</span></a>
+    <a>用法案例<span class="n">7</span></a>
+    <div class="grp">归档</div>
+    <a>全部技能<span class="n">44</span></a>
+    <a>推荐记录<span class="n">39</span></a>
+  </nav>
+
+  <main class="main">
+    <div class="h1">今日推荐</div>
+    <div class="sub">5 个新模块待接入机架 · 每天 09:00 更新</div>
+
+    <div class="recs">
+      <div class="slot">
+        <span class="tag">待插入</span>
+        <div class="sname">一线三垂直</div>
+        <div class="sen">math-explainer · 几何模型可视化</div>
+        <div class="swhy">你上周用它做了知识点图解页，几何模型讲清楚学生秒懂</div>
+        <div class="shot">★ 274K · GitHub Trending #1</div>
+        <div class="acts"><button class="btn primary">感兴趣</button><button class="btn ghost">不感兴趣</button></div>
+      </div>
+      <div class="slot">
+        <span class="tag">待插入</span>
+        <div class="sname">口播脚本工厂</div>
+        <div class="sen">short-script-gen · 学习方法短视频</div>
+        <div class="swhy">初中学习方法口播，60 秒脚本直接可用，适合你开新账号</div>
+        <div class="shot">★ 96K · 上周热门</div>
+        <div class="acts"><button class="btn primary">感兴趣</button><button class="btn ghost">不感兴趣</button></div>
+      </div>
+    </div>
+
+    <div class="sec"><h2>工具箱</h2><span class="cnt">44 模块 · 已装 16</span></div>
+    <div class="filters">
+      <button class="f on">全部</button><button class="f">教学备课</button><button class="f">内容创作</button><button class="f">效率工具</button><button class="f">视频制作</button>
+    </div>
+
+    <div class="rows">
+      <div class="row">
+        <i class="led g"></i><span class="no">003</span>
+        <div class="nm"><b>图解动画</b><em>manimate</em><span class="tagc biz">教学备课</span><span class="tagc rate">好用</span></div>
+        <div class="meta"><span class="cases">2 案例</span><button class="kebab" aria-label="更多">•••</button></div>
+      </div>
+      <div class="row">
+        <i class="led g"></i><span class="no">007</span>
+        <div class="nm"><b>视觉图解</b><em>visual-explainer</em><span class="tagc biz">内容创作</span><span class="tagc rate">好用</span></div>
+        <div class="meta"><span class="cases">1 案例</span><button class="kebab" aria-label="更多">•••</button></div>
+      </div>
+      <div class="row">
+        <i class="led g"></i><span class="no">011</span>
+        <div class="nm"><b>马特·波克技能集</b><em>mattpocock-skills</em><span class="tagc biz">效率工具</span></div>
+        <div class="meta"><span class="cases">0 案例</span><button class="kebab" aria-label="更多">•••</button></div>
+      </div>
+      <div class="row">
+        <i class="led a"></i><span class="no">014</span>
+        <div class="nm"><b>前端设计</b><em>frontend-design</em><span class="tagc biz">内容创作</span><span class="tagc biz">效率工具</span></div>
+        <div class="meta"><span class="cases">刚装好</span><button class="kebab" aria-label="更多">•••</button></div>
+      </div>
+      <div class="row">
+        <i class="led n"></i><span class="no">021</span>
+        <div class="nm"><b>人生指南</b><em>HowToLiveBetter</em><span class="tagc biz">效率工具</span><span class="tagc biz">家长答疑</span></div>
+        <div class="meta"><span class="cases">0 案例</span><button class="kebab" aria-label="更多">•••</button></div>
+      </div>
+      <div class="row">
+        <i class="led g"></i><span class="no">026</span>
+        <div class="nm"><b>知识地图</b><em>ljg-map</em><span class="tagc biz">教学备课</span><span class="tagc rate">一般</span></div>
+        <div class="meta"><span class="cases">0 案例</span><button class="kebab" aria-label="更多">•••</button></div>
+      </div>
+    </div>
+
+    <div class="footnote">机架状态条 · 改版方向 mock · IBM Plex Sans / Mono</div>
+  </main>
+</div>
+
+</body>
+</html>

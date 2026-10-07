@@ -1,0 +1,12 @@
+# 排除临时/备份/大文件
+_backup/
+_shots/
+*.tar.gz
+*.bak
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+
+# 本地验收产物不入库
+验收截图-kebab重做/

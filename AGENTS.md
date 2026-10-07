@@ -1,0 +1,211 @@
+# Skill 管理中心 — Agent 交接文档（AGENTS.md）
+
+> 本文件是 Skill 管理中心项目的权威交接文档。任何接手本项目的 agent（Claude Code / 其他）**第一步先读本文件**，再读 `交接说明-Claude-Code.md`（面向新环境的任务书）和 `README-部署指南.md`（backend 部署）。
+> 更新日期：2026-10-07。
+
+## 1. 项目目标（一句话）
+
+个人「Skill 技能管理台」：每天 9:00 自动推荐 AI Agent Skill（双档：为你推荐 5 条贴合初中数学教师画像 + 全网热门 5 条），写入飞书 Base「Skill 技能管理台」，同步生成在线 HTML「Skill 管理中心」网页；用户可在网页上浏览技能、提交安装/卸载/感兴趣/不感兴趣/好用/没用等反馈，agent 根据反馈执行本机安装/卸载并回流数据。
+
+## 1.5 运行分工（2026-10-07 用户确认 · 混合模式）
+
+- **Claude Code（本机 Mac）＝代码手术**：大重构、UI 大改、脚本工程化、复杂代码迭代。只在用户发起"改页面/重构/写代码"类请求时启用。
+- **豆包 agent（平台侧）＝日常运营**：每日推荐 cron、安装/卸载 skill、sync/发布/在线验证、反馈处理、内容创作（动画/封面/可视化）、以及豆包平台所有绑定动作（豆包 cron、doubaoapps 发布、给豆包环境装 skill）。
+- **边界**：Claude Code 不负责每日推荐、安装卸载、数据闭环（这些在平台侧，它无授权/无环境）；豆包 agent 不做大规模代码重构（交由 Claude Code）。
+- **协作点**：Claude Code 改完代码后，产物需回到平台侧发布（迁 CF Pages 或由豆包 agent 代发）；写库动作必须遵循本文件口径。
+- **额度**：Claude Code 仅在代码手术时启用，日常零消耗。
+
+## 2. 系统架构（数据流）
+
+```
+飞书 Base「Skill 技能管理台」(4 表，唯一数据源)
+   │  lark-cli base +record-list 导出
+   ▼
+data.json（中间产物，页面数据源）
+   │  sync_from_base.py 生成（同时覆写 HTML 内置快照常量）
+   ▼
+Skill管理中心.html（自包含单页，机架风 UI，含 SKILL_LEDGER/RECOMMEND_RECS/CASE_LEDGER 快照）
+   │  lark-cli apps +html-publish 发布
+   ▼
+在线网页 https://s0zel9adg2.doubaoapps.com/app/app_17f88vb743c
+   │
+   ├─ 用户点击反馈 → CF Worker (https://skill-center-api.ustchfut-b.workers.dev) → POST 写回 Base「技能反馈」表
+   └─ 用户要求安装/卸载 → agent 在本机执行 npx skills add/remove + 副本 + tar 备份 → 更新台账
+```
+
+## 3. 目录结构
+
+```
+skill-center/
+├── Skill管理中心.html      # 主页面（唯一待发布文件，发布前 cp 到 /tmp/index.html）
+├── data.json               # 页面数据源（ledger/recs/cases/rating/interest/updated）
+├── sync_from_base.py       # 同步脚本：读 4 表 JSON → 生成 data.json + 覆写 HTML 快照
+├── backend/                # CF Worker（worker.js + README-部署指南.md）
+├── assets/                 # 案例封面图、echarts.min.js
+├── redesign-mock.html      # 机架风 UI 设计参考
+├── 验收清单-v2.md / v3.md   # 历史验收口径
+├── AGENTS.md               # 本文件
+└── 交接说明-Claude-Code.md   # 新环境任务书
+```
+
+配套目录（在 skill-center 之外）：
+- `/home/user/Doubao/chats/38444168961292802/skills-backup/`：安装备份 tar（含日期）
+- `~/.claude/skills/`：npx skills 实际安装目录
+- `~/.doubao/agent_mode/workspace/.user_skills/`：安装副本（agent 可读的 skill 目录）
+
+## 4. 关键 ID 与表结构（写库前必读）
+
+- **base_token**：`VRA1bfbiaaiUjRsK0ekcwAdsnHd`（Base 名「Skill 技能管理台」）
+- **技能台账** `tblnkqaoYXg7j0dj`
+- **推荐记录** `tblMWvCyEcrhxbyu`
+- **用法案例** `tblgLIx9pFpojjW1`
+- **技能反馈** `tblLQqY1V17uA6Ql`
+
+### 技能台账字段（select 选项边界——写入选值只能用已有项）
+| 字段 | 字段ID | 选项（只允许这些值） |
+|---|---|---|
+| 技能名称 | fldCyEb5hS | text（英文注册名，如 security-audit） |
+| 中文名 | fldvtpmanW | text |
+| 安装状态 | fldADNj9x2 | 已安装 / 被环境清除 / 未安装 |
+| 备份状态 | fld5MwRsRp | 已备份 / 未备份 / 无需备份 |
+| 类别 | fldPFd6T0h | 内容创作 / 教学与教研 / 家长沟通 / 效率工具 / AI开发 / 视频制作 / 文档办公 / 官方系统 / 数据分析 / 其他 |
+| 对应业务 | fldQN3bMfV | 家长答疑 / 口播视频 / 题目解析 / 内容创作 / 教学备课 / 效率管理（**无「家长沟通」选项，写了报错 800030005，用「家长答疑」**） |
+| 功能标签 | fldnNOo20T | 写作润色 / 图片生成 / 视频生成 / 可视化 / 调研检索 / 自动化 / 代码开发 / 教学讲解 / 答疑代写 / 表格处理 |
+| 热度(星) | fldO95u1p8 | number |
+| 效果评分 | fldaJMu0mY | number |
+| 来源 | fldSRaLUeL | text（真实 URL） |
+| 备注 | fld1T1ru8q | text |
+| 一句话说明 | fldc78TPnY | text |
+| 最近试用日期 | fld2nwTlD0 | datetime |
+| 用法案例(link) | fldCMgppDF | link → 用法案例表 |
+| 推荐记录(link) | fldYygK7Ss | link → 推荐记录表 |
+
+### 推荐记录表字段
+| 字段 | 字段ID | 说明/选项 |
+|---|---|---|
+| 推荐批次 | fldqQI7KxX | text，格式 `YYYY-MM-DD 推荐` |
+| 推荐日期 | fldmfulEGW | datetime |
+| 推荐类型 | fldIj7yn1l | select：为你推荐 / 全网热门 |
+| 关联技能 | fldnimdOxI | link → 台账，传 `[{"id":"rec_xxx"}]` |
+| 是否安装 | fldpuYnr79 | select：已安装 / 未安装 / 待定（批量写统一「待定」） |
+| 是否试用 | fldQmNx7Kx | select：已试用 / 未试用 |
+| 试用效果 | fldaKIBeGT | select：很好 / 一般 / 不适用 / 未试用 |
+| 热度指标 | fldhCuSGPN | text（真实 star/安装量字符串） |
+| 来源链接 | fldye9EqoQ | text（真实 URL） |
+| 推荐理由与帮助 | fldIfkHYD9 | text（一句落地建议） |
+
+### 技能反馈表字段
+| 字段 | 字段ID | 说明/选项 |
+|---|---|---|
+| 技能名称 | fld7oOUUUx | text |
+| 反馈类型 | fld5PbdsNN | select：有用 / 没用 / 请求试用 / 评分 / 吐槽 / 感兴趣 / 不感兴趣 |
+| 评分 | fldjZimRxa | number |
+| 一句话备注 | fldLOU9Znc | text |
+| 提交时间 | — | 自动 |
+
+## 5. 核心命令（lark-cli）
+
+```bash
+# 读（导出全量，分页用 --limit 200 --offset N，直到 has_more=false）
+lark-cli base +record-list --base-token VRA1bfbiaaiUjRsK0ekcwAdsnHd --table-id tblnkqaoYXg7j0dj --as user --format json --limit 200
+
+# 核对表结构
+lark-cli base +table-list --base-token VRA1bfbiaaiUjRsK0ekcwAdsnHd --as user
+lark-cli base +field-list --base-token VRA1bfbiaaiUjRsK0ekcwAdsnHd --table-id <table_id> --as user
+
+# 写记录（create_records 是扁平字段 map 数组，不要包 fields 层）
+lark-cli base +record-batch-create --base-token VRA1bfbiaaiUjRsK0ekcwAdsnHd --table-id tblnkqaoYXg7j0dj --create-records '[{"技能名称":"xxx",...}]' --as user
+
+# 更新记录（成功形态 {"update_records":{rec_id:{字段:["值"]}}}，不带 --yes！）
+lark-cli base +record-batch-update --base-token VRA1bfbiaaiUjRsK0ekcwAdsnHd --table-id tblnkqaoYXg7j0dj --update-records '{"rec_xxx":{"安装状态":["已安装"]}}' --as user
+```
+
+## 6. 写入口径（血泪教训，必须遵守）
+
+1. `+record-batch-create` 的 `--create-records` 是**扁平字段 map 数组**，**不要包 `fields` 层**。
+2. `+record-batch-update` **不带 `--yes`**（带 `--yes` 报 unknown flag）；成功形态是 `{"update_records":{rec_id:{字段:["值"]}}}`。
+3. select 单选字段传 `["值"]`；link 字段传 `[{"id":"rec_xxx"}]`。
+4. 台账 select 字段只能写**已存在选项**（见 §4），写新值会触发平台新增选项或报错。
+5. 推荐批次格式：`YYYY-MM-DD 推荐`（日期用当天）。
+6. 热度指标、来源链接**必须是真实搜索结果**，禁止编造 star 数与链接；来源链接给原始 URL。
+7. 写后必须回读（`+record-list`）确认记录数 ≥ 写入数，才算完成。
+
+## 7. 安装/卸载约定（本机执行）
+
+```bash
+# 安装（本地安装；-g 全局可能失败，如 distilly 报 "does not support global skill installation"）
+cd /home/user && npx -y skills add <owner/repo@skill> -a '*' -y
+
+# 卸载
+cd /home/user && npx -y skills remove <技能> -g -y
+```
+
+- **注册名必须探测**，已知映射：colleague-skill→`titanwings/colleague-skill@distilly`、math-to-manim→`HarleyCoops/Math-To-Manim@hermes-learns-manim`、agent-reach→`panniantong/agent-reach@agent-reach`、HowToLiveBetter→`eternity4719/howtolivebetter@life-decision-guide`、mattpocock-skills→`mattpocock/skills@setup-matt-pocock-skills`、frontend-design→`anthropics/skills@frontend-design`；裸名安装报 repository does not exist 就换 owner/repo@skill。
+- deep 仓库（如 HKUDS/DeepTutor）npx 超时：`git clone --depth 1` + 手动落位 SKILL.md。
+- 安装后：`cp -rL ~/.claude/skills/<name>/ ~/.doubao/agent_mode/workspace/.user_skills/`，并 `tar` 备份到 `skills-backup/`（文件名含日期）。
+- 卸载后：同步删除 `.user_skills/` 下的副本。
+- 安装后更新台账：安装状态=已安装、备份状态=已备份、备注=`YYYY-MM-DD 安装（注册名）`；卸载反之。
+
+## 8. 发布与验证链路
+
+```bash
+cd /home/user/Doubao/chats/38444168961292802/skill-center
+python3 sync_from_base.py                      # 需先导出 4 表 JSON 到 /tmp 再运行
+cp Skill管理中心.html /tmp/index.html
+lark-cli apps +html-publish --path /tmp/index.html --app-id app_17f88vb743c --as user --format json
+# 取返回 release_id，轮询直到 status=finished：
+lark-cli apps +release-get --app-id app_17f88vb743c --release-id <id> --as user
+# 在线验证：python playwright + executable_path=/usr/local/bin/chromium，route abort fonts.*/gstatic/googleapis
+# （node playwright 不可用，必须用 python playwright）
+```
+
+在线页：https://s0zel9adg2.doubaoapps.com/app/app_17f88vb743c
+
+## 8.5 recommend.py 每日推荐管道（自动化入口）
+
+```bash
+python3 recommend.py fetch    --date YYYY-MM-DD            # 抓取候选（GitHub Trending + 经典兜底，star 实时 API）→ /tmp/rec_candidates.json
+python3 recommend.py select   --date YYYY-MM-DD --dry-run  # 规则打分（profile.json 画像）→ /tmp/rec_plan.json（为你推荐5+全网热门5）
+python3 recommend.py write    --date YYYY-MM-DD --dry-run  # 写 Base：台账补录 + 推荐记录 + link + 回读确认
+python3 recommend.py publish  --date YYYY-MM-DD --dry-run  # 导出4表 → sync_from_base.py → html-publish → 轮询 → 在线验证
+python3 recommend.py all      --date YYYY-MM-DD            # fetch→select→write→publish 一条链
+```
+
+- `--dry-run` 不写库、不发布，只打印计划；去掉即真实执行。
+- 画像关键词在 `profile.json`（初中数学教师：数学/教学/口播/家长/视频/写作/可视化等加权）。
+- 热度数据全部来自 GitHub Trending 页面抓取 + GitHub API 实时 star，**禁止改脚本编数字**。
+- write/publish 需要 lark-cli 已授权；fetch/select 不需要。
+- 规则推荐是自动化兜底；追求更高质量时可在 select 后人工/LLM 复核 plan.json 再 write。
+
+## 9. 已知问题与坑（必读，别再踩）
+
+- 台账「对应业务」无「家长沟通」选项 → 用「家长答疑」。
+- `+record-batch-update --yes` 是未知 flag；node playwright 不可用（用 python playwright）。
+- GitHub REST API 匿名限流（45.78.x rate limit exceeded）→ 用 skills CLI / raw.githubusercontent 取数据。
+- 页面请求 data.json 返回 404 属旧问题：页面实际数据源是 HTML 内置快照（sync 覆写），不是线上 data.json。
+- 禁 BootCDN；renderer 最外层必须 `<html style="margin:0;padding:0;">`。
+- 反馈双状态 bug 已修复：评价（好用/没用）与意向（感兴趣/不感兴趣）分组锁，fetch 超时 + 乐观更新；「已提交，等待同步」只在 data.json 同步时间晚于点击后才清除。
+- 意向语义（已定稿）：未安装+感兴趣→进资产待装；未安装+不感兴趣→排除；已安装+不感兴趣→标记待卸载（可点取消待卸载，按钮文案「卸载」）；「恢复」是行内小按钮不进 kebab 菜单；评价仅已装技能在抽屉内可点、不改安装状态；卡片不显示独立意向标签（用户要"页面清爽"）。
+- UI 已定稿：机架风（深色机架状态条+LED、IBM Plex、钴蓝主操作/信号红卸载/琥珀待定）；侧边固定导航+右侧滚动；kebab 菜单规格（宽 168px、白底、圆角 10px、无边框菜单项、危险项红字、Esc/外点关闭）；末行菜单向上弹出防遮挡；抽屉打开锁滚动。
+
+## 10. 环境差异（Linux 工作区 → 新机器/Claude Code 本机）
+
+- 原项目运行在 Linux 工作区 `/home/user/Doubao/chats/38444168961292802/skill-center/`；Claude Code 在本机（Mac）终端运行。
+- 新环境需要：`node + npm`（npx skills）、`python3`、`chromium`（playwright 验证）、`lark-cli`（**必须重新 OAuth 授权一次**，user 身份，飞书个人版 tenant）、Claude Code 本体（npm i -g @anthropic-ai/claude-code 或 brew 安装，在项目目录运行 `claude`）。
+- 豆包 cron（每日推荐调度）在豆包平台，Claude Code 无法管理；**调度外置方案**（GitHub Actions cron 跑 recommend.py）是后续可选迁移项，未开始。
+- 在线验证截图、发布链路在 Mac 上同样适用（装好 lark-cli + OAuth 后）。
+
+## 11. 已完成状态（截至 2026-10-07）
+
+- 台账 51 条、推荐记录 49 条、用法案例 8 条（全带封面）、技能反馈 50 条；data.json updated 2026-10-07 09:42。
+- 2026-10-07 已执行：每日双档推荐 10 条写入并发布（release 7693726211328084928 finished）；轮询安装 5 个（distilly / hermes-learns-manim / agent-reach / deeptutor / self-improving-agent）+ 卸载 1 个（security-audit），台账已更新（release 7693734314894674923 finished）。
+- 案例体验化：详情抽屉「它能干什么·示范案例」区块 + 8/8 案例封面完成。
+- 反馈/意向/评价闭环：CF Worker POST /feedback、/action、/auth；页面按钮全部直写 Base。
+
+## 12. 下一步（待办，按用户确认推进）
+
+1. 【进行中】调度外置：recommend.py 已抽出（§8.5），待配 GitHub Actions 每天 9:00 cron（替换豆包 cron）。**豆包 cron 暂不撤销**——Claude Code 若不可用，我（豆包 agent）随时按原方式继续跑每日推荐。
+2. 【可选】前端迁 Cloudflare Pages（HTML+data.json 静态托管，可绑域名；doubaoapps 发布退役）。
+3. 【已立项未推进】推荐系统反馈优化：用户动作（好用/没用/感兴趣/不感兴趣）回流 → 调整推荐权重（阶段一方案已提出，未交付）。
+4. 装机清单核对：新环境 node/python/chromium/lark-cli OAuth 是否就位。
+5. 每日推荐任务持续运行（双轨：豆包 cron 现役；recommend.py 供 Claude Code/GitHub Actions）。
