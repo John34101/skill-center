@@ -204,7 +204,7 @@ python3 recommend.py all      --date YYYY-MM-DD            # fetch→select→wr
 
 ## 12. 下一步（待办，按用户确认推进）
 
-1. 【进行中】调度外置：recommend.py 已抽出（§8.5），待配 GitHub Actions 每天 9:00 cron（替换豆包 cron）。**豆包 cron 暂不撤销**——Claude Code 若不可用，我（豆包 agent）随时按原方式继续跑每日推荐。
+1. 【阶段A已完成】调度外置：GitHub Actions workflow `daily-recommend-fetch.yml` 已上线并实测通过（每天 UTC 1:00=北京 9:00 抓 GitHub Trending 候选 → `data/candidates/YYYY-MM-DD.json` 自动 commit，2026-10-07 已验证 run 37644120914 success）。**豆包 cron 暂不撤销**（双轨：Actions 抓候选入仓库，豆包仍跑完整推荐；阶段 B 再让豆包 cron 消费仓库候选）。阶段 B：CF Worker 扩展为飞书代理（写库+发布外置，需用户面板配合更新 Worker 代码）。
 2. 【可选】前端迁 Cloudflare Pages（HTML+data.json 静态托管，可绑域名；doubaoapps 发布退役）。
 3. 【已立项未推进】推荐系统反馈优化：用户动作（好用/没用/感兴趣/不感兴趣）回流 → 调整推荐权重（阶段一方案已提出，未交付）。
 4. 装机清单核对：新环境 node/python/chromium/lark-cli OAuth 是否就位。
