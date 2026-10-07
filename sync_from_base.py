@@ -152,19 +152,43 @@ for r in load("handbook_raw"):
     }
 
 # ---- 用法案例（skill 关联转名称，修复 [object Object]）----
+# 产物类型：aka 短链无扩展名，按案例名人工标定（video/html/image）；未知按链接扩展名兜底
+CASE_KIND = {
+    "勾股定理证明动画": "video",
+    "逆等线模型讲解动画": "video",
+    "代数式概念讲解视频": "video",
+    "一元二次方程解法流程图": "image",
+    "几何辅助线三图": "image",
+    "初中生家长数学问题调研": "image",
+    "久坐+熬夜老师的高性价比健康方案": "html",
+    "一线三垂直模型图解页": "html",
+    "一元二次方程知识地图": "html",
+}
+def kind_of(name, link):
+    if name in CASE_KIND:
+        return CASE_KIND[name]
+    u = (link or "").lower()
+    if ".mp4" in u or ".webm" in u or ".mov" in u or ".m4v" in u:
+        return "video"
+    if ".png" in u or ".jpg" in u or ".jpeg" in u or ".gif" in u or ".webp" in u or ".svg" in u:
+        return "image"
+    return "html"
+
 cases = []
 for r in load("cases_raw"):
     link = first(r, "关联技能")
     sname = ""
     if isinstance(link, dict) and link.get("id"):
         sname = ledger_name_by_id.get(link["id"], "") or ""
+    link_url = extract_url(v(r, "产物链接"))
     cases.append({
         "name": v(r, "案例名称") or "",
         "skill": sname,
         "scene": first(r, "教学场景") or "",
         "date": date10(v(r, "完成日期")),
         "effect": first(r, "使用效果") or "",
-        "link": extract_url(v(r, "产物链接")),
+        "link": link_url,
+        "kind": kind_of(v(r, "案例名称") or "", link_url),
         "steps": v(r, "操作步骤") or "",
         "note": v(r, "复盘备注") or "",
         "cover": extract_url(v(r, "封面图")) or "",
@@ -198,7 +222,7 @@ html = open(HTML, encoding="utf-8").read()
 
 ledger_keys = ["name","cn","cat","tags","status","backup","hot","source","biz","last","score","desc","note"]
 recs_keys = ["batch","date","skill","inst","tried","effect","hot","why","type"]
-cases_keys = ["name","skill","scene","date","effect","link","steps","note","cover","bg","time","repro"]
+cases_keys = ["name","skill","scene","date","effect","link","kind","steps","note","cover","bg","time","repro"]
 
 new_ledger = js_array(ledger, ledger_keys)
 new_recs = js_array(recs, recs_keys)
