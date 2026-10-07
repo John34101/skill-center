@@ -162,6 +162,47 @@ def installed_set():
         print(f"[select] 台账读取失败（按无已装处理）：{e}")
     return inst
 
+def recent_recs(days=14):
+    """P1 重复抑制：读推荐记录表，返回最近 N 天推荐过的技能名集合"""
+    recent = set()
+    try:
+        r = run_cli(["base", "+record-list", "--base-token", BASE_TOKEN, "--table-id", TBL_RECS,
+                     "--as", "user", "--format", "json", "--limit", "200"])
+        d = json.loads(r.stdout)["data"]
+        fields, rows = d["fields"], d["data"]
+        from datetime import timedelta
+        cutoff = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
+        for row in rows:
+            rec = {fields[j]: row[j] for j in range(len(fields)) if j < len(row)}
+            dt = str(rec.get("推荐日期") or "")[:10]
+            name = rec.get("技能名称")
+            if dt >= cutoff and name and not isinstance(name, list):
+                recent.add(str(name))
+    except Exception as e:
+        print(f"[select] 推荐记录读取失败（重复抑制跳过）：{e}")
+    return recent
+
+def recent_cases(days=7):
+    """P4 个性化推荐语：读最近 N 天案例，返回 skill -> 案例名列表"""
+    cases = {}
+    try:
+        r = run_cli(["base", "+record-list", "--base-token", BASE_TOKEN, "--table-id", TBL_CASES,
+                     "--as", "user", "--format", "json", "--limit", "200"])
+        d = json.loads(r.stdout)["data"]
+        fields, rows = d["fields"], d["data"]
+        from datetime import timedelta
+        cutoff = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
+        for row in rows:
+            rec = {fields[j]: row[j] for j in range(len(fields)) if j < len(row)}
+            dt = str(rec.get("完成日期") or "")[:10]
+            name = rec.get("技能名称")
+            case = rec.get("案例名称")
+            if dt >= cutoff and name and case:
+                cases.setdefault(str(name), []).append(str(case))
+    except Exception as e:
+        print(f"[select] 案例读取失败（个性化推荐语跳过）：{e}")
+    return cases
+
 def fb_score(name, fb):
     """反馈分 = 感兴趣×3 + 有用×2 − 没用×2 − 不感兴趣×3（A1 口径）"""
     d = fb.get(name, {})
@@ -175,8 +216,16 @@ def score(item, profile):
             s += w
     return s
 
-def why_text(item):
-    text = f"{item.get('name','')} {item.get('desc','')}".lower()
+def why_text(item, cases=None, fb=None, name2cn=None):
+    """P4 个性化推荐语：优先结合最近 7 天真实案例与用户反馈；无则用画像模板"""
+    nm = item.get("name", "")
+    if cases and nm in cases:
+        cn = (name2cn or {}).get(nm, "") or ""
+        cs = "、".join(cases[nm][:2])
+        return f"你最近做过「{cs}」，它和这个技能同赛道，可复现同类产出"
+    if fb and fb.get(nm, {}).get("感兴趣", 0) > 0:
+        return "你标记过感兴趣，同赛道技能值得一试"
+    text = f"{nm} {item.get('desc','')}".lower()
     if any(k in text for k in ["video", "video", "anim", "visual", "diagram", "动画", "视频"]):
         return "可落地：把几何模型/定理做成讲解动画或口播配图"
     if any(k in text for k in ["writ", "polish", "human", "rewrit", "写作", "润色"]):
@@ -194,7 +243,9 @@ def select(date_str):
     profile = load_profile()
     fb = feedback_scores()
     inst = installed_set()
-    excluded = inst | {n for n, d in fb.items() if d.get("不感兴趣", 0) > 0}
+    recent = recent_recs(days=14)          # P1：最近 14 天已推，抑制重复
+    cases = recent_cases(days=7)           # P4：最近 7 天案例，个性化推荐语
+    excluded = inst | {n for n, d in fb.items() if d.get("不感兴趣", 0) > 0} | recent
     def final_score(c):
         return score(c, profile) + fb_score(c["name"], fb)
     scored = sorted(cands, key=lambda c: -final_score(c))
@@ -205,7 +256,7 @@ def select(date_str):
         if len(for_you) >= 5:
             break
         c["cn"] = c.get("cn") or ""
-        c["why"] = why_text(c)
+        c["why"] = why_text(c, cases, fb)
         c["tier"] = "for_you"
         c["img"] = score(c, profile)
         c["fb"] = fb_score(c["name"], fb)
@@ -215,8 +266,10 @@ def select(date_str):
     for c in sorted(cands, key=lambda x: -(x.get("hot") or 0)):
         if c["name"].lower() in used:
             continue
+        if len(trending) >= 5 and c["name"] in recent:
+            continue
         c["cn"] = c.get("cn") or ""
-        c["why"] = why_text(c)
+        c["why"] = why_text(c, cases, fb)
         c["tier"] = "trending"
         trending.append(c)
         if len(trending) >= 5:
@@ -225,11 +278,11 @@ def select(date_str):
     with open("/tmp/rec_plan.json", "w", encoding="utf-8") as f:
         json.dump(plan, f, ensure_ascii=False, indent=1)
     print(f"[select] 为你推荐 {len(for_you)} 条 / 全网热门 {len(trending)} 条 → /tmp/rec_plan.json")
-    print(f"[select] 已排除：已装 {len(inst & {c['name'] for c in cands})} 个 / 不感兴趣 {len({c['name'] for c in cands if c['name'] in excluded - inst})} 个")
+    print(f"[select] 已排除：已装 {len(inst & {c['name'] for c in cands})} / 不感兴趣 {len({c['name'] for c in cands if c['name'] in excluded - inst - recent})} / 近14天已推 {len(recent & {c['name'] for c in cands})}")
     for c in for_you:
-        print(f"  [为你推荐] {c['name']} ★{c.get('hot')} 画像{c['img']} 反馈{c['fb']} {c['desc'][:36]}")
+        print(f"  [为你推荐] {c['name']} ★{c.get('hot')} 画像{c['img']} 反馈{c['fb']} | {c['why'][:40]}")
     for c in trending:
-        print(f"  [全网热门] {c['name']} ★{c.get('hot')} {c['desc'][:40]}")
+        print(f"  [全网热门] {c['name']} ★{c.get('hot')} | {c['why'][:40]}")
     return plan
 
 # ---------------- write（Base） ----------------

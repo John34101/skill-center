@@ -1,0 +1,68 @@
+<html style="margin:0;padding:0;"><div style="background-color:#F7F8FA;box-sizing:border-box;font-family:'Roboto','PingFang SC','Segoe UI',Arial,sans-serif;padding:20px;color:#1A1B1C;">
+  <div style="max-width:880px;margin:0 auto;background:#fff;border-radius:14px;padding:24px 28px;box-shadow:0 2px 10px rgba(0,0,0,.06);box-sizing:border-box;">
+    <div style="font-size:11px;color:#6B7280;letter-spacing:1px;">初中几何 · 全等模型</div>
+    <h3 style="font-size:20px;margin:6px 0 4px;">一线三垂直（K 字模型）</h3>
+    <div style="font-size:13px;color:#6B7280;line-height:1.6;">一条直线上有三个直角，两侧两个直角三角形就会全等——压轴题里最常见的"隐形全等"。</div>
+
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin:18px 0;">
+      <div style="flex:1 1 240px;min-width:0;padding:14px;background:linear-gradient(135deg,rgba(155,187,244,.16),rgba(155,187,244,.3));border-radius:12px;box-sizing:border-box;">
+        <div style="font-size:12px;color:#4a5568;">图形条件</div>
+        <div style="font-size:14px;font-weight:600;margin-top:4px;line-height:1.55;">∠ABC = 90°<br>AD ⊥ l，CE ⊥ l</div>
+      </div>
+      <div style="flex:1 1 240px;min-width:0;padding:14px;background:linear-gradient(135deg,rgba(94,141,102,.14),rgba(94,141,102,.28));border-radius:12px;box-sizing:border-box;">
+        <div style="font-size:12px;color:#4a5568;">核心结论</div>
+        <div style="font-size:14px;font-weight:600;margin-top:4px;">△ABD ≌ △BCE</div>
+      </div>
+      <div style="flex:1 1 240px;min-width:0;padding:14px;background:linear-gradient(135deg,rgba(232,168,66,.14),rgba(232,168,66,.26));border-radius:12px;box-sizing:border-box;">
+        <div style="font-size:12px;color:#4a5568;">关键一步</div>
+        <div style="font-size:14px;font-weight:600;margin-top:4px;line-height:1.55;">∠1 = ∠3（同角的余角相等）</div>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:600;margin:16px 0 8px;">图形示意</div>
+    <div style="background:#FBFCFE;border:1px solid #E4E7EC;border-radius:12px;padding:16px;box-sizing:border-box;">
+      <svg viewBox="0 0 640 300" width="100%" style="display:block;max-width:640px;margin:0 auto;">
+        <line x1="40" y1="230" x2="600" y2="230" stroke="#9AA5B1" stroke-width="2"/>
+        <text x="600" y="246" font-size="13" fill="#9AA5B1" text-anchor="end">l</text>
+        <circle cx="150" cy="230" r="4" fill="#9BBBF4"/><text x="150" y="250" font-size="13" fill="#1A1B1C" text-anchor="middle">D</text>
+        <circle cx="320" cy="230" r="4" fill="#9BBBF4"/><text x="320" y="250" font-size="13" fill="#1A1B1C" text-anchor="middle">B</text>
+        <circle cx="490" cy="230" r="4" fill="#9BBBF4"/><text x="490" y="250" font-size="13" fill="#1A1B1C" text-anchor="middle">E</text>
+        <line x1="150" y1="230" x2="150" y2="70" stroke="#5E8D66" stroke-width="2"/>
+        <line x1="490" y1="230" x2="490" y2="70" stroke="#5E8D66" stroke-width="2"/>
+        <circle cx="150" cy="60" r="4" fill="#5E8D66"/><text x="150" y="50" font-size="14" fill="#1A1B1C" text-anchor="middle">A</text>
+        <circle cx="490" cy="60" r="4" fill="#5E8D66"/><text x="490" y="50" font-size="14" fill="#1A1B1C" text-anchor="middle">C</text>
+        <line x1="150" y1="70" x2="320" y2="230" stroke="#E8A842" stroke-width="2.5"/>
+        <line x1="320" y1="230" x2="490" y2="70" stroke="#E8A842" stroke-width="2.5"/>
+        <path d="M 122 94 A 28 28 0 0 1 150 70" fill="none" stroke="#E8A842" stroke-width="1.6"/>
+        <path d="M 460 70 A 28 28 0 0 1 488 94" fill="none" stroke="#E8A842" stroke-width="1.6"/>
+        <rect x="304" y="216" width="10" height="10" fill="none" stroke="#E8A842" stroke-width="1.6"/>
+        <text x="218" y="140" font-size="14" fill="#B4412F" font-style="italic">∠1</text>
+        <text x="408" y="140" font-size="14" fill="#B4412F" font-style="italic">∠2</text>
+        <text x="330" y="170" font-size="14" fill="#5E8D66" font-weight="600">∠ABC=90°</text>
+        <text x="60" y="180" font-size="13" fill="#1A1B1C">△ABD</text>
+        <text x="520" y="180" font-size="13" fill="#1A1B1C">△BCE</text>
+      </svg>
+    </div>
+
+    <div style="font-size:13px;font-weight:600;margin:18px 0 8px;">为什么一定全等？三步推</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:#F4F6FB;border-radius:10px;box-sizing:border-box;">
+        <span style="flex:none;width:20px;height:20px;border-radius:50%;background:#9BBBF4;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;">1</span>
+        <span style="font-size:13px;line-height:1.5;">∠1 + ∠2 = 90°（△ABD 内：∠A + 直角 + ∠1）→ 实际由"同角的余角相等"：∠1 与 ∠3 都加 ∠2 得 90°，所以 <b>∠1 = ∠3</b></span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:#F4F6FB;border-radius:10px;box-sizing:border-box;">
+        <span style="flex:none;width:20px;height:20px;border-radius:50%;background:#9BBBF4;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;">2</span>
+        <span style="font-size:13px;line-height:1.5;">两个三角形都有直角（AD⊥l、CE⊥l）→ <b>∠D = ∠E = 90°</b></span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:#F4F6FB;border-radius:10px;box-sizing:border-box;">
+        <span style="flex:none;width:20px;height:20px;border-radius:50%;background:#5E8D66;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;">3</span>
+        <span style="font-size:13px;line-height:1.5;">若再给一组边相等（常考：<b>AB = BC</b>）→ AAS/ASA → <b>△ABD ≌ △BCE</b></span>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:600;margin:18px 0 8px;">考题里怎么认出来</div>
+    <div style="font-size:13px;color:#1A1B1C;line-height:1.7;padding:12px 14px;background:#FFFBF2;border:1px solid #F3E7CD;border-radius:10px;box-sizing:border-box;">
+      看到"直角顶点落在一条直线上 + 两侧有垂线"，就是一线三垂直。常出现在：正方形内求边长、坐标系里求点坐标、等腰直角三角形的旋转题。辅助线做法：<b>过直角顶点向直线作垂线</b>，把"看不见的全等"显形。
+    </div>
+  </div>
+</div></html>
