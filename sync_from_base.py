@@ -136,6 +136,21 @@ for r in load("recs_raw"):
         "type": "trending" if first(r, "推荐类型") == "全网热门" else "for_you",
     })
 
+# ---- 技能手册（L2 使用手册，按技能名索引）----
+handbook = {}
+for r in load("handbook_raw"):
+    name = v(r, "技能名称")
+    if not name:
+        continue
+    handbook[name] = {
+        "scene": v(r, "触发场景") or "",
+        "tpl": v(r, "调用模板") or "",
+        "input": v(r, "输入准备") or "",
+        "output": v(r, "产出格式") or "",
+        "pitfalls": v(r, "坑与边界") or "",
+        "diff": first(r, "上手难度") or "",
+    }
+
 # ---- 用法案例（skill 关联转名称，修复 [object Object]）----
 cases = []
 for r in load("cases_raw"):
@@ -153,13 +168,16 @@ for r in load("cases_raw"):
         "steps": v(r, "操作步骤") or "",
         "note": v(r, "复盘备注") or "",
         "cover": extract_url(v(r, "封面图")) or "",
+        "bg": v(r, "任务背景") or "",
+        "time": v(r, "耗时卡点") or "",
+        "repro": first(r, "可复现性") or "",
     })
 
 updated = datetime.now().strftime("%Y-%m-%d %H:%M")
-data_json = {"ledger": ledger, "recs": recs, "cases": cases, "rating": rating_map, "interest": interest_map, "updated": updated}
+data_json = {"ledger": ledger, "recs": recs, "cases": cases, "rating": rating_map, "interest": interest_map, "handbook": handbook, "updated": updated}
 with open(f"{BASE}/data.json", "w", encoding="utf-8") as f:
     json.dump(data_json, f, ensure_ascii=False, indent=1)
-print(f"data.json written: ledger={len(ledger)} recs={len(recs)} cases={len(cases)} rating={len(rating_map)} interest={len(interest_map)} updated={updated}")
+print(f"data.json written: ledger={len(ledger)} recs={len(recs)} cases={len(cases)} rating={len(rating_map)} interest={len(interest_map)} handbook={len(handbook)} updated={updated}")
 
 # ---- HTML 内嵌快照 ----
 def js_array(items, keys):
@@ -180,13 +198,14 @@ html = open(HTML, encoding="utf-8").read()
 
 ledger_keys = ["name","cn","cat","tags","status","backup","hot","source","biz","last","score","desc","note"]
 recs_keys = ["batch","date","skill","inst","tried","effect","hot","why","type"]
-cases_keys = ["name","skill","scene","date","effect","link","steps","note","cover"]
+cases_keys = ["name","skill","scene","date","effect","link","steps","note","cover","bg","time","repro"]
 
 new_ledger = js_array(ledger, ledger_keys)
 new_recs = js_array(recs, recs_keys)
 new_cases = js_array(cases, cases_keys)
 new_rating = js_object(rating_map)
 new_interest = js_object(interest_map)
+new_handbook = js_object(handbook)
 
 def replace_block(html, const_name, new_body):
     pattern = re.compile(r"(const %s = )\[.*?\];" % const_name, re.DOTALL)
@@ -201,6 +220,7 @@ html = replace_block(html, "RECOMMEND_RECS", new_recs)
 html = replace_block(html, "CASE_LEDGER", new_cases)
 html = re.sub(r'(const RATING_MAP = )\{.*?\};', lambda m: m.group(1) + new_rating + ";", html, flags=re.DOTALL)
 html = re.sub(r'(const INTEREST_MAP = )\{.*?\};', lambda m: m.group(1) + new_interest + ";", html, flags=re.DOTALL)
+html = re.sub(r'(const HANDBOOK_MAP = )\{.*?\};', lambda m: m.group(1) + new_handbook + ";", html, flags=re.DOTALL)
 html = re.sub(r'(let DATA_UPDATED = )"[^"]*";', lambda m: m.group(1) + json.dumps(updated) + ";", html)
 
 with open(HTML, "w", encoding="utf-8") as f:

@@ -271,6 +271,28 @@
   .drow .k{font-family:var(--mono);font-size:11px;color:var(--ink-2);flex:none;width:70px}
   .drow .v{color:var(--ink);min-width:0;word-break:break-word}
 
+  /* ===== 四层档案 ===== */
+  .arch-lv{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;margin-bottom:10px}
+  .arch-lv .lv-tag{width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:#fff}
+  .lv1{background:#B4863D}.lv2{background:#5B7FA6}.lv3{background:#4F8F66}.lv4{background:#A85A4A}
+  .hb-sec{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px;background:var(--bg)}
+  .hb-row{font-size:12.5px;line-height:1.55;padding:5px 0;border-top:1px solid var(--line)}
+  .hb-row:first-child{border-top:0}
+  .hb-row .hk{font-size:11px;color:var(--ink-2);font-family:var(--mono);margin-bottom:1px}
+  .hb-tpl{background:#101318;border:1px solid var(--line);border-radius:6px;padding:7px 10px;font-family:var(--mono);font-size:12px;color:var(--blue);margin-top:3px;word-break:break-all}
+  .hb-diff{display:inline-block;font-size:11px;padding:1px 8px;border-radius:20px;border:1px solid var(--line);color:var(--ink-2)}
+  .case-arch{border-top:1px dashed var(--line);padding:9px 0 2px}
+  .case-arch:first-child{border-top:0;padding-top:4px}
+  .case-arch .ca-head{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px;font-weight:600;margin-bottom:5px}
+  .repro{font-size:10.5px;padding:1px 7px;border-radius:20px;border:1px solid var(--green);color:var(--green)}
+  .repro.no{border-color:var(--red);color:var(--red)}
+  .case-arch .ca-line{font-size:12.5px;color:var(--ink-2);line-height:1.55;padding:2px 0}
+  .case-arch .ca-line b{color:var(--ink);font-weight:600}
+  .flow-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-2);margin-top:6px}
+  .flow-line .fn{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:3px 8px;color:var(--ink-2)}
+  .flow-line .fn.hot{border-color:var(--accent);color:var(--accent)}
+  .flow-line .fa{color:var(--dim)}
+
   /* ===== 反馈面板 ===== */
   .fb-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.96);width:480px;max-width:92vw;background:var(--surface);border-radius:14px;box-shadow:0 20px 60px rgba(27,30,35,.25);z-index:140;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;display:flex;flex-direction:column;overflow:hidden}
   .fb-panel.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
@@ -545,19 +567,19 @@ const RECOMMEND_RECS = [
   {batch:"2026-10-07 推荐",date:"2026-10-07",skill:"anthropic-brand-guidelines",inst:"待定",tried:"未试用",effect:"未试用",hot:"17.9 万★（OpenAgentSkill 2026-10-04 快照）",why:"Anthropic 官方品牌规范，做封面/物料设计时配色字体有据可依",type:"trending"}
 ];
 const CASE_LEDGER = [
-  {name:"勾股定理证明动画",skill:"manimate",scene:"口播视频",date:"2026-09-25",effect:"很好",link:"https://aka.doubaocdn.com/s/OWUVWvYvMJ",steps:"自然语言描述几何证明思路，manimate 生成 Manim 动画 MP4，交付后可嵌入讲解视频",note:"几何定理可视化利器，学生直观看到面积拼补过程",cover:"https://aka.doubaocdn.com/s/n3gUVr8Jmw"},
-  {name:"逆等线模型讲解动画",skill:"manimate",scene:"题目解析",date:"2026-09-25",effect:"很好",link:"https://aka.doubaocdn.com/s/uMeaBS6vVV",steps:"输入逆等线模型讲解需求，manimate 分步生成动画",note:"中考几何模型讲解，动画辅助理解线段关系",cover:"https://aka.doubaocdn.com/s/NM4Hxa77jp"},
-  {name:"代数式概念讲解视频",skill:"hyperframes",scene:"口播视频",date:"2026-09-28",effect:"很好",link:"https://aka.doubaocdn.com/s/ZaAiVA9SE5",steps:"hyperframes faceless-explainer 全流水线：脚本→7帧分镜→配音→并行构建→渲染 MP4",note:"无脸讲解视频，字幕用整句 cue 避免中文乱码",cover:"https://aka.doubaocdn.com/s/YXepps4qtd"},
-  {name:"一元二次方程解法流程图",skill:"archify",scene:"题目解析",date:"2026-09-29",effect:"很好",link:"https://aka.doubaocdn.com/s/Jczf7rEuku",steps:"JSON 描述解法分支，archify 生成流程图，随改随更新",note:"配家长答疑可直接用，改 JSON 即改图",cover:"https://aka.doubaocdn.com/s/t6UUJVEfKK"},
-  {name:"几何辅助线三图",skill:"archify",scene:"题目解析",date:"2026-09-29",effect:"很好",link:"https://aka.doubaocdn.com/s/pirXejvVKW",steps:"JSON 构造三个辅助线场景，archify 生成示意图",note:"辅助线添加方法一目了然",cover:"https://aka.doubaocdn.com/s/beO1rxflNT"},
-  {name:"初中生家长数学问题调研",skill:"last30days",scene:"内容创作",date:"2026-10-01",effect:"很好",link:"https://aka.doubaocdn.com/s/nFzmi2pCMJ",steps:"last30days 引擎抓取近30天社区讨论+公开报道补充，产出7条家长关切与选题建议",note:"选题直接转化为内容创作素材",cover:"https://aka.doubaocdn.com/s/j8Vg8PrRAU"},
-  {name:"家长答疑回复去 AI 味",skill:"humanizer-zh",scene:"家长答疑",date:"2026-09-29",effect:"一般",link:"",steps:"humanizer-zh 对草稿中文润色，去模板化表达",note:"适合长文回复，短句场景人工微调更佳",cover:"https://aka.doubaocdn.com/s/VVtT2Mwop5"},
-  {name:"久坐+熬夜老师的高性价比健康方案",skill:"HowToLiveBetter",scene:"效率管理",date:"2026-10-07",effect:"很好",link:"https://github.com/eternity4719/HowToLiveBetter",steps:"用 life-decision-guide 查《高性价比人生指南》：输入真实场景「久坐备课+熬夜的初中老师」，skill 自动定位第 2 节（久坐/熬夜/运动）与第 3 节（精力/睡眠）相关条目，按 成本(钱/时间/毅力)×收益×证据等级 排序。输出 4 条零成本高性价比建议：1) 别久坐，起身动一动（坐最久者死亡风险 2.6 倍，每天 60-75 分钟活动可抵消）2) 爬楼梯/快走攒到每天 4-5 分钟（死亡风险低约四成）3) 熬夜当晚补觉别攒周末（少睡不补风险高约 42%）4) 下午 2 点后别碰咖啡因（少睡 1 小时+）。每条注明第几节第几条可溯源。结论：先做不花钱不挤时间的，再谈长期坚持。",note:"示范案例：验证 skill 核心价值——可溯源、不编数据、按性价比排序。可作为家长答疑/口播视频的素材模板。",cover:"https://aka.doubaocdn.com/s/PVxY63Sxmt"}
+  {name:"勾股定理证明动画",skill:"manimate",scene:"口播视频",date:"2026-09-25",effect:"很好",link:"https://aka.doubaocdn.com/s/OWUVWvYvMJ",steps:"自然语言描述几何证明思路，manimate 生成 Manim 动画 MP4，交付后可嵌入讲解视频",note:"几何定理可视化利器，学生直观看到面积拼补过程",cover:"https://aka.doubaocdn.com/s/n3gUVr8Jmw",bg:"给初二学生讲勾股定理，面积法证明用文字讲学生难理解，要做动画直观演示",time:"脚本确认+渲染约 15 分钟；动画 82 秒比预期 70 秒长 18%，部分帧无词级字幕数据",repro:"已验证可复现"},
+  {name:"逆等线模型讲解动画",skill:"manimate",scene:"题目解析",date:"2026-09-25",effect:"很好",link:"https://aka.doubaocdn.com/s/uMeaBS6vVV",steps:"输入逆等线模型讲解需求，manimate 分步生成动画",note:"中考几何模型讲解，动画辅助理解线段关系",cover:"https://aka.doubaocdn.com/s/NM4Hxa77jp",bg:"初三几何逆等线模型辅助线思路抽象，做动态讲解帮助学生理解",time:"约 10 分钟；模型图形动态变化要把辅助线讲清楚",repro:"已验证可复现"},
+  {name:"代数式概念讲解视频",skill:"hyperframes",scene:"口播视频",date:"2026-09-28",effect:"很好",link:"https://aka.doubaocdn.com/s/ZaAiVA9SE5",steps:"hyperframes faceless-explainer 全流水线：脚本→7帧分镜→配音→并行构建→渲染 MP4",note:"无脸讲解视频，字幕用整句 cue 避免中文乱码",cover:"https://aka.doubaocdn.com/s/YXepps4qtd",bg:"",time:"",repro:""},
+  {name:"一元二次方程解法流程图",skill:"archify",scene:"题目解析",date:"2026-09-29",effect:"很好",link:"https://aka.doubaocdn.com/s/Jczf7rEuku",steps:"JSON 描述解法分支，archify 生成流程图，随改随更新",note:"配家长答疑可直接用，改 JSON 即改图",cover:"https://aka.doubaocdn.com/s/t6UUJVEfKK",bg:"",time:"",repro:""},
+  {name:"几何辅助线三图",skill:"archify",scene:"题目解析",date:"2026-09-29",effect:"很好",link:"https://aka.doubaocdn.com/s/pirXejvVKW",steps:"JSON 构造三个辅助线场景，archify 生成示意图",note:"辅助线添加方法一目了然",cover:"https://aka.doubaocdn.com/s/beO1rxflNT",bg:"",time:"",repro:""},
+  {name:"初中生家长数学问题调研",skill:"last30days",scene:"内容创作",date:"2026-10-01",effect:"很好",link:"https://aka.doubaocdn.com/s/nFzmi2pCMJ",steps:"last30days 引擎抓取近30天社区讨论+公开报道补充，产出7条家长关切与选题建议",note:"选题直接转化为内容创作素材",cover:"https://aka.doubaocdn.com/s/j8Vg8PrRAU",bg:"",time:"",repro:""},
+  {name:"家长答疑回复去 AI 味",skill:"humanizer-zh",scene:"家长答疑",date:"2026-09-29",effect:"一般",link:"",steps:"humanizer-zh 对草稿中文润色，去模板化表达",note:"适合长文回复，短句场景人工微调更佳",cover:"https://aka.doubaocdn.com/s/VVtT2Mwop5",bg:"",time:"",repro:""},
+  {name:"久坐+熬夜老师的高性价比健康方案",skill:"HowToLiveBetter",scene:"效率管理",date:"2026-10-07",effect:"很好",link:"https://github.com/eternity4719/HowToLiveBetter",steps:"用 life-decision-guide 查《高性价比人生指南》：输入真实场景「久坐备课+熬夜的初中老师」，skill 自动定位第 2 节（久坐/熬夜/运动）与第 3 节（精力/睡眠）相关条目，按 成本(钱/时间/毅力)×收益×证据等级 排序。输出 4 条零成本高性价比建议：1) 别久坐，起身动一动（坐最久者死亡风险 2.6 倍，每天 60-75 分钟活动可抵消）2) 爬楼梯/快走攒到每天 4-5 分钟（死亡风险低约四成）3) 熬夜当晚补觉别攒周末（少睡不补风险高约 42%）4) 下午 2 点后别碰咖啡因（少睡 1 小时+）。每条注明第几节第几条可溯源。结论：先做不花钱不挤时间的，再谈长期坚持。",note:"示范案例：验证 skill 核心价值——可溯源、不编数据、按性价比排序。可作为家长答疑/口播视频的素材模板。",cover:"https://aka.doubaocdn.com/s/PVxY63Sxmt",bg:"",time:"",repro:""}
 ];
 const RATING_MAP = {"manimate":"好用","hyperframes":"好用","archify":"好用","openmaic":"未评价","last30days":"好用","humanizer-zh":"好用","book-to-skill":"未评价","marketingskills":"未评价","superpowers":"未评价","visual-explainer":"未评价","typesafe-ai":"未评价","manim-video":"好用","remotion-best-practices":"未评价","ppt-master":"未评价","brag":"未评价","show-me":"未评价","lemo-opuscar":"未评价","ljg-map":"未评价","security-audit":"未评价","planning-with-files":"未评价","playwright-cli":"未评价","teach-impeccable":"未评价","recipe-create-classroom-course":"没用","ai-video-generation":"未评价","scaffold-exercises":"未评价","writing-shape":"未评价","doc-coauthoring":"未评价","code-mate-minimax-code":"没用","writing-beats":"好用","baoyu-comic":"好用","content-strategy":"未评价","documentation-writer":"未评价","webapp-testing":"没用","math-teacher":"未评价","learn-faster-kit":"未评价","seedance-2.0-prompt-writing":"未评价","agent-reach":"未评价","frontend-design":"未评价","mattpocock-skills":"未评价","karpathy-skills":"未评价","ponytail":"未评价","addyosmani-agent-skills":"未评价","nvidia-openshell":"未评价","HowToLiveBetter":"好用","colleague-skill":"未评价","hermes-edu-skills":"未评价","deeptutor":"未评价","math-to-manim":"未评价","money-printer-turbo":"未评价","self-improving-agent":"未评价","anthropic-brand-guidelines":"未评价"};
 let WORKER_URL="https://skill-center-api.ustchfut-b.workers.dev"; // 后端代理已启用：按钮点击直接写飞书 Base（免表单）；留空则回退页内 iframe 面板
 /* 意向映射（sync 从反馈表生成）：技能 -> 感兴趣 | 不感兴趣 */
-const INTEREST_MAP = {"mattpocock-skills":"感兴趣","webapp-testing":"不感兴趣","HowToLiveBetter":"感兴趣","writing-beats":"感兴趣","frontend-design":"感兴趣","nvidia-openshell":"不感兴趣","addyosmani-agent-skills":"不感兴趣","documentation-writer":"不感兴趣","baoyu-comic":"感兴趣","agent-reach":"感兴趣","colleague-skill":"感兴趣","math-to-manim":"感兴趣","deeptutor":"感兴趣","security-audit":"不感兴趣","self-improving-agent":"感兴趣"};
+const INTEREST_MAP = {"mattpocock-skills":"感兴趣","webapp-testing":"不感兴趣","HowToLiveBetter":"感兴趣","writing-beats":"感兴趣","frontend-design":"感兴趣","nvidia-openshell":"不感兴趣","addyosmani-agent-skills":"不感兴趣","documentation-writer":"不感兴趣","baoyu-comic":"感兴趣","agent-reach":"感兴趣","colleague-skill":"感兴趣","math-to-manim":"感兴趣","deeptutor":"感兴趣","security-audit":"不感兴趣","self-improving-agent":"感兴趣","hermes-edu-skills":"感兴趣"};
 let interestLocal={};
 try{ interestLocal=JSON.parse(localStorage.getItem("skillInterest")||"{}"); }catch(e){}
 function saveInterest(){ try{ localStorage.setItem("skillInterest",JSON.stringify(interestLocal)); }catch(e){} }
@@ -567,7 +589,8 @@ function interestOf(name){
   if(disLike[name]) return "不感兴趣";   /* 兼容旧本地标记 */
   return "";
 }
-let DATA_UPDATED = "2026-10-07 09:42";
+const HANDBOOK_MAP = {"manimate":{"scene": "抽象数学概念/定理/几何模型，文字和静态图讲不清时；口播视频缺动画素材；课件动态演示", "tpl": "用 manimate 做一个「勾股定理证明」的讲解动画", "input": "不用素材；给内容主题+年级+想讲清楚的点；复杂内容先让它出脚本再渲染", "output": "MP4 动画视频，可下载嵌入课件/短视频/发给学生", "pitfalls": "渲染耗时可能超预期（勾股定理动画 82 秒 vs 计划 70 秒）；动画不带高质量中文配音，字幕轨可能覆盖不全需另配；纯文字推导类内容用 PPT 更快", "diff": "1分钟内上手"},"archify":{"scene": "画知识结构图/解题思路图/辅助线示意/流程图；讲题或备课配图", "tpl": "用 archify 画一个「一元二次方程解法」的流程图", "input": "一句话主题即可；画几何辅助线就提供题目背景", "output": "结构清晰的 SVG/HTML 图解，可嵌入文档/PPT/发给学生", "pitfalls": "擅长确定性结构（流程/关系/层级），不适合写实插画；示意结构会标注示意", "diff": "1分钟内上手"},"humanizer-zh":{"scene": "代写/润色给家长学生的回复，去 AI 腔、口语化、像真人老师", "tpl": "把这段话用 humanizer 改得更像真人老师写的", "input": "粘贴要改的原文", "output": "改写后的文本", "pitfalls": "保留事实和语气分寸，不改变内容准确性", "diff": "1分钟内上手"},"hyperframes":{"scene": "把概念讲解做成 1-2 分钟无真人出镜的短视频（口播/知识类）", "tpl": "用 hyperframes 做一个介绍代数式概念的视频", "input": "给主题+讲解脚本要点", "output": "MP4 成片（帧动画+配音+字幕，总时长约 80 秒）", "pitfalls": "渲染链路较长（脚本→帧→配音→字幕→合成）；字幕依赖配音数据，词级时间戳不全时字幕覆盖不全；总时长可能超预期", "diff": "需简单配置"},"last30days":{"scene": "调研最近大家在问什么（选题/内容方向）", "tpl": "查最近 30 天初中生家长都在问什么初中数学问题", "input": "给主题+时间范围", "output": "热点问题清单+来源", "pitfalls": "结果依赖公开社区声量，仅供参考；引用需核验来源", "diff": "1分钟内上手"}};
+let DATA_UPDATED = "2026-10-08 00:02";
 
 /* ===== 工具 ===== */
 const $=id=>document.getElementById(id);
@@ -1149,6 +1172,29 @@ function openDrawer(name){
   const recs=RECOMMEND_RECS.filter(r=>r.skill===name).sort((a,b)=>(b.date||"").localeCompare(a.date||""));
   const cases=CASE_LEDGER.filter(c=>c.skill===name);
   const heat=s.hot?`${fmtNum(s.hot)}★（GitHub）`:(recs[0]&&recs[0].hot?recs[0].hot:"暂无热度数据");
+  const hb=HANDBOOK_MAP[name];
+  const hbHtml=hb?`<div class="hb-sec"><div class="arch-lv"><span class="lv-tag lv2">L2</span>怎么用 · 使用手册</div>
+      ${hb.scene?`<div class="hb-row"><div class="hk">触发场景</div>${esc(hb.scene)}</div>`:""}
+      ${hb.tpl?`<div class="hb-row"><div class="hk">调用模板 · 在豆包里直接说</div><div class="hb-tpl">${esc(hb.tpl)}</div></div>`:""}
+      ${hb.input?`<div class="hb-row"><div class="hk">输入准备</div>${esc(hb.input)}</div>`:""}
+      ${hb.output?`<div class="hb-row"><div class="hk">产出格式</div>${esc(hb.output)}</div>`:""}
+      ${hb.pitfalls?`<div class="hb-row"><div class="hk">坑与边界</div>${esc(hb.pitfalls)}</div>`:""}
+      ${hb.diff?`<div class="hb-row"><div class="hk">上手难度</div><span class="hb-diff">${esc(hb.diff)}</span></div>`:""}
+    </div>`:"";
+  const casesHtml=cases.length?`<div class="drawer-block"><div class="arch-lv"><span class="lv-tag lv3">L3</span>用得好不好 · 过程档案（${cases.length}）</div>
+      ${cases.map(c=>{const ce=c.effect==="很好"?"rate-good":c.effect==="一般"?"rate-mid":"rate-none";const rp=c.repro==="已验证可复现"?"":(c.repro?"no":"");return `
+      <div class="case-arch">
+        <div class="ca-head">${esc(c.name)}${c.effect?`<span class="chip ${ce}">${esc(c.effect)}</span>`:""}${c.repro?`<span class="repro ${rp}">${esc(c.repro)}</span>`:""}</div>
+        ${c.bg?`<div class="ca-line"><b>背景</b>：${esc(c.bg)}</div>`:""}
+        ${c.steps?`<details class="case-details"><summary>展开使用步骤</summary><div class="full">${esc(c.steps)}</div></details>`:""}
+        ${c.time?`<div class="ca-line"><b>耗时/卡点</b>：${esc(c.time)}</div>`:""}
+        ${c.link?`<div class="ca-line"><b>产物</b>：<a href="${c.link}" target="_blank" rel="noopener">查看产物 ↗</a></div>`:""}
+      </div>`;}).join("")}
+    </div>`:"";
+  const l4Html=`<div class="drawer-block"><div class="arch-lv"><span class="lv-tag lv4">L4</span>产出闭环</div>
+      <div class="flow-line"><span class="fn">安装</span><span class="fa">→</span><span class="fn hot">30 分钟试跑</span><span class="fa">→</span><span class="fn">产出</span><span class="fa">→</span><span class="fn">生成档案</span><span class="fa">→</span><span class="fn">反馈回流</span></div>
+      <div style="font-size:12px;color:var(--ink-2);margin-top:8px">每个新装技能：30 分钟内用真实小任务试跑，产出自动沉淀为第一条档案。</div>
+    </div>`;
   $("drawerIn").innerHTML=`
     <div class="drawer-head">
       <div><div class="drawer-name">${esc(CN_OF[name]||name)}</div><div class="drawer-en">${esc(name)}</div></div>
@@ -1160,7 +1206,9 @@ function openDrawer(name){
       <span class="chip rate-none">类别：${esc(s.cat||"")}</span>
       ${(s.tags||[]).map(t=>`<span class="chip rate-none">${esc(t)}</span>`).join("")}
     </div>
+    <div class="arch-lv"><span class="lv-tag lv1">L1</span>它是什么</div>
     <div class="drawer-desc">${esc(s.desc||"暂无描述")}</div>
+    ${hbHtml}
     ${cases.length?(()=>{const hero=cases[0],hs=esc(hero.steps||""),brief=hero.steps?esc(hero.steps.slice(0,110))+(hero.steps.length>110?"…":""):"";const eff=hero.effect==="很好"?"rate-good":hero.effect==="一般"?"rate-mid":"rate-none";return `
     <div class="case-hero">
       <div class="ch-top">它能干什么 · 示范案例</div>
@@ -1190,9 +1238,8 @@ function openDrawer(name){
     <div class="drawer-block"><h4>推荐历史</h4>
       ${recs.length?recs.map(r=>`<div class="drow"><span class="k">${(r.date||"").slice(5)}</span><span class="v">${esc(r.why||"")}</span></div>`).join(""):`<div class="drow"><span class="k">—</span><span class="v">暂无推荐记录</span></div>`}
     </div>
-    <div class="drawer-block"><h4>案例记录（${cases.length}）</h4>
-      ${cases.map(c=>{const ce=c.effect==="很好"?"rate-good":c.effect==="一般"?"rate-mid":"rate-none";return `<div class="drow"><span class="k">${esc(c.scene||"")} ${c.cover?`<img src="${esc(c.cover)}" alt="" style="width:42px;height:24px;object-fit:cover;border-radius:4px;vertical-align:middle;border:1px solid var(--line)">`:""}</span><span class="v">${esc(c.name)} <span class="chip ${ce}" style="font-size:10.5px">${esc(c.effect||"—")}</span>${c.link?` <a href="${c.link}" target="_blank" rel="noopener" style="color:var(--accent)">查看 ↗</a>`:""}</span></div>`;}).join("")||`<div class="drow"><span class="k">—</span><span class="v">暂无案例</span></div>`}
-    </div>
+    ${casesHtml}
+    ${l4Html}
     <div class="drawer-block"><h4>其他</h4>
       <div class="drow"><span class="k">来源</span><span class="v">${s.source?`<a href="${s.source}" target="_blank" rel="noopener" style="word-break:break-all">${esc(s.source.replace(/^https?:\/\//,""))}</a>`:"本地 / 内部"}</span></div>
       <div class="drow"><span class="k">备份</span><span class="v">${esc(s.backup||"—")}</span></div>

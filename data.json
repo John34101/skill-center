@@ -1564,7 +1564,10 @@
    "link": "https://aka.doubaocdn.com/s/OWUVWvYvMJ",
    "steps": "自然语言描述几何证明思路，manimate 生成 Manim 动画 MP4，交付后可嵌入讲解视频",
    "note": "几何定理可视化利器，学生直观看到面积拼补过程",
-   "cover": "https://aka.doubaocdn.com/s/n3gUVr8Jmw"
+   "cover": "https://aka.doubaocdn.com/s/n3gUVr8Jmw",
+   "bg": "给初二学生讲勾股定理，面积法证明用文字讲学生难理解，要做动画直观演示",
+   "time": "脚本确认+渲染约 15 分钟；动画 82 秒比预期 70 秒长 18%，部分帧无词级字幕数据",
+   "repro": "已验证可复现"
   },
   {
    "name": "逆等线模型讲解动画",
@@ -1575,7 +1578,10 @@
    "link": "https://aka.doubaocdn.com/s/uMeaBS6vVV",
    "steps": "输入逆等线模型讲解需求，manimate 分步生成动画",
    "note": "中考几何模型讲解，动画辅助理解线段关系",
-   "cover": "https://aka.doubaocdn.com/s/NM4Hxa77jp"
+   "cover": "https://aka.doubaocdn.com/s/NM4Hxa77jp",
+   "bg": "初三几何逆等线模型辅助线思路抽象，做动态讲解帮助学生理解",
+   "time": "约 10 分钟；模型图形动态变化要把辅助线讲清楚",
+   "repro": "已验证可复现"
   },
   {
    "name": "代数式概念讲解视频",
@@ -1586,7 +1592,10 @@
    "link": "https://aka.doubaocdn.com/s/ZaAiVA9SE5",
    "steps": "hyperframes faceless-explainer 全流水线：脚本→7帧分镜→配音→并行构建→渲染 MP4",
    "note": "无脸讲解视频，字幕用整句 cue 避免中文乱码",
-   "cover": "https://aka.doubaocdn.com/s/YXepps4qtd"
+   "cover": "https://aka.doubaocdn.com/s/YXepps4qtd",
+   "bg": "",
+   "time": "",
+   "repro": ""
   },
   {
    "name": "一元二次方程解法流程图",
@@ -1597,7 +1606,10 @@
    "link": "https://aka.doubaocdn.com/s/Jczf7rEuku",
    "steps": "JSON 描述解法分支，archify 生成流程图，随改随更新",
    "note": "配家长答疑可直接用，改 JSON 即改图",
-   "cover": "https://aka.doubaocdn.com/s/t6UUJVEfKK"
+   "cover": "https://aka.doubaocdn.com/s/t6UUJVEfKK",
+   "bg": "",
+   "time": "",
+   "repro": ""
   },
   {
    "name": "几何辅助线三图",
@@ -1608,7 +1620,10 @@
    "link": "https://aka.doubaocdn.com/s/pirXejvVKW",
    "steps": "JSON 构造三个辅助线场景，archify 生成示意图",
    "note": "辅助线添加方法一目了然",
-   "cover": "https://aka.doubaocdn.com/s/beO1rxflNT"
+   "cover": "https://aka.doubaocdn.com/s/beO1rxflNT",
+   "bg": "",
+   "time": "",
+   "repro": ""
   },
   {
    "name": "初中生家长数学问题调研",
@@ -1619,7 +1634,10 @@
    "link": "https://aka.doubaocdn.com/s/nFzmi2pCMJ",
    "steps": "last30days 引擎抓取近30天社区讨论+公开报道补充，产出7条家长关切与选题建议",
    "note": "选题直接转化为内容创作素材",
-   "cover": "https://aka.doubaocdn.com/s/j8Vg8PrRAU"
+   "cover": "https://aka.doubaocdn.com/s/j8Vg8PrRAU",
+   "bg": "",
+   "time": "",
+   "repro": ""
   },
   {
    "name": "家长答疑回复去 AI 味",
@@ -1630,7 +1648,10 @@
    "link": "",
    "steps": "humanizer-zh 对草稿中文润色，去模板化表达",
    "note": "适合长文回复，短句场景人工微调更佳",
-   "cover": "https://aka.doubaocdn.com/s/VVtT2Mwop5"
+   "cover": "https://aka.doubaocdn.com/s/VVtT2Mwop5",
+   "bg": "",
+   "time": "",
+   "repro": ""
   },
   {
    "name": "久坐+熬夜老师的高性价比健康方案",
@@ -1641,7 +1662,10 @@
    "link": "https://github.com/eternity4719/HowToLiveBetter",
    "steps": "用 life-decision-guide 查《高性价比人生指南》：输入真实场景「久坐备课+熬夜的初中老师」，skill 自动定位第 2 节（久坐/熬夜/运动）与第 3 节（精力/睡眠）相关条目，按 成本(钱/时间/毅力)×收益×证据等级 排序。输出 4 条零成本高性价比建议：1) 别久坐，起身动一动（坐最久者死亡风险 2.6 倍，每天 60-75 分钟活动可抵消）2) 爬楼梯/快走攒到每天 4-5 分钟（死亡风险低约四成）3) 熬夜当晚补觉别攒周末（少睡不补风险高约 42%）4) 下午 2 点后别碰咖啡因（少睡 1 小时+）。每条注明第几节第几条可溯源。结论：先做不花钱不挤时间的，再谈长期坚持。",
    "note": "示范案例：验证 skill 核心价值——可溯源、不编数据、按性价比排序。可作为家长答疑/口播视频的素材模板。",
-   "cover": "https://aka.doubaocdn.com/s/PVxY63Sxmt"
+   "cover": "https://aka.doubaocdn.com/s/PVxY63Sxmt",
+   "bg": "",
+   "time": "",
+   "repro": ""
   }
  ],
  "rating": {
@@ -1712,7 +1736,50 @@
   "math-to-manim": "感兴趣",
   "deeptutor": "感兴趣",
   "security-audit": "不感兴趣",
-  "self-improving-agent": "感兴趣"
+  "self-improving-agent": "感兴趣",
+  "hermes-edu-skills": "感兴趣"
  },
- "updated": "2026-10-07 09:42"
+ "handbook": {
+  "manimate": {
+   "scene": "抽象数学概念/定理/几何模型，文字和静态图讲不清时；口播视频缺动画素材；课件动态演示",
+   "tpl": "用 manimate 做一个「勾股定理证明」的讲解动画",
+   "input": "不用素材；给内容主题+年级+想讲清楚的点；复杂内容先让它出脚本再渲染",
+   "output": "MP4 动画视频，可下载嵌入课件/短视频/发给学生",
+   "pitfalls": "渲染耗时可能超预期（勾股定理动画 82 秒 vs 计划 70 秒）；动画不带高质量中文配音，字幕轨可能覆盖不全需另配；纯文字推导类内容用 PPT 更快",
+   "diff": "1分钟内上手"
+  },
+  "archify": {
+   "scene": "画知识结构图/解题思路图/辅助线示意/流程图；讲题或备课配图",
+   "tpl": "用 archify 画一个「一元二次方程解法」的流程图",
+   "input": "一句话主题即可；画几何辅助线就提供题目背景",
+   "output": "结构清晰的 SVG/HTML 图解，可嵌入文档/PPT/发给学生",
+   "pitfalls": "擅长确定性结构（流程/关系/层级），不适合写实插画；示意结构会标注示意",
+   "diff": "1分钟内上手"
+  },
+  "humanizer-zh": {
+   "scene": "代写/润色给家长学生的回复，去 AI 腔、口语化、像真人老师",
+   "tpl": "把这段话用 humanizer 改得更像真人老师写的",
+   "input": "粘贴要改的原文",
+   "output": "改写后的文本",
+   "pitfalls": "保留事实和语气分寸，不改变内容准确性",
+   "diff": "1分钟内上手"
+  },
+  "hyperframes": {
+   "scene": "把概念讲解做成 1-2 分钟无真人出镜的短视频（口播/知识类）",
+   "tpl": "用 hyperframes 做一个介绍代数式概念的视频",
+   "input": "给主题+讲解脚本要点",
+   "output": "MP4 成片（帧动画+配音+字幕，总时长约 80 秒）",
+   "pitfalls": "渲染链路较长（脚本→帧→配音→字幕→合成）；字幕依赖配音数据，词级时间戳不全时字幕覆盖不全；总时长可能超预期",
+   "diff": "需简单配置"
+  },
+  "last30days": {
+   "scene": "调研最近大家在问什么（选题/内容方向）",
+   "tpl": "查最近 30 天初中生家长都在问什么初中数学问题",
+   "input": "给主题+时间范围",
+   "output": "热点问题清单+来源",
+   "pitfalls": "结果依赖公开社区声量，仅供参考；引用需核验来源",
+   "diff": "1分钟内上手"
+  }
+ },
+ "updated": "2026-10-08 00:02"
 }

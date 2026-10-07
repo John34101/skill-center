@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="margin:0;padding:0;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技能档案样板 · manimate</title>
+<style>
+  :root{
+    --bg:#141618; --panel:#1D2025; --panel2:#232730; --line:#30343D;
+    --ink:#E8E6E1; --ink2:#9AA0AA; --dim:#6B7280;
+    --amber:#E8B44A; --amber-soft:#3A3222;
+    --green:#6FBF73; --red:#E06C5B; --blue:#7FA8D9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;line-height:1.6;padding:24px;max-width:860px;margin:0 auto}
+  h1{font-size:22px;font-weight:700;letter-spacing:.5px}
+  .sub{color:var(--ink2);font-size:13px;margin-top:4px}
+  .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid var(--line);color:var(--ink2);margin-left:8px;vertical-align:middle}
+  .badge.demo{border-color:var(--amber);color:var(--amber)}
+  .layer{margin-top:22px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+  .layer-head{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--panel2);border-bottom:1px solid var(--line);font-size:14px;font-weight:600}
+  .lv{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#141618}
+  .lv1{background:var(--amber)} .lv2{background:var(--blue)} .lv3{background:var(--green)} .lv4{background:var(--red)}
+  .layer-head .tag{color:var(--dim);font-size:12px;font-weight:400;margin-left:auto}
+  .layer-body{padding:14px 16px;font-size:13.5px}
+  .one-liner{font-size:14px;color:var(--ink)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;color:var(--ink2);font-weight:600;width:92px;vertical-align:top;padding:6px 0}
+  td{padding:6px 0;color:var(--ink)}
+  .row{border-top:1px solid var(--line);padding:10px 0}
+  .row:first-child{border-top:none}
+  .cell-label{color:var(--ink2);font-size:12px;margin-bottom:2px}
+  .cell{font-size:13.5px}
+  .steps{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+  .step{display:flex;gap:8px;align-items:flex-start;font-size:13px}
+  .step .n{flex:none;width:18px;height:18px;border-radius:50%;background:var(--amber-soft);color:var(--amber);font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .code{background:#101318;border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:var(--amber);margin:6px 0}
+  .kpi{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+  .kpi .item{flex:1 1 120px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+  .kpi .v{font-size:16px;font-weight:700;color:var(--ink)}
+  .kpi .l{font-size:11px;color:var(--dim);margin-top:2px}
+  .ok{color:var(--green)} .warn{color:var(--amber)} .bad{color:var(--red)}
+  .flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;margin-top:8px}
+  .flow .node{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 12px;color:var(--ink2)}
+  .flow .node.hot{border-color:var(--amber);color:var(--amber)}
+  .flow .arrow{color:var(--dim)}
+  .foot{margin-top:20px;color:var(--dim);font-size:12px;text-align:center;padding-bottom:10px}
+</style>
+</head>
+<body>
+
+<h1>技能档案样板 — manimate<button class="badge demo">四层档案 DEMO</button></h1>
+<div class="sub">目的：展示未来每个技能在详情里长什么样。内容全部来自你真实使用记录，可验证。</div>
+
+<!-- ===== L1 ===== -->
+<div class="layer">
+  <div class="layer-head"><span class="lv lv1">L1</span>它是什么 <span class="tag">一句话定位</span></div>
+  <div class="layer-body">
+    <div class="one-liner">用自然语言描述生成 <b>Manim 数学动画视频（MP4）</b>。把数学定理、几何模型、解题过程做成 1–2 分钟的直观讲解动画，适合学生看不懂"文字推导"的场景。</div>
+  </div>
+</div>
+
+<!-- ===== L2 ===== -->
+<div class="layer">
+  <div class="layer-head"><span class="lv lv2">L2</span>怎么用 <span class="tag">使用手册 · 拿到即上手</span></div>
+  <div class="layer-body">
+    <div class="row">
+      <div class="cell-label">触发场景（什么时候该用它）</div>
+      <div class="cell">① 抽象概念/定理/模型，文字和静态图讲不清时；② 做口播视频时缺动画素材；③ 备课件、做私域课的动态演示。</div>
+    </div>
+    <div class="row">
+      <div class="cell-label">调用模板（在豆包里直接说这句话）</div>
+      <div class="code">用 manimate 做一个「勾股定理证明」的讲解动画</div>
+      <div class="cell" style="margin-top:4px">复杂内容建议分两步：先让它出脚本/大纲 → 你确认 → 再渲染，避免返工。</div>
+    </div>
+    <div class="row">
+      <div class="cell-label">输入准备（要给它什么）</div>
+      <div class="cell">不用素材。给"内容主题 + 年级 + 想讲清楚的点"；有题目背景/几何图更好。没有现成需求时就一句话点名主题。</div>
+    </div>
+    <div class="row">
+      <div class="cell-label">产出格式（拿到手的是什么）</div>
+      <div class="cell">MP4 视频，可直接下载，嵌入课件 / 短视频 / 发给学生。</div>
+    </div>
+    <div class="row">
+      <div class="cell-label">坑与边界（它不擅长什么）</div>
+      <div class="cell">
+        <span class="warn">⚠ 渲染耗时</span>：内容复杂时长会超预期（勾股定理那次总时长 82 秒，比计划的 70 秒长 18%）。<br>
+        <span class="warn">⚠ 配音/字幕</span>：动画本身不带高质量中文配音，字幕轨可能覆盖不全，成片后常需另配。<br>
+        <span class="warn">⚠ 不适合</span>：纯文字推导类内容（用 PPT/图文更快）；需要真人出镜的讲解。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== L3 ===== -->
+<div class="layer">
+  <div class="layer-head"><span class="lv lv3">L3</span>用得好不好 <span class="tag">过程档案 · 可复现证据</span></div>
+  <div class="layer-body">
+
+    <div class="row">
+      <div class="cell-label">案例 1 · 勾股定理证明动画 <span class="ok" style="margin-left:6px">已验证可复现</span></div>
+      <div class="cell">
+        <b>任务背景</b>：给初二学生讲勾股定理，"面积法证明"用文字讲学生难理解，要做一段动画直观演示。<br>
+        <b>使用步骤</b>：
+        <div class="steps">
+          <div class="step"><span class="n">1</span>说"用 manimate 做勾股定理证明动画"</div>
+          <div class="step"><span class="n">2</span>先出脚本：引入 → 拼图 → 证明 → 结论，四幕确认</div>
+          <div class="step"><span class="n">3</span>渲染动画，检查节奏后交付</div>
+        </div>
+        <b>耗时/卡点</b>：脚本确认 + 渲染约 15 分钟；卡点：动画 82 秒超预期 18%，部分帧没有词级字幕数据。<br>
+        <b>效果证据</b>：动画成片（封面已存案例库）；评价：<span class="ok">好用</span>。<br>
+        <b>可复现性</b>：✅ 同款指令再跑能出片（已验证）。<br>
+        <b>场景标签</b>：题目解析 / 口播视频
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell-label">案例 2 · 逆等线模型讲解 <span class="ok" style="margin-left:6px">已验证可复现</span></div>
+      <div class="cell">
+        <b>任务背景</b>：初三几何"逆等线模型"辅助线思路抽象，做动态讲解帮助学生理解。<br>
+        <b>使用步骤</b>：
+        <div class="steps">
+          <div class="step"><span class="n">1</span>点名主题"初中数学逆等线模型讲解"</div>
+          <div class="step"><span class="n">2</span>生成动画（重点动态演示辅助线做法）</div>
+          <div class="step"><span class="n">3</span>交付，确认可放入课堂</div>
+        </div>
+        <b>耗时/卡点</b>：约 10 分钟；注意点：模型图形的动态变化要把辅助线讲清楚。<br>
+        <b>效果证据</b>：动画成片（封面已存案例库）；评价：<span class="ok">好用</span>。<br>
+        <b>可复现性</b>：✅ 已验证可复现。<br>
+        <b>场景标签</b>：题目解析 / 教学备课
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== L4 ===== -->
+<div class="layer">
+  <div class="layer-head"><span class="lv lv4">L4</span>产出闭环 <span class="tag">装 → 用 → 沉淀 → 回流</span></div>
+  <div class="layer-body">
+    <div class="flow">
+      <span class="node">安装技能</span><span class="arrow">→</span>
+      <span class="node hot">30 分钟内真实小任务试跑</span><span class="arrow">→</span>
+      <span class="node">产出（动画/回复/图解）</span><span class="arrow">→</span>
+      <span class="node">生成第一条过程档案</span><span class="arrow">→</span>
+      <span class="node">反馈回流推荐算法</span>
+    </div>
+    <div class="kpi">
+      <div class="item"><div class="v">2</div><div class="l">manimate 已有真实案例</div></div>
+      <div class="item"><div class="v">2/2</div><div class="l">评价：好用</div></div>
+      <div class="item"><div class="v">✅</div><div class="l">可复现性已验证</div></div>
+      <div class="item"><div class="v">题目解析·口播·备课</div><div class="l">覆盖场景</div></div>
+    </div>
+    <div class="cell" style="margin-top:10px;color:var(--ink2)">规则：每个新装技能 → 我主动走一遍"试跑 + 沉淀"，产出自动变成第一条档案，不用你催。</div>
+  </div>
+</div>
+
+<div class="foot">Skill 管理中心 · 四层档案样板（manimate）· 内容基于真实使用记录</div>
+</body>
+</html>
