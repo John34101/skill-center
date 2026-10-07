@@ -295,6 +295,11 @@
   .repro{font-size:10.5px;padding:1px 7px;border-radius:20px;border:1px solid var(--green);color:var(--green)}
   .repro.no{border-color:var(--red);color:var(--red)}
   .case-arch .ca-line{font-size:12.5px;color:var(--ink-2);line-height:1.55;padding:2px 0}
+  .case-empty{border:1px dashed var(--line);border-radius:10px;padding:14px;margin-top:6px;background:rgba(0,0,0,.015)}
+  .case-empty .ce-t{font-size:13px;font-weight:600;color:var(--ink-1)}
+  .case-empty .ce-d{font-size:12.5px;color:var(--ink-2);line-height:1.6;margin-top:5px}
+  .case-empty .ce-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2);margin-top:10px}
+  .case-empty .ce-hint{font-size:11px;color:var(--dim)}
   .case-arch .ca-line b{color:var(--ink);font-weight:600}
   .flow-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-2);margin-top:6px}
   .flow-line .fn{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:3px 8px;color:var(--ink-2)}
@@ -1195,16 +1200,20 @@ function openDrawer(name){
       ${hb.pitfalls?`<div class="hb-row"><div class="hk">坑与边界</div>${esc(hb.pitfalls)}</div>`:""}
       ${hb.diff?`<div class="hb-row"><div class="hk">上手难度</div><span class="hb-diff">${esc(hb.diff)}</span></div>`:""}
     </div>`:"";
-  const casesHtml=cases.length?`<div class="drawer-block"><div class="arch-lv"><span class="lv-tag lv3">L3</span>用得好不好 · 过程档案（${cases.length}）</div>
-      ${cases.map(c=>{const ce=c.effect==="很好"?"rate-good":c.effect==="一般"?"rate-mid":"rate-none";const rp=c.repro==="已验证可复现"?"":(c.repro?"no":"");return `
+  const casesHtml=`<div class="drawer-block"><div class="arch-lv"><span class="lv-tag lv3">L3</span>用得好不好 · 过程档案${cases.length?`（${cases.length}）`:""}</div>
+      ${cases.length?cases.map(c=>{const ce=c.effect==="很好"?"rate-good":c.effect==="一般"?"rate-mid":"rate-none";const rp=c.repro==="已验证可复现"?"":(c.repro?"no":"");return `
       <div class="case-arch">
         <div class="ca-head">${esc(c.name)}${c.effect?`<span class="chip ${ce}">${esc(c.effect)}</span>`:""}${c.repro?`<span class="repro ${rp}">${esc(c.repro)}</span>`:""}</div>
         ${c.bg?`<div class="ca-line"><b>背景</b>：${esc(c.bg)}</div>`:""}
         ${c.steps?`<details class="case-details"><summary>展开使用步骤</summary><div class="full">${esc(c.steps)}</div></details>`:""}
         ${c.time?`<div class="ca-line"><b>耗时/卡点</b>：${esc(c.time)}</div>`:""}
         ${c.link?`<div class="ca-line"><b>产物</b>：<a href="${c.link}" target="_blank" rel="noopener">查看产物 ↗</a></div>`:""}
-      </div>`;}).join("")}
-    </div>`:"";
+      </div>`;}).join(""):`<div class="case-empty">
+        <div class="ce-t">还没有过程档案。</div>
+        <div class="ce-d">装好后用 30 分钟跑一个真实小任务（如：用它做一道题讲解 / 写一段家长回复），我帮你把任务背景、使用步骤、耗时卡点、可复现性沉淀成第一条档案。</div>
+        ${st==="inst"?`<div class="ce-r">当前评价：${ratingChip(name)||`<span class="chip rate-none">未评价</span>`}<span class="ce-hint">用上方按钮评价后立即生效</span></div>`:""}
+      </div>`}
+    </div>`;
   const l4Html=`<div class="drawer-block"><div class="arch-lv"><span class="lv-tag lv4">L4</span>产出闭环</div>
       <div class="flow-line"><span class="fn">安装</span><span class="fa">→</span><span class="fn hot">30 分钟试跑</span><span class="fa">→</span><span class="fn">产出</span><span class="fa">→</span><span class="fn">生成档案</span><span class="fa">→</span><span class="fn">反馈回流</span></div>
       <div style="font-size:12px;color:var(--ink-2);margin-top:8px">每个新装技能：30 分钟内用真实小任务试跑，产出自动沉淀为第一条档案。</div>
