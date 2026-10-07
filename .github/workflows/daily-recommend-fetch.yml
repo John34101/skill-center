@@ -1,0 +1,46 @@
+# ============================================================
+# C1 调度外置 · 阶段 A：每日候选抓取（GitHub Actions）
+# 作用：每天早上 9 点（UTC 1:00）自动抓取 GitHub Trending 候选，
+#       落地到仓库 data/candidates/YYYY-MM-DD.json，供推荐链路消费。
+# 说明：本步不依赖任何飞书/豆包凭证，纯 GitHub 环境可跑；
+#       阶段 B/C（写库+发布外置）见产品规划 C1。
+# ============================================================
+name: daily-skill-recommend-fetch
+
+on:
+  schedule:
+    - cron: "0 1 * * *"          # UTC 1:00 = 北京时间 9:00
+  workflow_dispatch:             # 支持手动触发
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run recommend.py fetch
+        run: |
+          python3 recommend.py fetch
+          mkdir -p data/candidates
+          cp /tmp/rec_candidates.json "data/candidates/$(date +%F).json"
+
+      - name: Commit & push
+        run: |
+          git config user.name "skill-center-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/candidates
+          if git diff --cached --quiet; then
+            echo "今日无新候选，无需提交"
+          else
+            git commit -m "每日候选抓取 $(date +%F)"
+            git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
+          fi
