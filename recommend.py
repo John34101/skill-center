@@ -118,6 +118,55 @@ def fetch():
 def load_profile():
     return json.load(open(PROFILE, encoding="utf-8"))
 
+def feedback_scores():
+    """读反馈表，按技能名聚合反馈类型计数（A1 推荐闭环）"""
+    fb = {}
+    try:
+        r = run_cli(["base", "+record-list", "--base-token", BASE_TOKEN, "--table-id", TBL_FEEDBACK,
+                     "--as", "user", "--format", "json", "--limit", "200"])
+        d = json.loads(r.stdout)["data"]
+        fields, rows = d["fields"], d["data"]
+        for row in rows:
+            rec = {fields[j]: row[j] for j in range(len(fields)) if j < len(row)}
+            name = rec.get("技能名称")
+            if not name:
+                continue
+            t = rec.get("反馈类型")
+            if isinstance(t, list):
+                t = t[0] if t else None
+            if t not in ("感兴趣", "有用", "没用", "不感兴趣"):
+                continue
+            fb.setdefault(name, {}).setdefault(t, 0)
+            fb[name][t] += 1
+    except Exception as e:
+        print(f"[select] 反馈表读取失败（按无反馈处理）：{e}")
+    return fb
+
+def installed_set():
+    """读台账，返回已安装技能名集合"""
+    inst = set()
+    try:
+        r = run_cli(["base", "+record-list", "--base-token", BASE_TOKEN, "--table-id", TBL_LEDGER,
+                     "--as", "user", "--format", "json", "--limit", "200"])
+        d = json.loads(r.stdout)["data"]
+        fields, rows = d["fields"], d["data"]
+        for row in rows:
+            rec = {fields[j]: row[j] for j in range(len(fields)) if j < len(row)}
+            name = rec.get("技能名称")
+            st = rec.get("安装状态")
+            if isinstance(st, list):
+                st = st[0] if st else None
+            if name and st == "已安装":
+                inst.add(name)
+    except Exception as e:
+        print(f"[select] 台账读取失败（按无已装处理）：{e}")
+    return inst
+
+def fb_score(name, fb):
+    """反馈分 = 感兴趣×3 + 有用×2 − 没用×2 − 不感兴趣×3（A1 口径）"""
+    d = fb.get(name, {})
+    return d.get("感兴趣", 0)*3 + d.get("有用", 0)*2 - d.get("没用", 0)*2 - d.get("不感兴趣", 0)*3
+
 def score(item, profile):
     text = f"{item.get('name','')} {item.get('cn','')} {item.get('desc','')}".lower()
     s = 0
@@ -143,16 +192,23 @@ def why_text(item):
 def select(date_str):
     cands = json.load(open("/tmp/rec_candidates.json", encoding="utf-8"))
     profile = load_profile()
-    scored = sorted(cands, key=lambda c: -score(c, profile))
+    fb = feedback_scores()
+    inst = installed_set()
+    excluded = inst | {n for n, d in fb.items() if d.get("不感兴趣", 0) > 0}
+    def final_score(c):
+        return score(c, profile) + fb_score(c["name"], fb)
+    scored = sorted(cands, key=lambda c: -final_score(c))
     for_you = []
     for c in scored:
-        if c["hot"] and c["hot"] >= 0:  # 全部可考虑
-            pass
+        if c["name"] in excluded:
+            continue
         if len(for_you) >= 5:
             break
         c["cn"] = c.get("cn") or ""
         c["why"] = why_text(c)
         c["tier"] = "for_you"
+        c["img"] = score(c, profile)
+        c["fb"] = fb_score(c["name"], fb)
         for_you.append(c)
     used = {c["name"].lower() for c in for_you}
     trending = []
@@ -169,8 +225,9 @@ def select(date_str):
     with open("/tmp/rec_plan.json", "w", encoding="utf-8") as f:
         json.dump(plan, f, ensure_ascii=False, indent=1)
     print(f"[select] 为你推荐 {len(for_you)} 条 / 全网热门 {len(trending)} 条 → /tmp/rec_plan.json")
+    print(f"[select] 已排除：已装 {len(inst & {c['name'] for c in cands})} 个 / 不感兴趣 {len({c['name'] for c in cands if c['name'] in excluded - inst})} 个")
     for c in for_you:
-        print(f"  [为你推荐] {c['name']} ★{c.get('hot')} {c['desc'][:40]}")
+        print(f"  [为你推荐] {c['name']} ★{c.get('hot')} 画像{c['img']} 反馈{c['fb']} {c['desc'][:36]}")
     for c in trending:
         print(f"  [全网热门] {c['name']} ★{c.get('hot')} {c['desc'][:40]}")
     return plan
