@@ -77,6 +77,9 @@
   .sec-head .sub{font-size:12.5px;color:var(--ink-2)}
   .sec-head .grow{flex:1}
   .empty{padding:26px;text-align:center;color:var(--ink-2);font-size:13.5px;background:var(--surface);border:1px dashed var(--line-2);border-radius:var(--radius)}
+  .empty .led{margin-right:7px;vertical-align:-1px}
+  .empty.empty-mini{padding:12px;font-size:12px}
+  mark.hl{background:var(--amber-soft);color:#9A6B12;border-radius:4px;padding:0 2px;font-weight:600}
 
   .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;transition:border-color .15s,box-shadow .15s}
   .card:hover{border-color:var(--line-2);box-shadow:0 2px 10px rgba(27,30,35,.05)}
@@ -786,6 +789,23 @@ function mainActs(s){
 /* ===== 顶栏 / 更新 ===== */
 function renderUpdated(){ $("updText").textContent=(DATA_UPDATED||"—").slice(5,16); }
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+/* 高亮命中关键词：先 esc 再包 <mark>，纯视觉包裹，不改原文本内容 */
+function hl(s,q){
+  const t=esc(s==null?"":s);
+  if(!q) return t;
+  const safe=q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  return t.replace(new RegExp("("+safe+")","ig"),'<mark class="hl">$1</mark>');
+}
+function matchRank(s,q){
+  if(!q) return 0;
+  if(s.name.toLowerCase().includes(q)||(s.cn||"").toLowerCase().includes(q)) return 3;
+  if((s.tags||[]).some(t=>t.toLowerCase().includes(q))) return 2;
+  if((s.desc||"").toLowerCase().includes(q)) return 1;
+  return 0;
+}
+function noResultHtml(q,mini){
+  return `<div class="empty${mini?" empty-mini":""}"><i class="led n"></i>没有找到"${esc(q)}"</div>`;
+}
 
 /* ===== 今日推荐 ===== */
 function todayRecs(){
@@ -806,7 +826,7 @@ function todayRecs(){
   }
   return {list, fy:list.filter(r=>r.type!=="trending"), tr:list.filter(r=>r.type==="trending"), subMsg};
 }
-function feedCardHtml(r){
+function feedCardHtml(r,q){
   const s=SKILL_LEDGER.find(x=>x.name===r.skill); if(!s) return "";
   const st=instState(s);
   const chip=st==="recover"?'<span class="chip recover">需恢复</span>':st==="inst"?'<span class="chip inst">已安装</span>':'<span class="chip missing">未安装</span>';
@@ -814,7 +834,7 @@ function feedCardHtml(r){
   return `<div class="card feed-card" role="button" tabindex="0" style="cursor:pointer" onclick="openDrawer('${r.skill.replace(/'/g,"\\'")}')" onkeydown="if(event.key==='Enter')openDrawer('${r.skill.replace(/'/g,"\\'")}')">
     <div class="fc-top">
       <div style="flex:1;min-width:0">
-        <div class="fc-name">${esc(CN_OF[r.skill]||r.skill)}<span class="fc-en">${esc(r.skill)}</span></div>
+        <div class="fc-name">${hl(CN_OF[r.skill]||r.skill,q)}<span class="fc-en">${hl(r.skill,q)}</span></div>
       </div>
       ${chip}
     </div>
@@ -829,13 +849,14 @@ function feedCardHtml(r){
 }
 function renderFeed(){
   const {list,fy,tr,subMsg}=todayRecs();
+  const q=(params.get("q")||"").trim();
   $("feedSub").textContent=subMsg;
-  if(!list.length){ $("feedRow").innerHTML=`<div class="empty">${(params.get("q")||"").trim()?`没有找到"${esc(params.get("q"))}"`:"还没有推荐记录，等明早 9 点的每日推荐吧。"}</div>`; return; }
+  if(!list.length){ $("feedRow").innerHTML=q?noResultHtml(q):`<div class="empty">还没有推荐记录，等明早 9 点的每日推荐吧。</div>`; return; }
   $("feedTitle").textContent=`今天推荐了 ${list.length} 个`;
   if(!subMsg) $("feedSub").textContent=`为你推荐 ${fy.length} · 全网热门 ${tr.length} · 评价立即生效，可随时改评`;
   const sec=(tt,sub,arr)=>`<div class="feed-sec">
     <div class="feed-sec-head"><span class="feed-sec-tt">${tt}</span><span class="feed-sec-sub">${sub}</span></div>
-    <div class="feed-grid">${arr.map(feedCardHtml).join("")||`<div class="feed-empty">${tt==="全网热门"?"全网热门档随每日推荐同步推送 Top5":"这个档位暂时没有内容"}</div>`}</div>
+    <div class="feed-grid">${arr.map(r=>feedCardHtml(r,q.toLowerCase())).join("")||`<div class="feed-empty">${q?"该区无匹配":(tt==="全网热门"?"全网热门档随每日推荐同步推送 Top5":"这个档位暂时没有内容")}</div>`}</div>
   </div>`;
   $("feedRow").innerHTML=sec("为你推荐","结合你的画像筛选",fy)+sec("全网热门","全网最火，不设相关筛选",tr);
 }
@@ -857,7 +878,7 @@ function renderInbox(){
     const s=SKILL_LEDGER.find(x=>x.name===r.skill);
     return `<div class="inbox-row">
       <span class="inbox-date">${(r.date||"").slice(5)}</span>
-      <span class="inbox-name" role="button" tabindex="0" style="cursor:pointer" onclick="openDrawer('${r.skill.replace(/'/g,"\\'")}')">${esc(CN_OF[r.skill]||r.skill)}<em>${esc(r.skill)}</em></span>
+      <span class="inbox-name" role="button" tabindex="0" style="cursor:pointer" onclick="openDrawer('${r.skill.replace(/'/g,"\\'")}')">${hl(CN_OF[r.skill]||r.skill,q)}<em>${hl(r.skill,q)}</em></span>
       ${typeChip(r)}
       <span class="inbox-why">${esc(r.why||"")}</span>
       <span class="inbox-acts">
@@ -865,7 +886,7 @@ function renderInbox(){
         ${noInterestBtn(r.skill,CN_OF[r.skill])}
       </span>
     </div>`;
-  }).join("")}</div>`:(q?`<div class="empty">没有找到"${esc(q)}"</div>`:`<div class="empty">收件箱空了：所有推荐都处理完了。👍</div>`);
+  }).join("")}</div>`:(q?noResultHtml(q):`<div class="empty">收件箱空了：所有推荐都处理完了。👍</div>`);
   /* 推荐历史：已处理（已安装/已评价/需恢复）按日期分组 */
   const done=RECOMMEND_RECS.filter(r=>{
     const s=r.skill&&SKILL_LEDGER.find(x=>x.name===r.skill);
@@ -903,13 +924,14 @@ function renderToolbox(){
   const sceneGroups={};
   SCENE_ORDER.forEach(sc=>sceneGroups[sc]=[]);
   SKILL_LEDGER.forEach(s=>{
-    if(q && !(s.name.toLowerCase().includes(q)||(s.cn||"").toLowerCase().includes(q)||(s.desc||"").toLowerCase().includes(q))) return;
+    if(q && !(s.name.toLowerCase().includes(q)||(s.cn||"").toLowerCase().includes(q)||(s.desc||"").toLowerCase().includes(q)||(s.tags||[]).some(t=>t.toLowerCase().includes(q)))) return;
     if(instState(s)==="missing" && interestOf(s.name)!=="感兴趣") return;  /* 未表态/不感兴趣不进资产库 */
     if(cur==="inst"&&instState(s)!=="inst") return;
     if(cur==="missing"&&instState(s)!=="missing") return;
     if(cur==="recover"&&instState(s)!=="recover") return;
     sceneGroups[sceneOf(s)].push(s);
   });
+  if(q){ Object.keys(sceneGroups).forEach(sc=>sceneGroups[sc].sort((a,b)=>matchRank(b,q)-matchRank(a,q))); }
   $("sceneGroups").innerHTML=SCENE_ORDER.map(sc=>{
     const arr=sceneGroups[sc];
     if(curScene && sc!==curScene) return "";
@@ -920,10 +942,10 @@ function renderToolbox(){
       ${arr.length?`<div class="tool-list">${arr.map(s=>{
         const st=instState(s), rt=myRating(s.name);
         const casesN=CASE_LEDGER.filter(c=>c.skill===s.name).length;
-        const tags=bizTags(s,sc).map(t=>`<span class="heat-tag">${esc(t)}</span>`).join("");
+        const tags=bizTags(s,sc).map(t=>`<span class="heat-tag">${hl(t,q)}</span>`).join("");
         return `<div class="tool-row">
           <span class="dot ${st}"></span>
-          <span class="tool-name" role="button" tabindex="0" style="cursor:pointer" onclick="openDrawer('${s.name.replace(/'/g,"\\'")}')">${esc(CN_OF[s.name]||s.name)}<em>${esc(s.name)}</em></span>
+          <span class="tool-name" role="button" tabindex="0" style="cursor:pointer" onclick="openDrawer('${s.name.replace(/'/g,"\\'")}')">${hl(CN_OF[s.name]||s.name,q)}<em>${hl(s.name,q)}</em></span>
           <span class="tool-tags">${tags}</span>
           ${ratingChip(s.name)}
           <span class="tool-cases">${casesN?`<span class="case-pill"><b>${casesN}</b> 个案例</span>`:""}</span>
@@ -936,12 +958,12 @@ function renderToolbox(){
             </span>
           </span>
         </div>`;
-      }).join("")}</div>`:`<div class="empty">这个场景还没有技能${cur!=="all"?"（当前筛选）":""}，去<a href="#sec-heat" style="color:var(--accent);text-decoration:underline">热度参考</a>看看</div>`}
+      }).join("")}</div>`:(q?`<div class="empty empty-mini">该区无匹配</div>`:`<div class="empty">这个场景还没有技能${cur!=="all"?"（当前筛选）":""}，去<a href="#sec-heat" style="color:var(--accent);text-decoration:underline">热度参考</a>看看</div>`)}
     </div>`;
   }).join("");
   const shown=Object.values(sceneGroups).reduce((a,b)=>a+b.length,0);
   if(!shown&&(q||cur!=="all")){
-    $("sceneGroups").innerHTML=q?`<div class="empty">没有找到"${esc(q)}"</div>`:`<div class="empty">当前筛选下没有匹配的技能。</div>`;
+    $("sceneGroups").innerHTML=q?noResultHtml(q):`<div class="empty">当前筛选下没有匹配的技能。</div>`;
   }
 }
 const K_ICON_EYE='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
@@ -1032,19 +1054,19 @@ function renderCases(){
   $("caseGrid").innerHTML=list.length?list.map(c=>{
     const s=SKILL_LEDGER.find(x=>x.name===c.skill);
     return `<div class="card case-card">
-      <div class="case-top"><b>${esc(c.name)}</b><span class="chip ${c.effect==="很好"?"inst":c.effect==="一般"?"missing":"rate-none"}">${esc(c.effect||"未验收")}</span></div>
+      <div class="case-top"><b>${hl(c.name,q)}</b><span class="chip ${c.effect==="很好"?"inst":c.effect==="一般"?"missing":"rate-none"}">${esc(c.effect||"未验收")}</span></div>
       <div class="case-meta">
         <span class="skill-link" role="button" tabindex="0" onclick="openDrawer('${c.skill.replace(/'/g,"\\'")}')">${esc(CN_OF[c.skill]||c.skill)}</span>
         <span>·</span><span>${esc(c.scene||"")}</span><span>·</span><span class="mono">${(c.date||"").slice(0,10)}</span>
       </div>
-      <div class="case-steps">${esc(c.steps||"")}</div>
+      <div class="case-steps">${hl(c.steps||"",q)}</div>
       ${c.effect==="一般"&&c.note?`<div class="case-note">局限：${esc(c.note)}</div>`:""}
       <div class="case-foot">
         <span style="font-size:12px;color:var(--dim)">${s?esc(s.desc||""):""}</span>
         ${c.link?`<a class="btn sub" href="${c.link}" target="_blank" rel="noopener">查看产物 ↗</a>`:""}
       </div>
     </div>`;
-  }).join(""):`<div class="empty" style="grid-column:1/-1">${q?`没有找到"${esc(q)}"`:"这个场景还没有案例。"}</div>`;
+  }).join(""):`<div class="empty" style="grid-column:1/-1">${q?noResultHtml(q):"这个场景还没有案例。"}</div>`;
 }
 
 /* ===== 热度参考 ===== */
@@ -1216,7 +1238,23 @@ $("searchInput").addEventListener("input",function(){
   history.replaceState(null,"","?"+params.toString());
   renderToolFilters();renderToolbox();renderCases();renderInbox();renderFeed();
 });
-$("searchInput").addEventListener("keydown",e=>{ if(e.key==="Enter") e.target.blur(); });
+$("searchInput").addEventListener("keydown",e=>{
+  if(e.key==="Enter") e.target.blur();
+  if(e.key==="Escape"){
+    e.stopPropagation();
+    if(e.target.value){ e.target.value=""; e.target.dispatchEvent(new Event("input")); }
+    e.target.blur();
+  }
+});
+/* "/" 聚焦搜索框（无输入焦点时）；聚焦态下交给输入框正常输入，不重复触发 */
+document.addEventListener("keydown",e=>{
+  if(e.key!=="/") return;
+  const ae=document.activeElement;
+  const typing=ae&&(ae.tagName==="INPUT"||ae.tagName==="TEXTAREA"||ae.isContentEditable);
+  if(typing) return;
+  e.preventDefault();
+  $("searchInput").focus();
+});
 
 /* ===== 启动 ===== */
 function boot(){
