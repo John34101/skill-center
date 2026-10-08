@@ -110,6 +110,7 @@
   .chip.rate-none{color:var(--ink-2);background:transparent;border-color:var(--line-2)}
   .chip.t-chip{font-size:11px;padding:1px 8px;background:#EEF0F3;border-color:var(--line);color:var(--ink-2)}
   .chip.interested{color:#2B5B8C;background:#E8F0F8;border-color:#C4D9EC}
+  .chip.recover-pending{color:#2B5B8C;background:#E8F0F8;border-color:#C4D9EC}
   .dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none;box-shadow:0 0 0 3px rgba(0,0,0,.05)}
   .dot.inst{background:var(--green)} .dot.missing{background:var(--amber)} .dot.recover{background:var(--red)} .dot.unload{background:#9A7B6E}
 
@@ -204,6 +205,8 @@
   .kebab-menu .mi.danger{color:var(--red)}
   .kebab-menu .mi.danger svg{color:var(--red)}
   .kebab-menu .mi.danger:hover,.kebab-menu .mi.danger[aria-selected="true"]{background:var(--red-soft)}
+  .kebab-menu .mi:disabled{opacity:.5;cursor:default}
+  .kebab-menu .mi:disabled:hover{background:none}
   .kebab-menu .mi-sep{height:1px;background:var(--line);border:0;margin:4px 0}
 
   /* ===== 用法案例 ===== */
@@ -770,7 +773,7 @@ function submitMark(el,skill,act){
     interestLocal[skill]=act; saveInterest(); INTEREST_MAP[skill]=act;
   }
   if(el&&el.isConnected){ el.disabled=false; el.classList.remove("pending"); }
-  renderFeed(); renderInbox(); renderToolbox(); renderStats(); renderCases();
+  renderFeed(); renderInbox(); renderToolbox(); renderStats(); renderCases(); renderRack();
   /* 抽屉若打开则重渲染：同组按钮互斥态（✓锁定 / 另一可点）即时更新 */
   const dr=$("drawer");
   if(dr&&dr.classList.contains("open")) openDrawer(skill);
@@ -925,6 +928,11 @@ function ratingChip(name){
 }
 
 /* ===== 状态 -> 主按钮 ===== */
+function recoverBtn(skill,cn){
+  const nm=skill.replace(/'/g,"\\'");
+  if(interestOf(skill)==="感兴趣") return `<button type="button" class="btn done" disabled title="已标记恢复：数据同步后进入待装，在对话窗口说『恢复 ${cn}』即可执行">已标记恢复 ✓</button>`;
+  return `<button type="button" class="btn primary" data-skill="${skill}" data-act="感兴趣" onclick="openAction(this,'fb','${nm}','感兴趣')">恢复</button>`;
+}
 function unmarkBtn(skill,cn){
   const nm=skill.replace(/'/g,"\\'");
   return `<button type="button" class="btn sub" data-skill="${skill}" data-act="感兴趣" onclick="openAction(this,'fb','${nm}','感兴趣')">取消待卸载</button>`;
@@ -1088,12 +1096,16 @@ function renderToolbox(){
   SCENE_ORDER.forEach(sc=>sceneGroups[sc]=[]);
   SKILL_LEDGER.forEach(s=>{
     if(q && !(s.name.toLowerCase().includes(q)||(s.cn||"").toLowerCase().includes(q)||(s.desc||"").toLowerCase().includes(q)||(s.tags||[]).some(t=>t.toLowerCase().includes(q)))) return;
-    if(instState(s)==="missing" && interestOf(s.name)!=="感兴趣") return;  /* 未表态/不感兴趣不进资产库 */
+    const st0=instState(s);
+    /* 需恢复+感兴趣 = 恢复中，视同待装（等执行恢复） */
+    const effSt=(st0==="recover"&&interestOf(s.name)==="感兴趣")?"missing":st0;
+    if(effSt==="missing" && interestOf(s.name)!=="感兴趣") return;  /* 未表态/不感兴趣不进资产库 */
+    if(st0==="recover" && interestOf(s.name)==="不感兴趣") return;   /* 放弃恢复：移出资产库 */
     const unloading=unloadState(s);
-    if(cur==="inst"&&(instState(s)!=="inst"||unloading)) return;   /* 待卸载不进「已安装」 */
+    if(cur==="inst"&&(effSt!=="inst"||unloading)) return;   /* 待卸载不进「已安装」 */
     if(cur==="unload"&&!unloading) return;
-    if(cur==="missing"&&instState(s)!=="missing") return;
-    if(cur==="recover"&&instState(s)!=="recover") return;
+    if(cur==="missing"&&effSt!=="missing") return;
+    if(cur==="recover"&&effSt!=="recover") return;
     sceneGroups[sceneOf(s)].push(s);
   });
   if(q){ Object.keys(sceneGroups).forEach(sc=>sceneGroups[sc].sort((a,b)=>matchRank(b,q)-matchRank(a,q))); }
@@ -1106,7 +1118,9 @@ function renderToolbox(){
     return `<div class="scene-group" id="scene-${sc}">
       <h3 class="scene-title">${sc}<span class="scene-cnt">已装 ${instN}${unloadN?` · 待卸载 ${unloadN}`:""} / 共 ${arr.length}</span></h3>
       ${arr.length?`<div class="tool-list">${arr.map(s=>{
-        const st=instState(s), unloading=unloadState(s), dispSt=unloading?"unload":st, rt=myRating(s.name);
+        const st=instState(s), unloading=unloadState(s);
+        const effSt=(st==="recover"&&interestOf(s.name)==="感兴趣")?"missing":st;
+        const dispSt=unloading?"unload":effSt, rt=myRating(s.name);
         const casesN=CASE_LEDGER.filter(c=>c.skill===s.name).length;
         const tags=bizTags(s,sc).map(t=>`<span class="heat-tag">${hl(t,q)}</span>`).join("");
         return `<div class="tool-row">
@@ -1136,6 +1150,7 @@ const K_ICON_EYE='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" st
 const K_ICON_TRASH='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/></svg>';
 const K_ICON_X='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>';
 const K_ICON_CHECK='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+const K_ICON_RESTORE='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.6-6.4"/><path d="M3 4v5h5"/></svg>';
 function kebabMenuHtml(s,st){
   const nm=s.name.replace(/'/g,"\\'");
   let body=`<button type="button" class="mi" tabindex="-1" onclick="openDrawer('${nm}')">${K_ICON_EYE}<span>查看详情</span></button>`;
@@ -1150,6 +1165,20 @@ function kebabMenuHtml(s,st){
   }
   if(st==="missing"){
     body+=`<button type="button" class="mi danger" tabindex="-1" data-skill="${s.name}" data-act="不感兴趣" onclick="openAction(this,'fb','${nm}','不感兴趣')">${K_ICON_X}<span>不感兴趣</span></button>`;
+  }
+  /* 需恢复：恢复（=标记感兴趣，进待装等执行）/ 不感兴趣（=放弃恢复，移出资产库） */
+  if(st==="recover"){
+    body+=`<hr class="mi-sep">`;
+    if(interestOf(s.name)==="感兴趣"){
+      body+=`<button type="button" class="mi" tabindex="-1" disabled><span>已标记恢复 ✓</span></button>`;
+    }else{
+      body+=`<button type="button" class="mi" tabindex="-1" data-skill="${s.name}" data-act="感兴趣" onclick="openAction(this,'fb','${nm}','感兴趣')">${K_ICON_RESTORE}<span>恢复</span></button>`;
+    }
+    if(interestOf(s.name)==="不感兴趣"){
+      body+=`<button type="button" class="mi" tabindex="-1" disabled><span>已标记不感兴趣 ✓</span></button>`;
+    }else{
+      body+=`<button type="button" class="mi danger" tabindex="-1" data-skill="${s.name}" data-act="不感兴趣" onclick="openAction(this,'fb','${nm}','不感兴趣')">${K_ICON_X}<span>不感兴趣</span></button>`;
+    }
   }
   return `<div class="kebab-menu">${body}</div>`;
 }
@@ -1268,14 +1297,15 @@ function renderHeat(){
 function renderRack(){
   const rack=$("rackBar"); if(!rack) return;
   const instN=SKILL_LEDGER.filter(s=>instState(s)==="inst"&&!unloadState(s)).length;
-  const missN=SKILL_LEDGER.filter(s=>instState(s)==="missing"&&interestOf(s.name)==="感兴趣").length;
-  const recoverN=SKILL_LEDGER.filter(s=>instState(s)==="recover").length;
+  const recoverPending=SKILL_LEDGER.filter(s=>instState(s)==="recover"&&interestOf(s.name)==="感兴趣").length;
+  const missN=SKILL_LEDGER.filter(s=>instState(s)==="missing"&&interestOf(s.name)==="感兴趣").length+recoverPending;
+  const recoverN=SKILL_LEDGER.filter(s=>instState(s)==="recover"&&interestOf(s.name)!=="感兴趣").length;
   const unloadN=SKILL_LEDGER.filter(s=>unloadState(s)).length;
   const today=new Date().toISOString().slice(0,10);
   const recN=RECOMMEND_RECS.filter(r=>r.date===today&&r.skill&&SKILL_LEDGER.some(s=>s.name===r.skill)).length;
   rack.innerHTML=`
     <span class="seg"><i class="led g"></i>已装 <b>${instN}</b></span>
-    <span class="seg"><i class="led a"></i>待装 <b>${missN}</b></span>
+    <span class="seg"><i class="led a"></i>待装 <b>${missN}${recoverPending?`<em style="font-style:normal;color:var(--dim)">含恢复${recoverPending}</em>`:""}</b></span>
     <span class="seg"><i class="led u"></i>待卸载 <b>${unloadN}</b></span>
     <span class="seg"><i class="led r"></i>需恢复 <b>${recoverN}</b></span>
     <span class="seg"><i class="led n"></i>推荐中 <b>${recN}</b></span>
@@ -1316,7 +1346,7 @@ function openDrawer(name){
   const s=SKILL_LEDGER.find(x=>x.name===name); if(!s) return;
   drawerLastFocus=document.activeElement;
   const st=instState(s), rt=myRating(s.name);
-  const dispSt=unloadState(s)?"unload":st;
+  const dispSt=unloadState(s)?"unload":(st==="recover"&&interestOf(s.name)==="感兴趣")?"recover-pending":st;
   const recs=RECOMMEND_RECS.filter(r=>r.skill===name).sort((a,b)=>(b.date||"").localeCompare(a.date||""));
   const cases=CASE_LEDGER.filter(c=>c.skill===name);
   const heat=s.hot?`${fmtNum(s.hot)}★（GitHub）`:(recs[0]&&recs[0].hot?recs[0].hot:"暂无热度数据");
@@ -1354,7 +1384,7 @@ function openDrawer(name){
       <button class="drawer-close" onclick="closeDrawer()" aria-label="关闭">×</button>
     </div>
     <div class="drawer-meta">
-      <span class="chip ${dispSt}">${dispSt==="unload"?"待卸载":dispSt==="inst"?"已安装":dispSt==="recover"?"需恢复":"未安装"}</span>
+      <span class="chip ${dispSt}">${dispSt==="unload"?"待卸载":dispSt==="inst"?"已安装":dispSt==="recover-pending"?"恢复中":dispSt==="recover"?"需恢复":"未安装"}</span>
       ${st==="inst"?`${ratingChip(name)||`<span class="chip rate-none">未评价</span>`}`:""}
       <span class="chip rate-none">类别：${esc(s.cat||"")}</span>
       ${(s.tags||[]).map(t=>`<span class="chip rate-none">${esc(t)}</span>`).join("")}
@@ -1382,6 +1412,8 @@ function openDrawer(name){
       ${mainActs(s)}
       ${st==="missing"?interestBtn(name,CN_OF[name]):""}
       ${st==="missing"?noInterestBtn(name,CN_OF[name]):""}
+      ${st==="recover"?recoverBtn(name,CN_OF[name]):""}
+      ${st==="recover"?noInterestBtn(name,CN_OF[name]):""}
     </div>
     ${st==="inst"?`<div class="rate-sec">
       <div class="rate-label">评价这个技能（用于优化推荐，不影响安装状态）</div>
