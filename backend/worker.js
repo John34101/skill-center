@@ -56,6 +56,50 @@ async function addRecord(env, kv, tableId, fields) {
   return { record_id: d.data.record.record_id };
 }
 
+/* ---------- 幂等：查同技能+同动作+状态未完成(空)的既有指令，命中则复用不新增 ---------- */
+async function findPendingAction(env, kv, skill, act) {
+  const token = await getToken(env, kv);
+  if (!token) return { needAuth: true };
+  const r = await fetch(`${FEISHU}/bitable/v1/apps/${BASE_TOKEN}/tables/${ACT_TABLE}/records/search`, {
+    method: "POST",
+    headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      filter: {
+        conjunction: "and",
+        conditions: [
+          { field_name: "技能名称", operator: "is", value: [skill] },
+          { field_name: "动作", operator: "is", value: [act] },
+          { field_name: "状态", operator: "isEmpty" }
+        ]
+      },
+      page_size: 20
+    })
+  });
+  const d = await r.json();
+  if (d.code !== 0) throw new Error("查询失败: " + (d.msg || d.code));
+  const items = (d.data && d.data.items) || [];
+  return items.length ? items[0].record_id : null;
+}
+
+/* ---------- 更新既有记录 ---------- */
+async function updateRecord(env, kv, tableId, recordId, fields) {
+  const token = await getToken(env, kv);
+  if (!token) return { needAuth: true };
+  const r = await fetch(`${FEISHU}/bitable/v1/apps/${BASE_TOKEN}/tables/${tableId}/records/${recordId}`, {
+    method: "PUT",
+    headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
+    body: JSON.stringify({ fields })
+  });
+  const d = await r.json();
+  if (d.code !== 0) throw new Error("更新失败: " + (d.msg || d.code));
+  return { record_id: d.data.record.record_id };
+}
+
+/* ---------- 当前北京时间（飞书 datetime 格式） ---------- */
+function nowText() {
+  return new Date(Date.now() + 8 * 3600 * 1000).toISOString().slice(0, 19).replace("T", " ");
+}
+
 /* ---------- OAuth 流程 ---------- */
 async function oauthStart(req, env) {
   const u = new URL(req.url);
@@ -128,7 +172,14 @@ export default {
         res = await addRecord(env, kv, FB_TABLE, { "技能名称": skill, "反馈类型": act });
       } else if (url.pathname.endsWith("/action")) {
         if (!ACTS.includes(act)) return cors(json({ ok: false, error: "动作不合法: " + act }, 400));
-        res = await addRecord(env, kv, ACT_TABLE, { "技能名称": skill, "动作": act });
+        const t = nowText();
+        const existing = await findPendingAction(env, kv, skill, act);
+        if (existing) {
+          res = await updateRecord(env, kv, ACT_TABLE, existing, { "提交时间": t });
+          res.reused = true;
+        } else {
+          res = await addRecord(env, kv, ACT_TABLE, { "技能名称": skill, "动作": act, "提交时间": t });
+        }
       } else {
         return cors(json({ ok: false, error: "未知端点" }, 404));
       }

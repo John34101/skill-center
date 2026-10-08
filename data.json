@@ -630,8 +630,8 @@
    "tags": [
     "写作润色"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/github/awesome-copilot/documentation-writer",
    "biz": [
@@ -641,7 +641,7 @@
    "last": null,
    "score": null,
    "desc": "GitHub官方文档写作规范：结构化输出教案/讲义/知识库文档",
-   "note": "2026-10-06 推荐（skills.sh 27.3K安装量）"
+   "note": "2026-10-08 09:45:10 通过网页指令安装"
   },
   {
    "name": "webapp-testing",
@@ -650,8 +650,8 @@
    "tags": [
     "自动化"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/anthropics/skills/webapp-testing",
    "biz": [
@@ -661,7 +661,7 @@
    "last": null,
    "score": null,
    "desc": "Anthropic官方网页应用测试：自动巡检自己发布的网页是否正常",
-   "note": "2026-10-06 推荐（skills.sh 170.3K安装量）"
+   "note": "2026-10-08 09:45:10 通过网页指令安装"
   },
   {
    "name": "math-teacher",
@@ -2193,7 +2193,12 @@
   "hermes-edu-skills": "感兴趣",
   "money-printer-turbo": "不感兴趣",
   "ponytail": "感兴趣",
-  "seedance-2.0-prompt-writing": "感兴趣"
+  "seedance-2.0-prompt-writing": "感兴趣",
+  "everything-claude-code": "感兴趣",
+  "awesome-claude-code": "感兴趣",
+  "xiaozhi-teach-math-lesson-planner": "感兴趣",
+  "xiaozhi-teach-math-error-analyzer": "感兴趣",
+  "coteach": "感兴趣"
  },
  "handbook": {
   "manimate": {
@@ -2605,5 +2610,5 @@
    "diff": "1分钟内上手"
   }
  },
- "updated": "2026-10-08 09:17"
+ "updated": "2026-10-08 09:47"
 }
