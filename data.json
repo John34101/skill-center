@@ -1011,6 +1011,196 @@
    "score": null,
    "desc": "Anthropic 官方品牌规范 Skill（配色/字体/视觉标准）",
    "note": "OpenAgentSkill 2026-10-04 快照 179K 星"
+  },
+  {
+   "name": "xiaozhi-teach-math-lesson-planner",
+   "cn": "小智数学教案",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://github.com/Lord1Egypt/RA-Skills",
+   "biz": [
+    "教学备课"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "把「讲概念+练题」升级为系统化数学教学：概念建构→例题示范→变式训练",
+   "note": "ClaudSkills 社区收录（Lord1Egypt/RA-Skills 系列）"
+  },
+  {
+   "name": "xiaozhi-teach-math-error-analyzer",
+   "cn": "小智数学错题分析",
+   "cat": "家长沟通",
+   "tags": [
+    "答疑代写"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://www.toolify.ai/openclaw-skills/xiaozhi-teach-math-error-analyzer-74180",
+   "biz": [
+    "家长答疑"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "四类错误分类+顽固弱项识别+错因图谱+数学弱项报告，家长答疑场景即用",
+   "note": "ClaudSkills 社区收录"
+  },
+  {
+   "name": "coteach",
+   "cn": "Coteach 数学图表",
+   "cat": "教学与教研",
+   "tags": [
+    "可视化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://claude.com/connectors/coteach",
+   "biz": [
+    "教学备课"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Claude 官方 K-12 数学图表生成：数轴/面积模型/坐标平面/分数模型，课堂讲义即开即用",
+   "note": "Claude 官方 Connector 目录"
+  },
+  {
+   "name": "k12-smart-teacher",
+   "cn": "K12智能老师",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://skillhub.cloud.tencent.com/skills/k12-smart-teacher",
+   "biz": [
+    "家长答疑"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "腾讯 SkillHub 错题闭环：判对错→错因分析→优先讲解→按薄弱知识点组卷",
+   "note": "腾讯 SkillHub 评分 4.6"
+  },
+  {
+   "name": "i-have-adhd",
+   "cn": "AI 说重点",
+   "cat": "效率工具",
+   "tags": [
+    "写作润色"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 37367,
+   "source": "https://github.com/ayghri/i-have-adhd",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "10 条输出规则（结论先行/步骤编号/行动优先/省客套），治 AI 长篇废话，中文社区爆款",
+   "note": "2026-09 掘金报道 37,367★"
+  },
+  {
+   "name": "everything-claude-code",
+   "cn": "Claude Code 全量百科",
+   "cat": "AI开发",
+   "tags": [
+    "代码开发"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 169700,
+   "source": "https://github.com/affaan-m/everything-claude-code",
+   "biz": [
+    "效率管理"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Claude Code 技巧/命令/工作流最大聚合仓库",
+   "note": "2026-07 arXiv 数据 169.7k★"
+  },
+  {
+   "name": "awesome-claude-code",
+   "cn": "Claude Code 精选清单",
+   "cat": "AI开发",
+   "tags": [
+    "代码开发"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 43400,
+   "source": "https://github.com/hesreallyhim/awesome-claude-code",
+   "biz": [
+    "效率管理"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "高质量 Claude Code 资源/技能精选列表",
+   "note": "2026-07 快照 43.4k★"
+  },
+  {
+   "name": "diagram-design",
+   "cn": "编辑级图表设计",
+   "cat": "内容创作",
+   "tags": [
+    "可视化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 43635,
+   "source": "https://github.com/cathrynlavery/diagram-design",
+   "biz": [
+    "题目解析"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "42 种编辑级 HTML/SVG 图表（Sankey/鱼骨/Wardley 等），无阴影无 Mermaid，5 天 +10k 星",
+   "note": "2026-10-06 gstars 43.6k★"
+  },
+  {
+   "name": "react-best-practices",
+   "cn": "React 最佳实践",
+   "cat": "AI开发",
+   "tags": [
+    "代码开发"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://agenticskills.io/learn/what-are-claude-skills",
+   "biz": [
+    "效率管理"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "React hooks/组合/性能最佳实践，14.9 万 installs",
+   "note": "2026-08 报道 148,900 installs"
+  },
+  {
+   "name": "agent-browser-core",
+   "cn": "Agent 浏览器核心",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 38000,
+   "source": "https://www.getclaudeskills.com/blog/best-productivity-skills",
+   "biz": [
+    "效率管理"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "CDP 协议控制浏览器：点选/填表/截图/多标签并行，不依赖 Playwright",
+   "note": "awesome-copilot 38k★"
   }
  ],
  "recs": [
@@ -1552,6 +1742,116 @@
    "hot": "17.9 万★（OpenAgentSkill 2026-10-04 快照）",
    "why": "Anthropic 官方品牌规范，做封面/物料设计时配色字体有据可依",
    "type": "trending"
+  },
+  {
+   "batch": "2026-10-08 推荐",
+   "date": "2026-10-08",
+   "skill": "xiaozhi-teach-math-lesson-planner",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "社区收录（ClaudSkills）",
+   "why": "教案直接产出「概念建构→例题示范→变式训练」三段式，备课从 2 小时缩到 20 分钟",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-08 推荐",
+   "date": "2026-10-08",
+   "skill": "xiaozhi-teach-math-error-analyzer",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "社区收录（ClaudSkills）",
+   "why": "家长发错题图→自动归类错因+给弱项报告，代写家长回复时直接引用",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-08 推荐",
+   "date": "2026-10-08",
+   "skill": "coteach",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "Claude 官方 Connector",
+   "why": "课堂讲义里的数轴/面积模型/坐标平面，一句话生成，教学课件即开即用",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-08 推荐",
+   "date": "2026-10-08",
+   "skill": "k12-smart-teacher",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "腾讯 SkillHub 评分 4.6",
+   "why": "错题闭环：判对错→错因→优先讲解→按薄弱点组卷，家长答疑一条龙",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-08 推荐",
+   "date": "2026-10-08",
+   "skill": "i-have-adhd",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "37,367★（2026-09 掘金）",
+   "why": "代写回复/内容直接「结论先行+编号动作」，和你简洁干练的风格天然匹配",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-08 推荐",
+   "date": "2026-10-08",
+   "skill": "everything-claude-code",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "169,700★（2026-07 arXiv）",
+   "why": "Claude Code 技巧/命令/工作流全收录，遇到用法问题先翻它再问",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-08 推荐",
+   "date": "2026-10-08",
+   "skill": "awesome-claude-code",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "43,400★（2026-07）",
+   "why": "高质 Claude Code 资源精选，技能/工作流一站式导航",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-08 推荐",
+   "date": "2026-10-08",
+   "skill": "diagram-design",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "43,635★（2026-10-06）",
+   "why": "42 种编辑级图表（Sankey/鱼骨/Wardley），题目解析图/知识地图秒出成片级",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-08 推荐",
+   "date": "2026-10-08",
+   "skill": "react-best-practices",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "148,900 installs（2026-08）",
+   "why": "React hooks/组合/性能最佳实践，开发类最热技能之一",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-08 推荐",
+   "date": "2026-10-08",
+   "skill": "agent-browser-core",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "38,000★（2026-08）",
+   "why": "CDP 控制浏览器点选/填表/截图，调研同行内容/抓取素材自动化",
+   "type": "trending"
   }
  ],
  "cases": [
@@ -1862,7 +2162,17 @@
   "math-to-manim": "未评价",
   "money-printer-turbo": "未评价",
   "self-improving-agent": "未评价",
-  "anthropic-brand-guidelines": "未评价"
+  "anthropic-brand-guidelines": "未评价",
+  "xiaozhi-teach-math-lesson-planner": "未评价",
+  "xiaozhi-teach-math-error-analyzer": "未评价",
+  "coteach": "未评价",
+  "k12-smart-teacher": "未评价",
+  "i-have-adhd": "未评价",
+  "everything-claude-code": "未评价",
+  "awesome-claude-code": "未评价",
+  "diagram-design": "未评价",
+  "react-best-practices": "未评价",
+  "agent-browser-core": "未评价"
  },
  "interest": {
   "mattpocock-skills": "感兴趣",
@@ -2295,5 +2605,5 @@
    "diff": "1分钟内上手"
   }
  },
- "updated": "2026-10-08 07:22"
+ "updated": "2026-10-08 09:17"
 }
