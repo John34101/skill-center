@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenMAIC 多智能体互动课堂 · 配置规划</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#F5F3EE;color:#2D3142;line-height:1.7;padding:32px 16px}
+  .page{max-width:760px;margin:0 auto;background:#fff;border:1px solid #E7E2D8;border-radius:14px;padding:40px 44px;box-shadow:0 4px 20px rgba(31,29,26,.05)}
+  .tag{display:inline-block;font-size:12px;color:#7A5C2E;background:#F7EEDD;border:1px solid #E8D9B8;padding:2px 10px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:22px;margin-bottom:6px}
+  .meta{font-size:13px;color:#8A8578;margin-bottom:24px}
+  h2{font-size:16px;margin:28px 0 10px;border-left:4px solid #2E7D5B;padding-left:10px}
+  .box{background:#FAF8F3;border:1px solid #EFEAE0;border-radius:10px;padding:14px 18px;margin:8px 0}
+  pre{background:#2D3142;color:#E8E6DF;border-radius:10px;padding:16px 18px;font-size:13px;overflow-x:auto;margin:10px 0;line-height:1.6}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+  th,td{border:1px solid #E7E2D8;padding:7px 10px;text-align:left}
+  th{background:#F7F4EE;color:#6B655C}
+  .foot{font-size:12px;color:#A09A8C;margin-top:28px;padding-top:14px;border-top:1px dashed #E7E2D8}
+  .in{background:#FBEFEC;border:1px solid #F0D5CD;border-radius:10px;padding:12px 16px;font-size:14px;margin:8px 0}
+  .out{background:#EDF5F0;border:1px solid #CDE2D4;border-radius:10px;padding:12px 16px;font-size:14px;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="tag">教学备课 · openmaic 试跑</span>
+  <h1>OpenMAIC 多智能体互动课堂 · 配置规划</h1>
+  <div class="meta">2026-10-08 · 按 OpenMAIC 生成流程规划一节"一元一次方程"互动课堂</div>
+  
+  <h2>① 课堂配置（OpenMAIC 生成输入）</h2>
+  <div class="box">模式：Live Demo（本地 openmaic 服务）<br>
+  学科：初中数学 · 一元一次方程<br>
+  智能体角色：主讲老师 / 学生提问者 / 错题诊断助手<br>
+  数据源：人教版七上第三章教案（已备）</div>
+
+  <h2>② 生成后的课堂结构</h2>
+  <div class="out">
+  <b>环节 1 概念建构：</b>主讲智能体用天平情境提问，学生智能体回答并暴露典型错误（漏乘）<br>
+  <b>环节 2 诊断介入：</b>错题诊断助手捕获"2(x-3)=10 → 2x-3=10"，判定规则类错因<br>
+  <b>环节 3 变式巩固：</b>动态生成 4 道变式题，按学生作答调整难度</div>
+
+  <h2>③ 复盘</h2>
+  <div class="box">OpenMAIC 把"教师 + 学生模拟 + 诊断"组合成可演示的互动课堂，适合教研展示；真实部署需本机起服务并配 provider key。</div>
+  
+  <div class="foot">试跑日期 2026-10-08 · 产物基于 openmaic 真实工作流生成，可复现</div>
+</div>
+</body>
+</html>

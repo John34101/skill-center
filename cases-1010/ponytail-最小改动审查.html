@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ponytail 模式：最小改动代码审查</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#F5F3EE;color:#2D3142;line-height:1.7;padding:32px 16px}
+  .page{max-width:760px;margin:0 auto;background:#fff;border:1px solid #E7E2D8;border-radius:14px;padding:40px 44px;box-shadow:0 4px 20px rgba(31,29,26,.05)}
+  .tag{display:inline-block;font-size:12px;color:#7A5C2E;background:#F7EEDD;border:1px solid #E8D9B8;padding:2px 10px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:22px;margin-bottom:6px}
+  .meta{font-size:13px;color:#8A8578;margin-bottom:24px}
+  h2{font-size:16px;margin:28px 0 10px;border-left:4px solid #2E7D5B;padding-left:10px}
+  .box{background:#FAF8F3;border:1px solid #EFEAE0;border-radius:10px;padding:14px 18px;margin:8px 0}
+  pre{background:#2D3142;color:#E8E6DF;border-radius:10px;padding:16px 18px;font-size:13px;overflow-x:auto;margin:10px 0;line-height:1.6}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+  th,td{border:1px solid #E7E2D8;padding:7px 10px;text-align:left}
+  th{background:#F7F4EE;color:#6B655C}
+  .foot{font-size:12px;color:#A09A8C;margin-top:28px;padding-top:14px;border-top:1px dashed #E7E2D8}
+  .in{background:#FBEFEC;border:1px solid #F0D5CD;border-radius:10px;padding:12px 16px;font-size:14px;margin:8px 0}
+  .out{background:#EDF5F0;border:1px solid #CDE2D4;border-radius:10px;padding:12px 16px;font-size:14px;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="tag">工程提效 · ponytail 试跑</span>
+  <h1>Ponytail 模式：最小改动代码审查</h1>
+  <div class="meta">2026-10-08 · 输入一段课堂小工具代码，按"最小的完整改动"审查</div>
+  
+  <h2>① 输入（一段初代代码）</h2>
+  <div class="in">课堂随机点名器 v1：写了 80 行，含配置类、接口抽象、3 个没被用的选项</div>
+  <pre>class RandomPicker:
+    def __init__(self, students, shuffle_mode="default", seed=None, log=True, ...):
+        ...
+    def pick_one(self):
+        import random
+        n = len(self.students)
+        i = random.randrange(n)
+        return self.students[i]</pre>
+
+  <h2>② Ponytail 判定：最小的完整改动</h2>
+  <div class="out"><b>结论：</b>点名器核心只需要 3 行，其余全是没被要求的灵活性。<br><br>
+  <pre>import random
+students = ["张", "李", "王", "赵", "陈"]
+print(random.choice(students))   # 一行解决，标准库已有</pre>
+  <b>跳过项：</b>shuffle_mode/seed/log 等选项没人要求；删除 77 行。<br>
+  <b>必须知道的风险：</b>random.choice 每次调用重新随机，如需"本轮不重复点名"需另加一句 pop。</div>
+
+  <h2>③ 规则复盘</h2>
+  <div class="box">命中规则：标准库优先、删除优于新增、不写"为将来"的代码。对备课工具类脚本，Ponytail 模式可省 80% 冗余代码。</div>
+  
+  <div class="foot">试跑日期 2026-10-08 · 产物基于 ponytail 真实工作流生成，可复现</div>
+</div>
+</body>
+</html>

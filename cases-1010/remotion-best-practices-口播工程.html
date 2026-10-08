@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>口播短视频 · Remotion 工程规划</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#F5F3EE;color:#2D3142;line-height:1.7;padding:32px 16px}
+  .page{max-width:760px;margin:0 auto;background:#fff;border:1px solid #E7E2D8;border-radius:14px;padding:40px 44px;box-shadow:0 4px 20px rgba(31,29,26,.05)}
+  .tag{display:inline-block;font-size:12px;color:#7A5C2E;background:#F7EEDD;border:1px solid #E8D9B8;padding:2px 10px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:22px;margin-bottom:6px}
+  .meta{font-size:13px;color:#8A8578;margin-bottom:24px}
+  h2{font-size:16px;margin:28px 0 10px;border-left:4px solid #2E7D5B;padding-left:10px}
+  .box{background:#FAF8F3;border:1px solid #EFEAE0;border-radius:10px;padding:14px 18px;margin:8px 0}
+  pre{background:#2D3142;color:#E8E6DF;border-radius:10px;padding:16px 18px;font-size:13px;overflow-x:auto;margin:10px 0;line-height:1.6}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+  th,td{border:1px solid #E7E2D8;padding:7px 10px;text-align:left}
+  th{background:#F7F4EE;color:#6B655C}
+  .foot{font-size:12px;color:#A09A8C;margin-top:28px;padding-top:14px;border-top:1px dashed #E7E2D8}
+  .in{background:#FBEFEC;border:1px solid #F0D5CD;border-radius:10px;padding:12px 16px;font-size:14px;margin:8px 0}
+  .out{background:#EDF5F0;border:1px solid #CDE2D4;border-radius:10px;padding:12px 16px;font-size:14px;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="tag">视频制作 · remotion 试跑</span>
+  <h1>口播短视频 · Remotion 工程规划</h1>
+  <div class="meta">2026-10-08 · 用 Remotion 最佳实践搭建"数学口播"视频项目</div>
+  
+  <h2>① 项目结构（Remotion 最佳实践）</h2>
+  <div class="out">
+  <pre>math-talks/
+  src/
+    compositions/
+      刷题误区.tsx      # 60 秒口播主合成
+      错题归因.tsx      # 备用选题
+    components/
+      Caption.tsx       # 字幕组件（复用）
+      Formula.tsx       # 公式渲染
+    static/             # 素材
+  remotion.config.ts</pre></div>
+
+  <h2>② 关键最佳实践</h2>
+  <div class="box">
+  - 每个口播 = 一个 composition，字幕/公式/配色抽成复用组件<br>
+  - 用 <code>useCurrentFrame</code> 驱动节奏，口播文字逐句上屏<br>
+  - 公式用 KaTeX 渲染（数学口播必备）<br>
+  - Studio 里可交互调参（字幕时长、字号），写完直接渲染 MP4</div>
+
+  <h2>③ 复盘</h2>
+  <div class="box">Remotion 把口播视频变成"可编程工程"：同一套组件批量产出系列口播，改文案不用重剪。</div>
+  
+  <div class="foot">试跑日期 2026-10-08 · 产物基于 remotion-best-practices 真实工作流生成，可复现</div>
+</div>
+</body>
+</html>

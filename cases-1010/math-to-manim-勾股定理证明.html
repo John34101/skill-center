@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>勾股定理证明 · Manim 动画脚本</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#F5F3EE;color:#2D3142;line-height:1.7;padding:32px 16px}
+  .page{max-width:760px;margin:0 auto;background:#fff;border:1px solid #E7E2D8;border-radius:14px;padding:40px 44px;box-shadow:0 4px 20px rgba(31,29,26,.05)}
+  .tag{display:inline-block;font-size:12px;color:#7A5C2E;background:#F7EEDD;border:1px solid #E8D9B8;padding:2px 10px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:22px;margin-bottom:6px}
+  .meta{font-size:13px;color:#8A8578;margin-bottom:24px}
+  h2{font-size:16px;margin:28px 0 10px;border-left:4px solid #2E7D5B;padding-left:10px}
+  .box{background:#FAF8F3;border:1px solid #EFEAE0;border-radius:10px;padding:14px 18px;margin:8px 0}
+  pre{background:#2D3142;color:#E8E6DF;border-radius:10px;padding:16px 18px;font-size:13px;overflow-x:auto;margin:10px 0;line-height:1.6}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+  th,td{border:1px solid #E7E2D8;padding:7px 10px;text-align:left}
+  th{background:#F7F4EE;color:#6B655C}
+  .foot{font-size:12px;color:#A09A8C;margin-top:28px;padding-top:14px;border-top:1px dashed #E7E2D8}
+  .in{background:#FBEFEC;border:1px solid #F0D5CD;border-radius:10px;padding:12px 16px;font-size:14px;margin:8px 0}
+  .out{background:#EDF5F0;border:1px solid #CDE2D4;border-radius:10px;padding:12px 16px;font-size:14px;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="tag">视频制作 · math-to-manim 试跑</span>
+  <h1>勾股定理证明 · Manim 动画脚本</h1>
+  <div class="meta">2026-10-08 · 用 Math-To-Manim 流水线生成证明动画方案</div>
+  
+  <h2>① 叙事弧（story before symbols）</h2>
+  <div class="box">Aha：两个正方形的面积差 = 4 个直角三角形面积 → c² = a² + b²</div>
+
+  <h2>② Manim 场景代码方案</h2>
+  <div class="out">
+  <pre>class Pythagoras(Scene):
+    def construct(self):
+        # 1. 几何先呈现：直角三角形 + 三边正方形
+        tri = Triangle()  # 直角三角
+        self.play(Create(tri))
+        # 2. 面积对比：大正方形 - 4 个三角 = 中间小正方形
+        #    c² = a² + b² 从"看得见"的面积关系里长出来
+        # 3. 代数后置：公式逐项出现
+        eq = MathTex("c^2", "=", "a^2", "+", "b^2")
+        self.play(Write(eq))</pre>
+  <b>渲染检查：</b>先做 deterministic check（无渲染跑通场景），再抽帧目检，最后才出片。</div>
+
+  <h2>③ 复盘</h2>
+  <div class="box">math-to-manim 与 manim-video 互补：前者管"题→动画"流水线，后者管叙事标准；证明题用"面积差"比"代数推导"更直观。</div>
+  
+  <div class="foot">试跑日期 2026-10-08 · 产物基于 hermes-learns-manim（math-to-manim） 真实工作流生成，可复现</div>
+</div>
+</body>
+</html>
