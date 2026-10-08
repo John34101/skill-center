@@ -30,7 +30,7 @@
     "视频生成",
     "自动化"
    ],
-   "status": "被环境清除",
+   "status": "已安装",
    "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/heygen-com/hyperframes/hyperframes",
@@ -41,7 +41,7 @@
    "last": "2026-09-28",
    "score": 5,
    "desc": "无脸讲解视频全流水线（分镜+配音+7帧并行构建+渲染），已做代数式概念视频",
-   "note": "大技能包被环境清除，需从备份 tar 恢复"
+   "note": "2026-10-08 轮询恢复（从本机备份恢复 hyperframes 系列 11 个子技能）"
   },
   {
    "name": "archify",
@@ -661,8 +661,8 @@
    "tags": [
     "写作润色"
    ],
-   "status": "已安装",
-   "backup": "已备份",
+   "status": "未安装",
+   "backup": "未备份",
    "hot": null,
    "source": "https://skills.sh/github/awesome-copilot/documentation-writer",
    "reg": "",
@@ -673,7 +673,7 @@
    "last": null,
    "score": null,
    "desc": "GitHub官方文档写作规范：结构化输出教案/讲义/知识库文档",
-   "note": "2026-10-08 09:45:10 通过网页指令安装"
+   "note": "2026-10-08 轮询卸载（用户标记不感兴趣）"
   },
   {
    "name": "webapp-testing",
@@ -682,8 +682,8 @@
    "tags": [
     "自动化"
    ],
-   "status": "已安装",
-   "backup": "已备份",
+   "status": "未安装",
+   "backup": "未备份",
    "hot": null,
    "source": "https://skills.sh/anthropics/skills/webapp-testing",
    "reg": "",
@@ -694,7 +694,7 @@
    "last": null,
    "score": null,
    "desc": "Anthropic官方网页应用测试：自动巡检自己发布的网页是否正常",
-   "note": "2026-10-08 09:45:10 通过网页指令安装"
+   "note": "2026-10-08 轮询卸载（用户标记不感兴趣）"
   },
   {
    "name": "math-teacher",
@@ -746,8 +746,8 @@
    "tags": [
     "视频生成"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/filtrix-ai/filtrix-skills/seedance-2-0-prompting-skills",
    "reg": "filtrix-ai/filtrix-skills@seedance-2-0-prompting-skills",
@@ -757,7 +757,7 @@
    "last": null,
    "score": null,
    "desc": "为Seedance 2.0写精准视频提示词（运镜/剪辑/音乐/产品叙事），口播短视频分镜提效",
-   "note": "2026-10-06 为你推荐（openagentskill 4.2K★）"
+   "note": "2026-10-08 轮询安装（感兴趣）"
   },
   {
    "name": "agent-reach",
@@ -849,8 +849,8 @@
     "代码开发",
     "自动化"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/dietrichgebert/ponytail/ponytail",
    "reg": "dietrichgebert/ponytail@ponytail",
@@ -860,7 +860,7 @@
    "last": null,
    "score": null,
    "desc": "让AI像最懒的高级工程师一样思考，极简高效的编码行为模式",
-   "note": "2026-10-06 全网热门（150K★，单日+1,194）"
+   "note": "2026-10-08 轮询安装（感兴趣）"
   },
   {
    "name": "addyosmani-agent-skills",
@@ -950,8 +950,8 @@
    "tags": [
     "教学讲解"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/hezkvectory/hermes-edu-skills/civil-service-essay",
    "reg": "hezkvectory/hermes-edu-skills（系列）",
@@ -961,7 +961,7 @@
    "last": null,
    "score": null,
    "desc": "中文教育场景 Agent Skill Pack：备课/答疑/家校沟通等",
-   "note": "2026-07 作者开源，暂无公开 star 数据"
+   "note": "2026-10-08 轮询安装（感兴趣，GitHub 直拉 170 子技能）"
   },
   {
    "name": "deeptutor",
@@ -1121,7 +1121,7 @@
    "last": null,
    "score": null,
    "desc": "Claude 官方 K-12 数学图表生成：数轴/面积模型/坐标平面/分数模型，课堂讲义即开即用",
-   "note": "Claude 官方 Connector 目录"
+   "note": "2026-10-08 轮询：感兴趣但为 Claude 官方 Connector，非 skills.sh 技能，无法本机安装"
   },
   {
    "name": "k12-smart-teacher",
@@ -1201,7 +1201,7 @@
    "last": null,
    "score": null,
    "desc": "高质量 Claude Code 资源/技能精选列表",
-   "note": "2026-07 快照 43.4k★"
+   "note": "2026-10-08 轮询：感兴趣但为 GitHub 资源列表（43.4k★），非可安装技能包"
   },
   {
    "name": "diagram-design",
@@ -2379,7 +2379,8 @@
   "awesome-claude-code": "感兴趣",
   "xiaozhi-teach-math-lesson-planner": "感兴趣",
   "xiaozhi-teach-math-error-analyzer": "感兴趣",
-  "coteach": "感兴趣"
+  "coteach": "感兴趣",
+  "hyperframes": "感兴趣"
  },
  "handbook": {
   "manimate": {
@@ -2871,5 +2872,5 @@
    "diff": "1分钟内上手"
   }
  },
- "updated": "2026-10-08 12:29"
+ "updated": "2026-10-08 14:04"
 }
