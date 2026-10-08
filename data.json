@@ -1922,10 +1922,10 @@
    "scene": "口播视频",
    "date": "2026-09-25",
    "effect": "很好",
-   "link": "https://aka.doubaocdn.com/s/lgcBvK1znI",
+   "link": "https://aka.doubaocdn.com/s/Cbsjxn9QGL",
    "kind": "video",
    "steps": "自然语言描述几何证明思路，manimate 生成 Manim 动画 MP4，交付后可嵌入讲解视频",
-   "note": "几何定理可视化利器，学生直观看到面积拼补过程",
+   "note": "2026-10-08 Skill Lab 打磨 v1→v2：经典4三角双拼法（左 c² 斜放/右 a²+b² 两方块）+ 斜边中点精确构造 + 全片字幕 + 三色贯穿(a蓝/b绿/c黄) + 51s(比v1紧凑11.5s)；方案文档 reczz28KoxlYnRSL",
    "cover": "https://aka.doubaocdn.com/s/n3gUVr8Jmw",
    "bg": "给初二学生讲勾股定理，面积法证明用文字讲学生难理解，要做动画直观演示",
    "time": "脚本确认+渲染约 15 分钟；动画 82 秒比预期 70 秒长 18%，部分帧无词级字幕数据",
@@ -3125,7 +3125,21 @@
    "tpl": "1)叙事弧先行:先定Aha时刻再写代码 2)三色贯穿全片(A/B/C角固定色,结论公式同色呼应) 3)结构元素(辅助线/网格)opacity≤0.35 4)关键揭示后wait 2.5-3s 5)角标、等式用与弧同色Text(中文字体Noto Sans CJK SC) 6)每场景不同布局/入场动画 7)渲染:草稿-ql(5-15s/场景),成片-qm 720p30(教学够用) 8)字幕subcaption每动画必带",
    "note": "v1用平行线+内错角标准证明法(人教版七下),说明页与成片方法已对齐;成片42.8s带字幕",
    "date": "2026-10-08"
+  },
+  {
+   "name": "math-to-manim",
+   "scene": "勾股定理证明动画",
+   "status": "已达标",
+   "rounds": 2,
+   "score": 4.4,
+   "v1": "https://aka.doubaocdn.com/s/lgcBvK1znI",
+   "v2": "https://aka.doubaocdn.com/s/Cbsjxn9QGL",
+   "issues": "1)v1无字幕,学生跟不上 2)证明是静态面积对比,无Aha揭示 3)三边正方形与边长标签无颜色对应 4)62.5s偏长,节奏拖 5)无角标/直角标记细节 6)Scene3拼图几何用描边三角+透明度叠加,视觉平淡",
+   "fixes": "1)全片subcaption字幕 2)改为经典4三角双拼法:同一大正方形两种拼法(左c²斜放/右a²+b²),空白面积相等作Aha 3)三色贯穿:a蓝/b绿/c黄,正方形同色 4)压缩到51s 5)Scene1补直角标记+边长标签 6)三角填充色0.18+空白区高亮0.4",
+   "tpl": "1)题→动画先定证明方法(几何拼图优先于代数) 2)同一图形两种摆法的面积对比=最强Aha 3)c²斜放方块用4条斜边中点构造(Polygon四中点)保证几何精确 4)3-4-5直角三角是教学安全组合(整数网格) 5)公式着色用独立MathTex拼VGroup,勿用[0][i]索引(get_part_by_tex易None) 6)每场景独立class+字幕,成片720p30",
+   "note": "复用manim-video打磨模板(三色/字幕/透明度/布局);math-to-manim价值=题→动画推理链,渲染质量按manim-video标准执行;hermes-learns-manim已归档,实际产出走manim渲染",
+   "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-08 16:23"
+ "updated": "2026-10-08 17:33"
 }
