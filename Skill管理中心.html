@@ -42,6 +42,7 @@
   .led.g{background:var(--green);box-shadow:0 0 0 3px rgba(47,158,91,.16)}
   .led.a{background:var(--amber);box-shadow:0 0 0 3px rgba(224,159,62,.16)}
   .led.r{background:var(--red);box-shadow:0 0 0 3px rgba(195,60,46,.15)}
+  .led.u{background:#9A7B6E;box-shadow:0 0 0 3px rgba(154,123,110,.15)}
   .led.n{background:transparent;border:1.5px solid #4A5260}
   .rack b{color:#E6EAEF;font-weight:500}
   .rack .spacer{flex:1}
@@ -102,6 +103,7 @@
   .chip.inst{color:var(--green);background:var(--green-soft);border-color:#BFE0CB}
   .chip.missing{color:#9A6B12;background:var(--amber-soft);border-color:#EFDCB4}
   .chip.recover{color:var(--red);background:var(--red-soft);border-color:#F0C9C2}
+  .chip.unload{color:#8A4A3A;background:#F6EDEA;border-color:#E5C8BF}
   .chip.rate-good{color:var(--green);background:var(--green-soft);border-color:#BFE0CB}
   .chip.rate-mid{color:#9A6B12;background:var(--amber-soft);border-color:#EFDCB4}
   .chip.rate-bad{color:var(--red);background:var(--red-soft);border-color:#F0C9C2}
@@ -109,7 +111,7 @@
   .chip.t-chip{font-size:11px;padding:1px 8px;background:#EEF0F3;border-color:var(--line);color:var(--ink-2)}
   .chip.interested{color:#2B5B8C;background:#E8F0F8;border-color:#C4D9EC}
   .dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none;box-shadow:0 0 0 3px rgba(0,0,0,.05)}
-  .dot.inst{background:var(--green)} .dot.missing{background:var(--amber)} .dot.recover{background:var(--red)}
+  .dot.inst{background:var(--green)} .dot.missing{background:var(--amber)} .dot.recover{background:var(--red)} .dot.unload{background:#9A7B6E}
 
   .heat-tag{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);white-space:nowrap}
   .heat-tag b{font-weight:500;color:var(--ink)}
@@ -683,6 +685,8 @@ const BIZ_SCENE={"口播视频":"口播视频","题目解析":"题目解析","�
 const SCENE_LABELS={"口播视频":"口播视频","题目解析":"题目解析","内容创作":"内容创作","家长答疑":"家长答疑","教学备课":"教研备课","效率管理":"效率工具"};
 
 function instState(s){ return s.status==="被环境清除"?"recover":(s.status==="已安装"?"inst":"missing"); }
+/* 待卸载：物理已装但标记「不感兴趣」= 用户要卸载。独立状态，工具箱单独成组 */
+function unloadState(s){ return instState(s)==="inst" && interestOf(s.name)==="不感兴趣"; }
 function myRating(name){ return RATING_MAP[name]||"未评价"; }
 function sceneOf(s){
   const b=s.biz||[];
@@ -1067,7 +1071,7 @@ function renderInbox(){
 /* ===== 工具箱 ===== */
 function renderToolFilters(){
   const cur=params.get("filter")||"all";
-  const opts=[["all","全部"],["inst","已安装"],["missing","待装"],["recover","需恢复"]];
+  const opts=[["all","全部"],["inst","已安装"],["missing","待装"],["recover","需恢复"],["unload","待卸载"]];
   $("toolFilters").innerHTML=opts.map(([k,label])=>`<button class="btn ${cur===k?"on":""}" onclick="setToolFilter('${k}')">${label}</button>`).join("");
 }
 function setToolFilter(k){
@@ -1085,7 +1089,9 @@ function renderToolbox(){
   SKILL_LEDGER.forEach(s=>{
     if(q && !(s.name.toLowerCase().includes(q)||(s.cn||"").toLowerCase().includes(q)||(s.desc||"").toLowerCase().includes(q)||(s.tags||[]).some(t=>t.toLowerCase().includes(q)))) return;
     if(instState(s)==="missing" && interestOf(s.name)!=="感兴趣") return;  /* 未表态/不感兴趣不进资产库 */
-    if(cur==="inst"&&instState(s)!=="inst") return;
+    const unloading=unloadState(s);
+    if(cur==="inst"&&(instState(s)!=="inst"||unloading)) return;   /* 待卸载不进「已安装」 */
+    if(cur==="unload"&&!unloading) return;
     if(cur==="missing"&&instState(s)!=="missing") return;
     if(cur==="recover"&&instState(s)!=="recover") return;
     sceneGroups[sceneOf(s)].push(s);
@@ -1095,15 +1101,16 @@ function renderToolbox(){
     const arr=sceneGroups[sc];
     if(curScene && sc!==curScene) return "";
     if(!arr.length && (cur!=="all"||q)) return "";
-    const instN=arr.filter(s=>instState(s)==="inst").length;
+    const instN=arr.filter(s=>instState(s)==="inst"&&!unloadState(s)).length;
+    const unloadN=arr.filter(s=>unloadState(s)).length;
     return `<div class="scene-group" id="scene-${sc}">
-      <h3 class="scene-title">${sc}<span class="scene-cnt">已装 ${instN} / 共 ${arr.length}</span></h3>
+      <h3 class="scene-title">${sc}<span class="scene-cnt">已装 ${instN}${unloadN?` · 待卸载 ${unloadN}`:""} / 共 ${arr.length}</span></h3>
       ${arr.length?`<div class="tool-list">${arr.map(s=>{
-        const st=instState(s), rt=myRating(s.name);
+        const st=instState(s), unloading=unloadState(s), dispSt=unloading?"unload":st, rt=myRating(s.name);
         const casesN=CASE_LEDGER.filter(c=>c.skill===s.name).length;
         const tags=bizTags(s,sc).map(t=>`<span class="heat-tag">${hl(t,q)}</span>`).join("");
         return `<div class="tool-row">
-          <span class="dot ${st}"></span>
+          <span class="dot ${dispSt}"></span>
           <span class="tool-name" role="button" tabindex="0" style="cursor:pointer" onclick="openDrawer('${s.name.replace(/'/g,"\\'")}')">${hl(CN_OF[s.name]||s.name,q)}<em>${hl(s.name,q)}</em></span>
           <span class="tool-tags">${tags}</span>
           ${ratingChip(s.name)}
@@ -1260,14 +1267,16 @@ function renderHeat(){
 /* ===== 机架状态条（纯视觉汇总，派生自现有数据，不参与任何交互）===== */
 function renderRack(){
   const rack=$("rackBar"); if(!rack) return;
-  const instN=SKILL_LEDGER.filter(s=>instState(s)==="inst").length;
+  const instN=SKILL_LEDGER.filter(s=>instState(s)==="inst"&&!unloadState(s)).length;
   const missN=SKILL_LEDGER.filter(s=>instState(s)==="missing"&&interestOf(s.name)==="感兴趣").length;
   const recoverN=SKILL_LEDGER.filter(s=>instState(s)==="recover").length;
+  const unloadN=SKILL_LEDGER.filter(s=>unloadState(s)).length;
   const today=new Date().toISOString().slice(0,10);
   const recN=RECOMMEND_RECS.filter(r=>r.date===today&&r.skill&&SKILL_LEDGER.some(s=>s.name===r.skill)).length;
   rack.innerHTML=`
     <span class="seg"><i class="led g"></i>已装 <b>${instN}</b></span>
     <span class="seg"><i class="led a"></i>待装 <b>${missN}</b></span>
+    <span class="seg"><i class="led u"></i>待卸载 <b>${unloadN}</b></span>
     <span class="seg"><i class="led r"></i>需恢复 <b>${recoverN}</b></span>
     <span class="seg"><i class="led n"></i>推荐中 <b>${recN}</b></span>
     <span class="spacer"></span>
@@ -1277,7 +1286,8 @@ function renderRack(){
 /* ===== 数据面板 ===== */
 function renderStats(){
   const recN=RECOMMEND_RECS.filter(r=>r.skill&&SKILL_LEDGER.some(s=>s.name===r.skill)).length;
-  const instN=SKILL_LEDGER.filter(s=>instState(s)==="inst").length;
+  const instN=SKILL_LEDGER.filter(s=>instState(s)==="inst"&&!unloadState(s)).length;
+  const unloadN=SKILL_LEDGER.filter(s=>unloadState(s)).length;
   const good=SKILL_LEDGER.filter(s=>myRating(s.name)==="好用").length;
   const mid=SKILL_LEDGER.filter(s=>myRating(s.name)==="一般").length;
   const bad=SKILL_LEDGER.filter(s=>instState(s)!=="missing" && myRating(s.name)==="没用").length;
@@ -1286,6 +1296,7 @@ function renderStats(){
   $("statsBar").innerHTML=`
     <span class="stat-pill">累计推荐 <b>${recN}</b></span>
     <span class="stat-pill">已装 <b>${instN}</b></span>
+    <span class="stat-pill">待卸载 <b>${unloadN}</b></span>
     <span class="stat-pill">评价好用 <b>${good}</b></span>
     <span class="stat-pill">一般 <b>${mid}</b></span>`;
   const total=Math.max(1,SKILL_LEDGER.length);
@@ -1305,6 +1316,7 @@ function openDrawer(name){
   const s=SKILL_LEDGER.find(x=>x.name===name); if(!s) return;
   drawerLastFocus=document.activeElement;
   const st=instState(s), rt=myRating(s.name);
+  const dispSt=unloadState(s)?"unload":st;
   const recs=RECOMMEND_RECS.filter(r=>r.skill===name).sort((a,b)=>(b.date||"").localeCompare(a.date||""));
   const cases=CASE_LEDGER.filter(c=>c.skill===name);
   const heat=s.hot?`${fmtNum(s.hot)}★（GitHub）`:(recs[0]&&recs[0].hot?recs[0].hot:"暂无热度数据");
@@ -1342,7 +1354,7 @@ function openDrawer(name){
       <button class="drawer-close" onclick="closeDrawer()" aria-label="关闭">×</button>
     </div>
     <div class="drawer-meta">
-      <span class="chip ${st}">${st==="inst"?"已安装":st==="recover"?"需恢复":"未安装"}</span>
+      <span class="chip ${dispSt}">${dispSt==="unload"?"待卸载":dispSt==="inst"?"已安装":dispSt==="recover"?"需恢复":"未安装"}</span>
       ${st==="inst"?`${ratingChip(name)||`<span class="chip rate-none">未评价</span>`}`:""}
       <span class="chip rate-none">类别：${esc(s.cat||"")}</span>
       ${(s.tags||[]).map(t=>`<span class="chip rate-none">${esc(t)}</span>`).join("")}
