@@ -1967,10 +1967,10 @@
    "scene": "题目解析",
    "date": "2026-09-29",
    "effect": "很好",
-   "link": "https://aka.doubaocdn.com/s/84LQB27vjG",
+   "link": "https://aka.doubaocdn.com/s/wUwmRVlyLU",
    "kind": "image",
    "steps": "JSON 描述解法分支，archify 生成流程图，随改随更新",
-   "note": "配家长答疑可直接用，改 JSON 即改图",
+   "note": "2026-10-08 打磨至 v2：editorial 预设+教学副标题+卡片修复，通过 archify 3.0.1 全部质量门，质量评分 4.5（打磨记录见技能打磨记录表）",
    "cover": "https://aka.doubaocdn.com/s/t6UUJVEfKK",
    "bg": "",
    "time": "",
@@ -3097,5 +3097,21 @@
    "diff": "1分钟内上手"
   }
  },
- "updated": "2026-10-08 14:42"
+ "polish": [
+  {
+   "name": "archify",
+   "scene": "一元二次方程解法流程图",
+   "status": "已达标",
+   "rounds": 3,
+   "score": 4.5,
+   "v1": "https://aka.doubaocdn.com/s/84LQB27vjG",
+   "v2": "https://aka.doubaocdn.com/s/wUwmRVlyLU",
+   "issues": "v1：①无视觉规格（默认 classic）②无教学副标题 ③图例工程语义硬映射 ④cards 字段用 body（应为 dot/title/items）导致卡片异常。v2 初版：同 lane 同 col 节点重叠、sublabel 超宽超桌面预算、viewBox 1159px 超 930px（6px 字缩到 4.8px 不可读）",
+   "fixes": "①指定 editorial 视觉预设+subtitle 教学语境 ②图例改教学语义（起点/判断/快捷解法/结果）③cards 修正为 dot/title/items ④sublabel 精简到 12 字符内、yOffset 90 错开同列节点、按 v1 成功布局对齐 col",
+   "tpl": "archify 教学图配方：meta.visual_preset=editorial（教学展示首选）；meta.subtitle 写教学语境；node 字段用 type/sublabel/icon（勿用 kind/description/body）；判断与解法各占独立 col；同 lane 同列节点用 yOffset 错开；sublabel ≤12 字符；viewBox 目标 ≤930px 过 desktop-readability 门；cards 用 dot/title/items 结构",
+   "note": "v1 在旧版本（无 desktop-readability 门）下生成；v2 通过 archify 3.0.1 全部质量门 validate/deliver/check/browser-check；editorial 预设自带编辑风格切换与现场笔记",
+   "date": "2026-10-08"
+  }
+ ],
+ "updated": "2026-10-08 15:22"
 }

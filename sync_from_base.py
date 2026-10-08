@@ -142,6 +142,24 @@ for r in load("recs_raw"):
         "type": "trending" if first(r, "推荐类型") == "全网热门" else "for_you",
     })
 
+# ---- 技能打磨记录（Skill Lab，按技能名索引）----
+polish = []
+for r in load("polish_raw"):
+    polish.append({
+        "name": v(r, "技能名称") or "",
+        "scene": v(r, "打磨场景") or "",
+        "status": first(r, "打磨状态") or "",
+        "rounds": v(r, "迭代轮次"),
+        "score": v(r, "当前质量评分"),
+        "v1": extract_url(v(r, "初始版本链接")) or "",
+        "v2": extract_url(v(r, "迭代版本链接")) or "",
+        "issues": v(r, "评审问题清单") or "",
+        "fixes": v(r, "改进措施") or "",
+        "tpl": v(r, "最佳实践模板") or "",
+        "note": v(r, "复盘备注") or "",
+        "date": date10(v(r, "完成日期")),
+    })
+
 # ---- 技能手册（L2 使用手册，按技能名索引）----
 handbook = {}
 for r in load("handbook_raw"):
@@ -204,10 +222,10 @@ for r in load("cases_raw"):
     })
 
 updated = datetime.now().strftime("%Y-%m-%d %H:%M")
-data_json = {"ledger": ledger, "recs": recs, "cases": cases, "rating": rating_map, "interest": interest_map, "handbook": handbook, "updated": updated}
+data_json = {"ledger": ledger, "recs": recs, "cases": cases, "rating": rating_map, "interest": interest_map, "handbook": handbook, "polish": polish, "updated": updated}
 with open(f"{BASE}/data.json", "w", encoding="utf-8") as f:
     json.dump(data_json, f, ensure_ascii=False, indent=1)
-print(f"data.json written: ledger={len(ledger)} recs={len(recs)} cases={len(cases)} rating={len(rating_map)} interest={len(interest_map)} handbook={len(handbook)} updated={updated}")
+print(f"data.json written: ledger={len(ledger)} recs={len(recs)} cases={len(cases)} rating={len(rating_map)} interest={len(interest_map)} handbook={len(handbook)} polish={len(polish)} updated={updated}")
 
 # ---- HTML 内嵌快照 ----
 def js_array(items, keys):
@@ -229,6 +247,7 @@ html = open(HTML, encoding="utf-8").read()
 ledger_keys = ["name","cn","cat","tags","status","backup","hot","source","reg","biz","last","score","desc","note"]
 recs_keys = ["batch","date","skill","inst","tried","effect","hot","why","type"]
 cases_keys = ["name","skill","scene","date","effect","link","kind","steps","note","cover","bg","time","repro"]
+polish_keys = ["name","scene","status","rounds","score","v1","v2","issues","fixes","tpl","note","date"]
 
 new_ledger = js_array(ledger, ledger_keys)
 new_recs = js_array(recs, recs_keys)
@@ -236,6 +255,7 @@ new_cases = js_array(cases, cases_keys)
 new_rating = js_object(rating_map)
 new_interest = js_object(interest_map)
 new_handbook = js_object(handbook)
+new_polish = js_array(polish, polish_keys)
 
 def replace_block(html, const_name, new_body):
     pattern = re.compile(r"(const %s = )\[.*?\];" % const_name, re.DOTALL)
@@ -248,6 +268,7 @@ def replace_block(html, const_name, new_body):
 html = replace_block(html, "SKILL_LEDGER", new_ledger)
 html = replace_block(html, "RECOMMEND_RECS", new_recs)
 html = replace_block(html, "CASE_LEDGER", new_cases)
+html = re.sub(r'(const POLISH_RECORDS = )\[.*?\];', lambda m: m.group(1) + new_polish + ";", html, flags=re.DOTALL)
 html = re.sub(r'(const RATING_MAP = )\{.*?\};', lambda m: m.group(1) + new_rating + ";", html, flags=re.DOTALL)
 html = re.sub(r'(const INTEREST_MAP = )\{.*?\};', lambda m: m.group(1) + new_interest + ";", html, flags=re.DOTALL)
 html = re.sub(r'(const HANDBOOK_MAP = )\{.*?\};', lambda m: m.group(1) + new_handbook + ";", html, flags=re.DOTALL)
