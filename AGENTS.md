@@ -1,7 +1,7 @@
 # Skill 管理中心 — Agent 交接文档（AGENTS.md）
 
-> 本文件是 Skill 管理中心项目的权威交接文档。任何接手本项目的 agent（Claude Code / 其他）**第一步先读本文件**，再读 `交接说明-Claude-Code.md`（面向新环境的任务书）和 `README-部署指南.md`（backend 部署）。
-> 更新日期：2026-10-07。
+> 本文件是 Skill 管理中心项目的权威交接文档。任何接手本项目的 agent（WorkBuddy / 豆包 / Claude Code / 其他）**第一步先读本文件**，再读 `CHANGELOG.md`（进度与协作历史 → §13）、`交接说明-Claude-Code.md`（面向新环境的任务书）和 `README-部署指南.md`（backend 部署）。
+> 更新日期：2026-10-09（新增 §13 版本管理与协作记录）。初版 2026-10-07。
 
 ## 1. 项目目标（一句话）
 
@@ -40,6 +40,8 @@ skill-center/
 ├── Skill管理中心.html      # 主页面（唯一待发布文件，发布前 cp 到 /tmp/index.html）
 ├── data.json               # 页面数据源（ledger/recs/cases/rating/interest/updated）
 ├── sync_from_base.py       # 同步脚本：读 4 表 JSON → 生成 data.json + 覆写 HTML 快照
+├── VERSION                 # 项目版本号唯一真源（当前 0.1.0，见 §13）
+├── CHANGELOG.md            # 变更日志 + 多 Agent 协作记录（必读，且干完活必写，见 §13）
 ├── backend/                # CF Worker（worker.js + README-部署指南.md）
 ├── assets/                 # 案例封面图、echarts.min.js
 ├── redesign-mock.html      # 机架风 UI 设计参考
@@ -209,3 +211,28 @@ python3 recommend.py all      --date YYYY-MM-DD            # fetch→select→wr
 3. 【已立项未推进】推荐系统反馈优化：用户动作（好用/没用/感兴趣/不感兴趣）回流 → 调整推荐权重（阶段一方案已提出，未交付）。
 4. 装机清单核对：新环境 node/python/chromium/lark-cli OAuth 是否就位。
 5. 每日推荐任务持续运行（双轨：豆包 cron 现役；recommend.py 供 Claude Code/GitHub Actions）。
+
+## 13. 版本管理与协作记录（2026-10-09 起）
+
+### 13.1 版本号的唯一真源
+- 根目录 **`VERSION`** 文件，内容为纯版本号（如 `0.1.0`）。**查当前版本一律读它**，不要从代码注释里猜。
+- 与之对应的 Git tag 形如 **`v0.1.0`**（`VERSION` 内容加前缀 `v`）。
+
+### 13.2 版本策略（语义化版本 semver 2.0.0）
+格式：`主版本.次版本.修订号`
+
+- **当前处于 `0.x` 阶段**：项目早期，目录结构 / 数据管道 / 接口均可能变动，**不保证向后兼容**
+- **修订号**（第三位）：数据同步、文档更新、小修小补
+- **次版本**（第二位）：新增能力、结构性改动
+- **`1.0.0` 门槛**：对外提供稳定契约且长期不再变动时方可升级，**由用户拍板**，agent 不得擅自升主版本
+
+### 13.3 协作记录铁律（所有 Agent 必读必守）
+本项目由多 Agent 协同维护（角色分工见 §1.5），进度必须对所有人透明：
+
+1. 完成任何任务后**必须**更新 **`CHANGELOG.md`** 的 `[Unreleased]` 段，写清：**做了什么 / 动了哪些文件 / 有无后续待办**
+2. 发布时由发布方把 `[Unreleased]` 收敛为新版本段落、同步递增 `VERSION`、提交后**打同名 tag（`v<VERSION>`）并推送**
+3. **禁止**不记录就提交；**禁止**篡改他人已写入的历史条目（有误就在下方追加更正说明）
+4. 完整格式与协作历史见 `CHANGELOG.md` 顶部「协作记录规则」
+
+### 13.4 Worker 组件版本 ≠ 项目版本
+`backend/worker.js` 注释中的版本号（如 `v2.1.0`）是 **CF Worker 组件的独立版本**，与本项目整体版本号（读 `VERSION`）**互不相干**，勿交叉引用。
