@@ -2357,10 +2357,10 @@
    "scene": "口播视频",
    "date": "2026-10-08",
    "effect": "很好",
-   "link": "https://aka.doubaocdn.com/s/Fj7R256mRm",
+   "link": "https://aka.doubaocdn.com/s/LhCoRDBzUR",
    "kind": "html",
    "steps": "1. 定叙事弧与 Aha 时刻（三角拼平角）2. 四场景分镜（几何先呈现→撕角拼合→代数后置→变式）3. 视觉规则（不透明度分层/呼吸停顿）",
-   "note": "几何先于代数：先让学生看见 180 度，再讲证明，对应真实教学法",
+   "note": "2026-10-08 Skill Lab 打磨 v1→v2：辅助线 0.75→0.35、补∠A/∠B/∠C角标、180°弹出+三弧高亮、结论三色公式（A黄/B蓝/C绿）；成片 720p30 42.8s 带字幕；分镜说明页 https://aka.doubaocdn.com/s/BLbgAghll8",
    "cover": "",
    "bg": "验证 manim-video 技能工作流能否在用户业务场景（初中数学教学/口播/家长沟通）直接产出可用成果",
    "time": "",
@@ -3111,7 +3111,21 @@
    "tpl": "archify 教学图配方：meta.visual_preset=editorial（教学展示首选）；meta.subtitle 写教学语境；node 字段用 type/sublabel/icon（勿用 kind/description/body）；判断与解法各占独立 col；同 lane 同列节点用 yOffset 错开；sublabel ≤12 字符；viewBox 目标 ≤930px 过 desktop-readability 门；cards 用 dot/title/items 结构",
    "note": "v1 在旧版本（无 desktop-readability 门）下生成；v2 通过 archify 3.0.1 全部质量门 validate/deliver/check/browser-check；editorial 预设自带编辑风格切换与现场笔记",
    "date": "2026-10-08"
+  },
+  {
+   "name": "manim-video",
+   "scene": "三角形内角和定理证明动画",
+   "status": "已达标",
+   "rounds": 1,
+   "score": 4.3,
+   "v1": "https://aka.doubaocdn.com/s/Fj7R256mRm",
+   "v2": "https://aka.doubaocdn.com/s/LhCoRDBzUR",
+   "issues": "1)辅助线透明度0.75过高,结构层抢主角(标准0.15-0.35) 2)角弧无∠A/∠B/∠C角标,学生难对应 3)Aha平角出现平淡,180°直接FadeIn无强调 4)结论公式单色,与前面场景颜色无呼应 5)四场景布局单一(FULL_CENTER) 6)角搬走后原位置无残影,搬运感弱",
+   "fixes": "1)辅助线opacity降到0.35(结构层) 2)补三色角标∠A(黄)/∠B(蓝)/∠C(绿) 3)平角后180°用GrowFromCenter弹出+三弧加粗高亮 4)结论公式三色MathTex(A黄/B蓝/C绿) 5)Scene2三角偏左下,每场景布局不同 6)角搬运保留原位置残影(0.4)",
+   "tpl": "1)叙事弧先行:先定Aha时刻再写代码 2)三色贯穿全片(A/B/C角固定色,结论公式同色呼应) 3)结构元素(辅助线/网格)opacity≤0.35 4)关键揭示后wait 2.5-3s 5)角标、等式用与弧同色Text(中文字体Noto Sans CJK SC) 6)每场景不同布局/入场动画 7)渲染:草稿-ql(5-15s/场景),成片-qm 720p30(教学够用) 8)字幕subcaption每动画必带",
+   "note": "v1用平行线+内错角标准证明法(人教版七下),说明页与成片方法已对齐;成片42.8s带字幕",
+   "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-08 15:22"
+ "updated": "2026-10-08 16:23"
 }

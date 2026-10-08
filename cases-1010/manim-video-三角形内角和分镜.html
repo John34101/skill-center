@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>三角形内角和 180° · 动画叙事分镜</title>
+<title>三角形内角和 180° · 证明动画（Skill Lab 打磨 v2）</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#F5F3EE;color:#2D3142;line-height:1.7;padding:32px 16px}
@@ -25,27 +25,27 @@
 <body>
 <div class="page">
   <span class="tag">视频制作 · manim-video 试跑</span>
-  <h1>三角形内角和 180° · 动画叙事分镜</h1>
-  <div class="meta">2026-10-08 · 按"几何先于代数、每帧都教学"标准设计动画</div>
+  <h1>三角形内角和 180° · 证明动画（Skill Lab 打磨 v2）</h1>
+  <div class="meta">2026-10-08 · Skill Lab 打磨 v2：辅助线弱化 · 角标补齐 · Aha 强化 · 三色公式</div>
   
   <h2>① 叙事弧（先定 Aha 时刻）</h2>
   <div class="box">要纠正的误解：学生相信"内角和是 180°"但不知道为什么。<br>
-  Aha 时刻：三个角被撕下来拼在一条直线上，刚好组成平角。</div>
+  Aha 时刻：过 A 作 BC 的平行线，内错角把 ∠B、∠C 搬到 A 两侧，三色角拼成一个平角。</div>
 
-  <h2>② 分镜（Scene 规划）</h2>
+  <h2>② 分镜（Scene 规划，v2）</h2>
   <div class="out">
-  <b>Scene 1 · 几何先呈现：</b>画一个三角形（不标数字），三个角用不同颜色填充<br>
-  <b>Scene 2 · 撕角拼合：</b>三个角动画移动到三角形底边，顶点贴在一起 → 拼成 180° 平角（Aha！）<br>
-  <b>Scene 3 · 代数后置：</b>角 A + 角 B + 角 C = 180°，数字才出现<br>
-  <b>Scene 4 · 变式：</b>换一个任意三角形，同样拼合成立（一般性）</div>
+  <b>Scene 1 · 几何先呈现：</b>标题 + 三角形，三个角弧与 ∠A/∠B/∠C 角标依次出现（提问）<br>
+  <b>Scene 2 · 平行线搬运：</b>辅助线 DE∥BC（opacity 0.35）→ ∠B 搬到 A 左侧、∠C 搬到右侧，原位置留残影，标注内错角相等<br>
+  <b>Scene 3 · 平角 Aha：</b>半圆平角 Create → 180° 弹出 → 三个角弧同时加粗高亮<br>
+  <b>Scene 4 · 代数后置：</b>∠A(黄)+∠B(蓝)+∠C(绿)=180°(黄) 三色公式，颜色呼应前三个场景</div>
 
   <h2>③ 视觉规则</h2>
-  <div class="box">主元素不透明度 1.0、辅助 0.4、结构 0.15；每个关键 reveal 后 self.wait(2)；全片统一配色。</div>
+  <div class="box">主元素 1.0、角弧 1.0、辅助线 0.35（结构层）；关键 reveal 后 wait 2.5~3s；全片三色贯穿（A 黄 / B 蓝 / C 绿）；布局每场景不同（S1 居中 / S2 偏左下）。</div>
 
   <h2>④ 复盘</h2>
-  <div class="box">manim-video 的"几何先于代数"直接对应教学法：先让学生看见 180°，再讲证明。</div>
+  <div class="box">v1 问题：辅助线过亮（0.75）、角无标注、Aha 平角出现平淡、结论公式单色。v2 修复：结构元素降到 0.35、补 ∠A/∠B/∠C 角标、180° 弹出+三弧高亮、结论三色公式呼应全片。产物：1280x720@30 带字幕，42.8s。</div>
   
-  <div class="foot">试跑日期 2026-10-08 · 产物基于 manim-video 真实工作流生成，可复现</div>
+  <div class="foot">试跑 2026-10-08 · Skill Lab 打磨 v2 · 产物 https://aka.doubaocdn.com/s/LhCoRDBzUR</div>
 </div>
 </body>
 </html>
