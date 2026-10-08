@@ -2530,6 +2530,21 @@
    "bg": "七年级上册有理数§1.1负数的认识，家长/学生痛点：负数从哪来、0是正是负、负数比较。用知识漫画把概念讲成故事。",
    "time": "",
    "repro": "已验证可复现"
+  },
+  {
+   "name": "正数与负数第1课时课件（ppt-master 打磨）",
+   "skill": "ppt-master",
+   "scene": "教学备课",
+   "date": "2026-10-08",
+   "effect": "未验收",
+   "link": "https://aka.doubaocdn.com/s/RyymVwZZ6p",
+   "kind": "html",
+   "steps": "1)项目初始化 project_manager.py init --format ppt169 2)写源内容source.md(10页教学结构) 3)写design_spec.md+spec_lock.md(瑞士网格/墨蓝#1B3A6B/红#C8102E/Noto Sans CJK) 4)启动live preview 5)SVG逐页手写(1280x720,网格底纹+大标题+编号章节标签) 6)svg_quality_checker质量门通过 7)svg_to_pptx.py转PPTX",
+   "note": "踩坑记录:1)canvas格式名是ppt169不是16:9 2)import-sources路径要精确到projects/<name>_ppt169_日期 3)release导出需spec_lock.md+质量报告 4)spec_lock必须声明所有实际用到的字号角色(title52/body28/annotation22/caption24/lead30等),否则font-size recurrence报错 5)design_spec §IX Slide块格式:### Slide NN纯数字+每块必带-Audience move: 6)P3卡片280px宽文字溢出→改2x2网格580宽 7)P5分类行x坐标重叠→改上下两行",
+   "cover": "https://aka.doubaocdn.com/s/6qEzVGMPpV",
+   "bg": "Skill Lab 第5单：打磨 ppt-master 生成教学课件，与 baoyu-comic 瑞士网格版同视觉语言，形成漫画预习→课件讲授系列",
+   "time": "",
+   "repro": "已验证可复现"
   }
  ],
  "rating": {
@@ -3168,7 +3183,21 @@
    "tpl": "1)知识漫画选题=单一难点+生活化叙事(负数=温度/欠账/电梯/海拔) 2)先建EXTEND.md(ligne-claire+warm+zh)再开工 3)角色表先行,页面以角色表为ref保一致(image_edit传ref) 4)每页prompt存prompts/NN-*.md可复现 5)AI文字易错:关键规则式在画面出现2次(图中+字幕条),数字负号单独强调 6)3:4竖版直接可用家长群/课堂 7)分格数在prompt里写死(上中下3格/2×2)",
    "note": "第4单 baoyu-comic 最终定稿=瑞士网格版。三轮迭代：清线v1→水墨整本重做→瑞士网格转正。风格升级路径验证：同一skill可通过风格矩阵做出从儿童读物到学术海报的跨度。",
    "date": "2026-10-08"
+  },
+  {
+   "name": "ppt-master",
+   "scene": "初中数学《正数与负数》第1课时课件",
+   "status": "已达标",
+   "rounds": 1,
+   "score": 4.4,
+   "v1": "https://aka.doubaocdn.com/s/RyymVwZZ6p",
+   "v2": "",
+   "issues": "1)卡片宽度不足文字溢出 2)分类行文字横向重叠 3)spec_lock字号角色未声明触发质量门 4)design_spec IX Slide块格式不符 5)flat模式文字栅格化(Office兼容PNG+SVG双格式,可编辑性受限)",
+   "fixes": "1)四卡片改2x2网格(580px宽) 2)分类行改上下两行(y=448/498) 3)spec_lock声明title52/body28/lead30/annotation22/caption24等字号角色 4)Slide块用纯数字编号+Audience move 5)质量门全通过后导出",
+   "tpl": "PPT类技能打磨:①canvas格式名用ppt169/ppt43 ②SVG手写前先启动live preview ③spec_lock声明全部字号角色(否则quality checker硬报错) ④设计稿先chromium渲染目检再转PPTX ⑤瑞士网格风格可复用(网格底纹+大标题+编号标签+红强调)",
+   "note": "第5单完成。产出可下载PPTX(10页,38KB)。与baoyu-comic瑞士网格版形成视觉系列。下一轮可升级structured模式实现文字可编辑(需补masters/layouts定义)。",
+   "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-08 19:21"
+ "updated": "2026-10-08 19:38"
 }
