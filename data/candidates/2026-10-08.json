@@ -1,0 +1,209 @@
+[
+ {
+  "name": "skills",
+  "cn": "",
+  "repo": "mattpocock/skills",
+  "desc": "Skills for Real Engineers. Straight from my .agents directory.",
+  "hot": 279847,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "agent-skills",
+  "cn": "",
+  "repo": "addyosmani/agent-skills",
+  "desc": "Production-grade engineering skills for AI coding agents.",
+  "hot": 102924,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "claude-mem",
+  "cn": "",
+  "repo": "thedotmack/claude-mem",
+  "desc": "Persistent Context Across Sessions for Every Agent – Captures everything your agent does during sessions, compresses it ",
+  "hot": 97840,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "i-have-adhd",
+  "cn": "",
+  "repo": "ayghri/i-have-adhd",
+  "desc": "A skill to stop your coding agent from burying the answer. ADHD-friendly output.",
+  "hot": 55256,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "diagram-design",
+  "cn": "",
+  "repo": "cathrynlavery/diagram-design",
+  "desc": "Editorial diagram design for Claude Code, Codex, GitHub Copilot, Factory Droid, and Pi. 42 diagram types. Self-contained",
+  "hot": 45158,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "cua",
+  "cn": "",
+  "repo": "trycua/cua",
+  "desc": "Scale computer-use 2.0 with open-source drivers, cross-OS fleets, and benchmarks for training, evaluation, and data gene",
+  "hot": 28823,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "cmux",
+  "cn": "",
+  "repo": "manaflow-ai/cmux",
+  "desc": "Open source Ghostty-based macOS terminal with vertical tabs and notifications for AI coding agents. Built for multitaski",
+  "hot": 27899,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "security-audit-skill",
+  "cn": "",
+  "repo": "cloudflare/security-audit-skill",
+  "desc": "A coding-agent skill for multi-phase security audits with independently verified, machine-readable findings",
+  "hot": 26148,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "rea",
+  "cn": "",
+  "repo": "morluto/rea",
+  "desc": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+  "hot": 16399,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "AnyPS5",
+  "cn": "",
+  "repo": "boykopovar/AnyPS5",
+  "desc": "Tool for automatic PS5 executables porting to Linux and Windows",
+  "hot": 11066,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "raddebugger",
+  "cn": "",
+  "repo": "EpicGames/raddebugger",
+  "desc": "A native, user-mode, multi-process, graphical debugger.",
+  "hot": 7908,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "e2e",
+  "cn": "",
+  "repo": "tester-army/e2e",
+  "desc": "Next generation e2e testing framework for web and mobile apps.",
+  "hot": 7642,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "openGym",
+  "cn": "",
+  "repo": "DuarteSantos8/openGym",
+  "desc": "Self-hosted gym &amp; body-weight tracker — plan routines, log workouts (supersets, warm-ups, cardio), see which muscles",
+  "hot": 7149,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "frontend-design",
+  "cn": "前端设计",
+  "repo": "anthropics/skills",
+  "desc": "Anthropic 官方前端设计规范，避免模板化 UI",
+  "hot": 0,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "pdf",
+  "cn": "PDF处理",
+  "repo": "anthropics/skills",
+  "desc": "PDF 读写编辑转换全流程处理",
+  "hot": 0,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "docx",
+  "cn": "Word处理",
+  "repo": "anthropics/skills",
+  "desc": "Office Word 阅读新建修改",
+  "hot": 0,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "pptx",
+  "cn": "PPT处理",
+  "repo": "anthropics/skills",
+  "desc": "PowerPoint 创建编辑导出",
+  "hot": 0,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "excel",
+  "cn": "Excel处理",
+  "repo": "anthropics/skills",
+  "desc": "Excel 表格读写分析可视化",
+  "hot": 0,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "webapp-testing",
+  "cn": "网页测试",
+  "repo": "anthropics/skills",
+  "desc": "Playwright 网页自动化测试",
+  "hot": 0,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "life-decision-guide",
+  "cn": "高性价比人生指南",
+  "repo": "eternity4719/HowToLiveBetter",
+  "desc": "全站爆款：按正文回答该不该做、值不值",
+  "hot": 0,
+  "source": "https://github.com/eternity4719/HowToLiveBetter",
+  "src": "classic"
+ },
+ {
+  "name": "setup-matt-pocock-skills",
+  "cn": "Matt Pocock技能集",
+  "repo": "mattpocock/skills",
+  "desc": "TypeScript 名师的生产级 Claude Code 技能集合",
+  "hot": 0,
+  "source": "https://github.com/mattpocock/skills",
+  "src": "classic"
+ },
+ {
+  "name": "security-audit",
+  "cn": "安全审计",
+  "repo": "mattpocock/skills",
+  "desc": "代码安全漏洞审查",
+  "hot": 0,
+  "source": "https://github.com/mattpocock/skills",
+  "src": "classic"
+ },
+ {
+  "name": "colleague-skill",
+  "cn": "同事蒸馏",
+  "repo": "titanwings/colleague-skill",
+  "desc": "把同事/关系人蒸馏成可复用人物画像",
+  "hot": 0,
+  "source": "https://github.com/titanwings/colleague-skill",
+  "src": "classic"
+ }
+]

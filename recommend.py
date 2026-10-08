@@ -81,7 +81,7 @@ def fetch_trending():
         repo = mh.group(1).strip().strip("/")
         desc = re.sub(r"<[^>]+>", "", md.group(1) if md else "").strip()
         desc = re.sub(r"\s+", " ", desc)
-        star = parse_star(ms.group(1)) if ms else 0
+        star = parse_star(re.sub(r"<[^>]+>", "", ms.group(1))) if ms else 0
         items.append({"name": repo.split("/")[-1], "cn": "", "repo": repo,
                       "desc": desc[:120], "hot": star,
                       "source": f"https://github.com/trending?since=daily",
