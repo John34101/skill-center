@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 技能开发检索 · everything-claude-code 试跑</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#F5F3EE;color:#2D3142;line-height:1.7;padding:32px 16px}
+  .page{max-width:740px;margin:0 auto;background:#fff;border:1px solid #E7E2D8;border-radius:14px;padding:40px 44px;box-shadow:0 4px 20px rgba(31,29,26,.05)}
+  .tag{display:inline-block;font-size:12px;color:#7A5C2E;background:#F7EEDD;border:1px solid #E8D9B8;padding:2px 10px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:22px;margin-bottom:6px}
+  .meta{font-size:13px;color:#8A8578;margin-bottom:24px}
+  h2{font-size:16px;margin:28px 0 10px;border-left:4px solid #2E7D5B;padding-left:10px}
+  .box{background:#FAF8F3;border:1px solid #EFEAE0;border-radius:10px;padding:14px 18px;margin:8px 0}
+  ol{padding-left:22px}
+  li{margin:8px 0}
+  .k{display:inline-block;background:#F7EEDD;border:1px solid #E8D9B8;color:#7A5C2E;font-size:12px;border-radius:5px;padding:1px 8px;margin-left:6px}
+  .foot{font-size:12px;color:#A09A8C;margin-top:28px;padding-top:14px;border-top:1px dashed #E7E2D8}
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="tag">工程提效 · everything-claude-code 试跑</span>
+  <h1>Claude Code 技能开发检索</h1>
+  <div class="meta">2026-10-08 · 已验证可复现 · 检索 Claude Code 技能开发全链路要点</div>
+
+  <h2>检索结论：开发一个 Claude Code 技能的最小闭环</h2>
+  <div class="box">
+    <ol>
+      <li><b>定义 SKILL.md</b>：frontmatter 写 name + description（description 决定何时被触发，要写「when … use」）；正文写步骤与规则。<span class="k">核心</span></li>
+      <li><b>目录规范</b>：<code>~/.claude/skills/&lt;技能名&gt;/SKILL.md</code>（个人级）或 <code>.claude/skills/</code>（项目级）；可带 <code>scripts/</code>、<code>references/</code> 子资源。</li>
+      <li><b>渐进披露</b>：主文件保持简短，细节放 <code>references/*.md</code>，由主文件按需指引读取，节省上下文。</li>
+      <li><b>可执行资产</b>：需要跑脚本时提供 <code>scripts/</code> 并声明运行方式；规则类技能优先纯 Markdown。</li>
+      <li><b>验证方式</b>：在 Claude Code 里用触发场景实测，观察 description 是否命中、流程是否闭环。</li>
+    </ol>
+  </div>
+
+  <h2>适用于「你」的直接用法</h2>
+  <div class="box">
+    <b>技能包 > 零散技能：</b>参考 mattpocock/skills、hezkvectory/hermes-edu-skills 的「系列包」结构，把你的数学教学技能（教案/错题分析/家长回复）打包成一个 <b>math-edu 系列</b>，统一版本、统一分发。<br>
+    <b>触发词设计：</b>description 里写清「当用户粘贴家长问题 / 上传错题 / 要求写教案时使用」，让 Claude Code 自动路由。
+  </div>
+
+  <div class="foot">复盘：everything-claude-code 把「技能开发」从零散经验整理成可执行清单，写新技能前先过一遍这 5 步。</div>
+</div>
+</body>
+</html>

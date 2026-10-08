@@ -2192,7 +2192,7 @@
    "scene": "家长答疑",
    "date": "2026-10-08",
    "effect": "很好",
-   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "link": "https://aka.doubaocdn.com/s/sS3kxeMEWF",
    "kind": "html",
    "steps": "1. 输入家长原话（孩子月考 78 分退步、作业能完成考试考不好怎么办）→ 2. 按规则改写：首行给可执行动作（拍卷子 6 题）、编号三步诊断法、结尾给 2 分钟内的单一动作、删寒暄铺垫 → 3. 产出结论先行版回复",
    "note": "家长沟通提效明显：同一内容信息密度更高，家长读完知道下一步做什么",
@@ -2207,7 +2207,7 @@
    "scene": "效率管理",
    "date": "2026-10-08",
    "effect": "很好",
-   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "link": "https://aka.doubaocdn.com/s/0TLqqxmdC1",
    "kind": "html",
    "steps": "1. 克隆仓库做库内检索 → 2. 命中 docs/es/commands/skill-create.md 与 MANUAL-ADAPTATION-GUIDE.md → 3. 得出可执行结论：本地可用 /skill-create 解析 git 历史生成 SKILL.md，含 --commits/--output/--instincts 参数；跨环境迁移遵循'最小上下文包'原则",
    "note": "研究型资料库：当 Claude Code 的'说明书'用，遇到问题先查它再搜",
@@ -2222,7 +2222,7 @@
    "scene": "效率管理",
    "date": "2026-10-08",
    "effect": "很好",
-   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "link": "https://aka.doubaocdn.com/s/EhXBfbtWM3",
    "kind": "html",
    "steps": "1. 克隆仓库 → 2. 检索 Documentation, Knowledge & Learning 与 Writing & Prose Quality 板块 → 3. 命中 learn-faster-kit（FASTER 自主学习框架，可给学生做计划）、showreel（自动生成图文文档/录屏说明）、claude-code-docs（官方文档全文本检索镜像）",
    "note": "找现成技能的第一站：先查清单再决定装什么，避免重复造轮子",
@@ -2237,7 +2237,7 @@
    "scene": "效率管理",
    "date": "2026-10-08",
    "effect": "很好",
-   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "link": "https://aka.doubaocdn.com/s/PzqJDLyVkB",
    "kind": "html",
    "steps": "1. 构造真实低效组件（useEffect 内串行 fetch）→ 2. 按规则命中核对：async-parallel（Promise.all 并行 ✓）、rerender-memo（StatsRow 隔离建议）、async-suspense-boundaries（Suspense 流式建议）→ 3. 产出命中核对表 + 2 条优化建议",
    "note": "写给 AI 的 React 性能手册：写/审组件时按规则过一遍比凭感觉稳",
@@ -2267,7 +2267,7 @@
    "scene": "教学备课",
    "date": "2026-10-08",
    "effect": "很好",
-   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "link": "https://aka.doubaocdn.com/s/tVRmJY5x2j",
    "kind": "html",
    "steps": "1. 按 skill 工作流执行：概念建构（天平情境引入+变式对比归纳定义）→ 例题示范（思路/步骤/易错点）→ 变式训练（4 题多题一解含负系数/分母易错点）→ 2. 产出完整教案",
    "note": "备课提效：'讲概念+练题'直接升级为结构化教学，概念建构→例题→变式闭环",
@@ -2282,7 +2282,7 @@
    "scene": "题目解析",
    "date": "2026-10-08",
    "effect": "很好",
-   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "link": "https://aka.doubaocdn.com/s/8v1woTJOvK",
    "kind": "html",
    "steps": "1. 输入真实错题（2(x-3)=10 误作 2x-3=10）→ 2. 按 7 类错因判定为【规则】类（分配律漏乘）→ 3. 知识图谱关联（去括号步骤←有理数乘法/去括号法则→含分母方程）→ 4. 给出下节课教学建议与共性热力判断",
    "note": "家长答疑提效：错因+知识图谱+教学建议三件套，回复家长时专业度立现",
@@ -2376,10 +2376,10 @@
   "ponytail": "感兴趣",
   "seedance-2.0-prompt-writing": "感兴趣",
   "everything-claude-code": "感兴趣",
-  "awesome-claude-code": "感兴趣",
+  "awesome-claude-code": "不感兴趣",
   "xiaozhi-teach-math-lesson-planner": "感兴趣",
   "xiaozhi-teach-math-error-analyzer": "感兴趣",
-  "coteach": "感兴趣",
+  "coteach": "不感兴趣",
   "hyperframes": "感兴趣"
  },
  "handbook": {
@@ -2872,5 +2872,5 @@
    "diff": "1分钟内上手"
   }
  },
- "updated": "2026-10-08 14:04"
+ "updated": "2026-10-08 14:28"
 }

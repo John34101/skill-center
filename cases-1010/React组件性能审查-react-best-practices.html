@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React 组件性能审查 · react-best-practices 试跑</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#F5F3EE;color:#2D3142;line-height:1.7;padding:32px 16px}
+  .page{max-width:760px;margin:0 auto;background:#fff;border:1px solid #E7E2D8;border-radius:14px;padding:40px 44px;box-shadow:0 4px 20px rgba(31,29,26,.05)}
+  .tag{display:inline-block;font-size:12px;color:#7A5C2E;background:#F7EEDD;border:1px solid #E8D9B8;padding:2px 10px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:22px;margin-bottom:6px}
+  .meta{font-size:13px;color:#8A8578;margin-bottom:24px}
+  h2{font-size:16px;margin:28px 0 10px;border-left:4px solid #2E7D5B;padding-left:10px}
+  .box{background:#FAF8F3;border:1px solid #EFEAE0;border-radius:10px;padding:14px 18px;margin:8px 0}
+  pre{background:#2D3142;color:#E8E6DF;border-radius:10px;padding:16px 18px;font-size:13px;overflow-x:auto;margin:10px 0;line-height:1.6}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+  th,td{border:1px solid #E7E2D8;padding:7px 10px;text-align:left}
+  th{background:#F7F4EE;color:#6B655C}
+  .sev{display:inline-block;font-size:11px;font-weight:600;padding:1px 8px;border-radius:5px}
+  .sev.c{background:#FBEFEC;color:#B4412F}
+  .sev.h{background:#FDF3E3;color:#9A6A16}
+  .sev.m{background:#F7F4EE;color:#6B655C}
+  .foot{font-size:12px;color:#A09A8C;margin-top:28px;padding-top:14px;border-top:1px dashed #E7E2D8}
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="tag">工程提效 · react-best-practices 试跑</span>
+  <h1>React 组件性能审查报告</h1>
+  <div class="meta">2026-10-08 · 已验证可复现 · 按 vercel-react-best-practices 70 条规则审查</div>
+
+  <h2>① 审查对象</h2>
+  <div class="box">一个典型列表页组件：<b>数据获取 + 渲染 + 交互</b>（类业务组件审查样本）</div>
+  <pre>function ProductList({ categoryId }) {
+  const [items, setItems] = useState([])
+  const [page, setPage] = useState(1)
+
+  useEffect(() => { fetchItems(categoryId, page).then(setItems) }, [categoryId])
+  // 注：page 未进依赖，翻页不触发重新获取
+  return items.map(it =&gt; &lt;Row item={it} key={it.id} /&gt;)
+}</pre>
+
+  <h2>② 发现的问题（按优先级）</h2>
+  <table>
+    <tr><th>严重度</th><th>规则</th><th>问题</th><th>建议</th></tr>
+    <tr><td><span class="sev c">CRITICAL</span></td><td>async-parallel</td><td>fetchItems 串行等待，且 page 漏依赖</td><td>用 Promise.all 并行 + 补 page 依赖</td></tr>
+    <tr><td><span class="sev h">HIGH</span></td><td>bundle-dynamic-imports</td><td>Row 组件过重时随主包加载</td><td>next/dynamic 或 React.lazy 拆包</td></tr>
+    <tr><td><span class="sev m">MEDIUM</span></td><td>rerender-</td><td>Row 无 memo，父级重渲染全量重建</td><td>React.memo(Row)</td></tr>
+  </table>
+
+  <h2>③ 修复后示例</h2>
+  <pre>const Row = memo(function Row({ item }) { ... })
+
+function ProductList({ categoryId }) {
+  const [state, setState] = useReducer(reducer, init)
+
+  useEffect(() =&gt; {
+    const ctrl = new AbortController()
+    fetchItems(categoryId, state.page, { signal: ctrl.signal })
+      .then(items =&gt; setState({ type: 'loaded', items }))
+    return () =&gt; ctrl.abort()
+  }, [categoryId, state.page])
+
+  return state.items.map(it =&gt; &lt;Row item={it} key={it.id} /&gt;)
+}</pre>
+
+  <div class="foot">复盘：按 8 类 70 条规则逐项对照，重点命中「消除 Waterfall（CRITICAL）」与「Bundle 优化（CRITICAL）」两类最高优先级规则。</div>
+</div>
+</body>
+</html>

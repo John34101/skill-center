@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>错题错因分析 · xiaozhi 错题分析试跑</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#F5F3EE;color:#2D3142;line-height:1.7;padding:32px 16px}
+  .page{max-width:720px;margin:0 auto;background:#fff;border:1px solid #E7E2D8;border-radius:14px;padding:40px 44px;box-shadow:0 4px 20px rgba(31,29,26,.05)}
+  .tag{display:inline-block;font-size:12px;color:#7A5C2E;background:#F7EEDD;border:1px solid #E8D9B8;padding:2px 10px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:22px;margin-bottom:6px}
+  .meta{font-size:13px;color:#8A8578;margin-bottom:24px}
+  h2{font-size:16px;margin:28px 0 10px;border-left:4px solid #B4412F;padding-left:10px}
+  .box{background:#FAF8F3;border:1px solid #EFEAE0;border-radius:10px;padding:14px 18px;margin:8px 0}
+  .wrong{background:#FBEFEC;border:1px solid #F0D5CD;border-radius:10px;padding:14px 18px;font-size:15px}
+  .verdict{display:flex;align-items:center;gap:10px;background:#FDF8F0;border:1px solid #EFE3C8;border-radius:10px;padding:12px 18px;margin:10px 0}
+  .badge{background:#B4412F;color:#fff;font-size:12px;padding:2px 10px;border-radius:6px;font-weight:600}
+  .map{background:#EDF5F0;border:1px solid #CDE2D4;border-radius:10px;padding:14px 18px;margin:10px 0}
+  .map .center{font-weight:600;color:#2E7D5B}
+  .arrow{color:#8A8578;font-size:12px;text-align:center;margin:6px 0}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+  th,td{border:1px solid #E7E2D8;padding:7px 10px;text-align:left}
+  th{background:#F7F4EE;color:#6B655C}
+  .rec{background:#FAF8F3;border:1px dashed #D8D0C0;border-radius:10px;padding:14px 18px;margin:10px 0}
+  .foot{font-size:12px;color:#A09A8C;margin-top:28px;padding-top:14px;border-top:1px dashed #E7E2D8}
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="tag">题目解析 · xiaozhi 错题分析试跑</span>
+  <h1>错题错因分析报告</h1>
+  <div class="meta">2026-10-08 · 已验证可复现 · 用 xiaozhi-teach-math-error-analyzer 的 7 类错因框架</div>
+
+  <h2>① 原题与错误过程</h2>
+  <div class="wrong">
+    <b>题目：</b>解方程 2(x - 3) = 10<br>
+    <b>错误过程：</b>2x - 3 = 10 → 2x = 13 → x = 6.5
+  </div>
+
+  <h2>② 错因判定</h2>
+  <div class="verdict">
+    <span class="badge">规则类</span>
+    <b>去括号分配律漏乘</b>：2 只乘了 x，漏乘了 -3
+  </div>
+  <div class="box">
+    <div class="label">判定依据（7 类错因对照）</div>
+    不是计算类（每一步数值运算本身没错）；不是审题类（题目理解正确）；是<b>规则类</b>——去括号法则（乘法分配律）执行不完整：a(b - c) = ab - ac 中「每一项都要乘」。
+  </div>
+
+  <h2>③ 知识图谱关联</h2>
+  <div class="map">
+    <div class="center">【去括号步骤】</div>
+    <div class="arrow">依赖 ↓</div>
+    <div>有理数乘法 · 乘法分配律 ← 规则源头</div>
+    <div class="arrow">影响 ↓</div>
+    <div>含分母方程（去分母时同样会漏乘）· 不等式去括号 · 整式运算</div>
+  </div>
+  <div class="box">说明：该错误若不止一次出现，会沿「去括号 → 去分母 → 含参方程」链条持续放大，是后续方程的隐患点。</div>
+
+  <h2>④ 下节课教学建议</h2>
+  <div class="rec">
+    <b>1. 强化分配律可视检查：</b>去括号后让学生「数一数括号里有几项，括号外有没有乘号」，每一项都必须过一遍；<br>
+    <b>2. 对照法纠错：</b>把 2(x-3) 展开成 2·x 和 2·(-3) 两行写出来，再合并；<br>
+    <b>3. 共性热力判断：</b>若班级错题集中在同类，安排 1 道「去括号 + 移项」组合题当堂限时训练。
+  </div>
+
+  <div class="foot">复盘：错因 + 知识图谱 + 教学建议三件套，家长答疑时专业度立现；约 5 分钟产出，关键是错因归类边界（规则 vs 计算）需结合题目判断。</div>
+</div>
+</body>
+</html>
