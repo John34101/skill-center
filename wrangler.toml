@@ -1,0 +1,14 @@
+# ============================================================
+# Skill 中心 · 后端 Worker 部署配置（wrangler）
+# 部署入口：GitHub Actions .github/workflows/deploy-worker.yml
+# 说明：APP_ID / APP_SECRET 不进仓库，由 workflow 从 GitHub
+#       Secrets 注入（wrangler secret put），见部署 workflow。
+# ============================================================
+name = "skill-center-api"
+main = "backend/worker.js"
+compatibility_date = "2024-11-01"
+
+# KV 命名空间（存飞书用户授权 token），变量名必须为 AUTH（worker.js 硬编码读取 env.AUTH）
+[[kv_namespaces]]
+binding = "AUTH"
+id = "e76954886c564d819bc3f556eb4b32f1"

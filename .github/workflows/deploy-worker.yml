@@ -1,0 +1,34 @@
+# ============================================================
+# Skill 中心 · 后端 Worker 自动部署（Cloudflare + wrangler）
+# 触发：推送 backend/ 相关文件时自动部署；也可手动触发。
+# 所需 GitHub Secrets：
+#   CLOUDFLARE_ACCOUNT_ID   = d00a6dabc469e8be820bd6904357421c
+#   CLOUDFLARE_API_TOKEN    = 你在 Cloudflare 创建的 API Token
+#   APP_ID / APP_SECRET     = 飞书自建应用凭证（wrangler 注入为 Worker 机密变量）
+# ============================================================
+name: deploy-skill-center-worker
+
+on:
+  push:
+    paths:
+      - "backend/**"
+      - "wrangler.toml"
+      - ".github/workflows/deploy-worker.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # 飞书凭证以机密变量方式注入 Worker（不落仓库明文）
+          secrets: |
+            APP_ID
+            APP_SECRET
