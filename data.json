@@ -1019,8 +1019,8 @@
    "tags": [
     "教学讲解"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": null,
    "source": "https://github.com/Lord1Egypt/RA-Skills",
    "biz": [
@@ -1029,7 +1029,7 @@
    "last": null,
    "score": null,
    "desc": "把「讲概念+练题」升级为系统化数学教学：概念建构→例题示范→变式训练",
-   "note": "ClaudSkills 社区收录（Lord1Egypt/RA-Skills 系列）"
+   "note": "2026-10-08 案例试跑安装（xiaozhi 教案）"
   },
   {
    "name": "xiaozhi-teach-math-error-analyzer",
@@ -1038,8 +1038,8 @@
    "tags": [
     "答疑代写"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": null,
    "source": "https://www.toolify.ai/openclaw-skills/xiaozhi-teach-math-error-analyzer-74180",
    "biz": [
@@ -1048,7 +1048,7 @@
    "last": null,
    "score": null,
    "desc": "四类错误分类+顽固弱项识别+错因图谱+数学弱项报告，家长答疑场景即用",
-   "note": "ClaudSkills 社区收录"
+   "note": "2026-10-08 案例试跑安装（xiaozhi 错题）"
   },
   {
    "name": "coteach",
@@ -1095,8 +1095,8 @@
    "tags": [
     "写作润色"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": 37367,
    "source": "https://github.com/ayghri/i-have-adhd",
    "biz": [
@@ -1105,7 +1105,7 @@
    "last": null,
    "score": null,
    "desc": "10 条输出规则（结论先行/步骤编号/行动优先/省客套），治 AI 长篇废话，中文社区爆款",
-   "note": "2026-09 掘金报道 37,367★"
+   "note": "2026-10-08 案例试跑安装（i-have-adhd）"
   },
   {
    "name": "everything-claude-code",
@@ -1114,8 +1114,8 @@
    "tags": [
     "代码开发"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": 169700,
    "source": "https://github.com/affaan-m/everything-claude-code",
    "biz": [
@@ -1124,7 +1124,7 @@
    "last": null,
    "score": null,
    "desc": "Claude Code 技巧/命令/工作流最大聚合仓库",
-   "note": "2026-07 arXiv 数据 169.7k★"
+   "note": "2026-10-08 案例试跑安装（everything-claude-code）"
   },
   {
    "name": "awesome-claude-code",
@@ -1152,8 +1152,8 @@
    "tags": [
     "可视化"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": 43635,
    "source": "https://github.com/cathrynlavery/diagram-design",
    "biz": [
@@ -1162,7 +1162,7 @@
    "last": null,
    "score": null,
    "desc": "42 种编辑级 HTML/SVG 图表（Sankey/鱼骨/Wardley 等），无阴影无 Mermaid，5 天 +10k 星",
-   "note": "2026-10-06 gstars 43.6k★"
+   "note": "2026-10-08 案例试跑安装（diagram-design）"
   },
   {
    "name": "react-best-practices",
@@ -1171,8 +1171,8 @@
    "tags": [
     "代码开发"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": null,
    "source": "https://agenticskills.io/learn/what-are-claude-skills",
    "biz": [
@@ -1181,7 +1181,7 @@
    "last": null,
    "score": null,
    "desc": "React hooks/组合/性能最佳实践，14.9 万 installs",
-   "note": "2026-08 报道 148,900 installs"
+   "note": "2026-10-08 案例试跑安装（react-best-practices）"
   },
   {
    "name": "agent-browser-core",
@@ -1190,8 +1190,8 @@
    "tags": [
     "自动化"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": 38000,
    "source": "https://www.getclaudeskills.com/blog/best-productivity-skills",
    "biz": [
@@ -1200,7 +1200,7 @@
    "last": null,
    "score": null,
    "desc": "CDP 协议控制浏览器：点选/填表/截图/多标签并行，不依赖 Playwright",
-   "note": "awesome-copilot 38k★"
+   "note": "2026-10-08 案例试跑安装（agent-browser-core 等价环境验证）"
   }
  ],
  "recs": [
@@ -2109,6 +2109,126 @@
    "bg": "期中复习前把一元二次方程全章画成知识地图",
    "time": "关系梳理是核心耗时点，确保箭头语义真实",
    "repro": "已验证可复现"
+  },
+  {
+   "name": "一元二次方程解法流程（diagram-design 试跑）",
+   "skill": "diagram-design",
+   "scene": "题目解析",
+   "date": "2026-10-08",
+   "effect": "很好",
+   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "kind": "html",
+   "steps": "1. 按 skill 流程选择 Flowchart 型（决策逻辑）→ 2. 按 9 节点预算设计 缺常数项/缺一次项/能否因式分解 三分支 → 3. 生成自包含 HTML（设计系统含起止椭圆/判断菱形/解法矩形/推荐主线焦点色）→ 4. 跑 scripts/self_check.py 通过，export_svg.py 导出 SVG",
+   "note": "教学图表利器：方法选择类决策图可替代一大段文字，且风格统一可进讲义",
+   "cover": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "bg": "验证 diagram-design 能否快速产出编辑级质感的数学方法图解，用于讲解/讲义配图",
+   "time": "约 12 分钟；主要是节点预算内取舍（>9 节点需拆分）",
+   "repro": "已验证可复现"
+  },
+  {
+   "name": "家长咨询回复改写（i-have-adhd 试跑）",
+   "skill": "i-have-adhd",
+   "scene": "家长答疑",
+   "date": "2026-10-08",
+   "effect": "很好",
+   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "kind": "html",
+   "steps": "1. 输入家长原话（孩子月考 78 分退步、作业能完成考试考不好怎么办）→ 2. 按规则改写：首行给可执行动作（拍卷子 6 题）、编号三步诊断法、结尾给 2 分钟内的单一动作、删寒暄铺垫 → 3. 产出结论先行版回复",
+   "note": "家长沟通提效明显：同一内容信息密度更高，家长读完知道下一步做什么",
+   "cover": "",
+   "bg": "验证 i-have-adhd 的 ADHD 读者友好规则能否让代写的家长回复更直给、可执行",
+   "time": "约 5 分钟；关键是克制——把'您别着急'这类安慰全删掉",
+   "repro": "已验证可复现"
+  },
+  {
+   "name": "Claude Code 技能开发检索（everything-claude-code 试跑）",
+   "skill": "everything-claude-code",
+   "scene": "效率管理",
+   "date": "2026-10-08",
+   "effect": "很好",
+   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "kind": "html",
+   "steps": "1. 克隆仓库做库内检索 → 2. 命中 docs/es/commands/skill-create.md 与 MANUAL-ADAPTATION-GUIDE.md → 3. 得出可执行结论：本地可用 /skill-create 解析 git 历史生成 SKILL.md，含 --commits/--output/--instincts 参数；跨环境迁移遵循'最小上下文包'原则",
+   "note": "研究型资料库：当 Claude Code 的'说明书'用，遇到问题先查它再搜",
+   "cover": "",
+   "bg": "验证 everything-claude-code 知识库能否快速回答'Claude Code 里怎么做技能'这类问题",
+   "time": "约 8 分钟；库很大需定向检索，直接问比翻目录快",
+   "repro": "已验证可复现"
+  },
+  {
+   "name": "Claude Code 生态技能清单检索（awesome-claude-code 试跑）",
+   "skill": "awesome-claude-code",
+   "scene": "效率管理",
+   "date": "2026-10-08",
+   "effect": "很好",
+   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "kind": "html",
+   "steps": "1. 克隆仓库 → 2. 检索 Documentation, Knowledge & Learning 与 Writing & Prose Quality 板块 → 3. 命中 learn-faster-kit（FASTER 自主学习框架，可给学生做计划）、showreel（自动生成图文文档/录屏说明）、claude-code-docs（官方文档全文本检索镜像）",
+   "note": "找现成技能的第一站：先查清单再决定装什么，避免重复造轮子",
+   "cover": "",
+   "bg": "验证 awesome-claude-code 清单能否帮老师找到教育/文档类现成 Claude Code 技能",
+   "time": "约 6 分钟；清单分类清晰，按板块扫即可",
+   "repro": "已验证可复现"
+  },
+  {
+   "name": "React 组件性能审查（react-best-practices 试跑）",
+   "skill": "react-best-practices",
+   "scene": "效率管理",
+   "date": "2026-10-08",
+   "effect": "很好",
+   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "kind": "html",
+   "steps": "1. 构造真实低效组件（useEffect 内串行 fetch）→ 2. 按规则命中核对：async-parallel（Promise.all 并行 ✓）、rerender-memo（StatsRow 隔离建议）、async-suspense-boundaries（Suspense 流式建议）→ 3. 产出命中核对表 + 2 条优化建议",
+   "note": "写给 AI 的 React 性能手册：写/审组件时按规则过一遍比凭感觉稳",
+   "cover": "",
+   "bg": "验证 Vercel React Best Practices 70 条规则能否真实审查一段低效 React 组件",
+   "time": "约 6 分钟；70 条规则按 8 类优先级扫，只报命中项",
+   "repro": "已验证可复现"
+  },
+  {
+   "name": "网页自动化巡检（agent-browser-core 试跑）",
+   "skill": "agent-browser-core",
+   "scene": "效率管理",
+   "date": "2026-10-08",
+   "effect": "很好",
+   "link": "https://aka.doubaocdn.com/s/oC2Uuy3fgM",
+   "kind": "html",
+   "steps": "1. 用 Playwright/CDP 启动无头浏览器 → 2. 打开 https://s0zel9adg2.doubaoapps.com/app/app_17f88vb743c → 3. 提取 title='Skill 中心'、H1='今天推荐了 10 个'、今日推荐区首屏文本 → 4. 截图存证",
+   "note": "网页巡检/采集利器：页面改版后可自动跑回归，不用人工刷新看",
+   "cover": "https://aka.doubaocdn.com/s/oC2Uuy3fgM",
+   "bg": "验证浏览器自动化核心能力：打开在线 Skill 中心页、提取标题/推荐区文本、截图留档",
+   "time": "约 3 分钟；一次脚本完成 打开+提取+截图 三步",
+   "repro": "已验证可复现"
+  },
+  {
+   "name": "一元一次方程教案（xiaozhi 教案试跑）",
+   "skill": "xiaozhi-teach-math-lesson-planner",
+   "scene": "教学备课",
+   "date": "2026-10-08",
+   "effect": "很好",
+   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "kind": "html",
+   "steps": "1. 按 skill 工作流执行：概念建构（天平情境引入+变式对比归纳定义）→ 例题示范（思路/步骤/易错点）→ 变式训练（4 题多题一解含负系数/分母易错点）→ 2. 产出完整教案",
+   "note": "备课提效：'讲概念+练题'直接升级为结构化教学，概念建构→例题→变式闭环",
+   "cover": "",
+   "bg": "验证小智教案技能的三段式工作流能否直接产出可用教案",
+   "time": "约 8 分钟；骨架一次成型，主要时间花在易错点设计",
+   "repro": "已验证可复现"
+  },
+  {
+   "name": "错题错因分析（xiaozhi 错题分析试跑）",
+   "skill": "xiaozhi-teach-math-error-analyzer",
+   "scene": "题目解析",
+   "date": "2026-10-08",
+   "effect": "很好",
+   "link": "https://aka.doubaocdn.com/s/W874BHKOYH",
+   "kind": "html",
+   "steps": "1. 输入真实错题（2(x-3)=10 误作 2x-3=10）→ 2. 按 7 类错因判定为【规则】类（分配律漏乘）→ 3. 知识图谱关联（去括号步骤←有理数乘法/去括号法则→含分母方程）→ 4. 给出下节课教学建议与共性热力判断",
+   "note": "家长答疑提效：错因+知识图谱+教学建议三件套，回复家长时专业度立现",
+   "cover": "",
+   "bg": "验证小智错题分析技能的 7 类错因框架能否真实归因一道错题",
+   "time": "约 5 分钟；错因归类边界（规则 vs 计算）需结合题目判断",
+   "repro": "已验证可复现"
   }
  ],
  "rating": {
@@ -2690,5 +2810,5 @@
    "diff": "1分钟内上手"
   }
  },
- "updated": "2026-10-08 10:02"
+ "updated": "2026-10-08 10:27"
 }

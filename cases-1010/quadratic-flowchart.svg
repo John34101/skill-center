@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720" role="img" aria-labelledby="qd-title qd-desc" id="quadratic-flowchart-root">
+    <title id="qd-title">解一元二次方程的方法选择流程</title>
+    <desc id="qd-desc">从缺常数项、缺一次项、能否因式分解三个判断，分别走向提公因式、直接开平方、十字相乘或求根公式。</desc>
+  <defs>
+      <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;family=Noto+Serif:ital@0;1&amp;family=Noto+Sans+KR:wght@400;500;600&amp;family=Noto+Serif+KR:wght@400&amp;family=Noto+Sans+TC:wght@400;500;600&amp;family=Noto+Serif+TC:wght@400&amp;display=swap');
+      #quadratic-flowchart-root { --paper:#f5f5f5;--ink:#2d3142;--muted:#4f5d75;--accent:#eb6c36;--sans:'Geist','Noto Sans TC',system-ui,sans-serif;--serif:'Instrument Serif','Noto Serif TC',serif;--mono:'Geist Mono',ui-monospace,monospace }
+      #quadratic-flowchart-root { font-family: var(--sans); color: var(--ink); }
+      #quadratic-flowchart-root .diagram-container { width:100%;overflow-x:auto }
+      #quadratic-flowchart-root .sub { font-size:.95rem;color:var(--muted);max-width:46rem;line-height:1.6;margin-bottom:1.5rem }
+      #quadratic-flowchart-root .legend { display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.25rem;font-family:var(--mono);font-size:.72rem;color:var(--muted);border-top:1px solid rgba(45,49,66,.15);padding-top:1rem }
+      #quadratic-flowchart-root .lg { display:inline-flex;align-items:center;gap:.45rem }
+      #quadratic-flowchart-root .lg i { display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid var(--ink) }
+      #quadratic-flowchart-root .lg i.ov { border-radius:50% }
+      #quadratic-flowchart-root .lg i.di { width:14px;height:14px;transform:rotate(45deg);border-radius:2px }
+      #quadratic-flowchart-root .box { fill:var(--paper);stroke:var(--ink);stroke-width:1.5 }
+      #quadratic-flowchart-root .decision { fill:var(--paper);stroke:var(--ink);stroke-width:1.5 }
+      #quadratic-flowchart-root .term { fill:var(--paper);stroke:var(--ink);stroke-width:1.5 }
+      #quadratic-flowchart-root .focal { stroke:var(--accent);stroke-width:2 }
+      #quadratic-flowchart-root text { font-family:var(--sans);font-size:15px;fill:var(--ink) }
+      #quadratic-flowchart-root text.mono { font-family:var(--mono);font-size:12.5px;fill:var(--muted) }
+      #quadratic-flowchart-root text.lbl { font-family:var(--mono);font-size:12px;fill:var(--muted) }
+      #quadratic-flowchart-root text.formula { font-family:var(--mono);font-size:13.5px;fill:var(--ink) }
+      #quadratic-flowchart-root .arrow { stroke:var(--ink);stroke-width:1.3;fill:none }
+      #quadratic-flowchart-root .mask { fill:var(--paper) }</style>
+  </defs>
+    <path class="arrow" d="M450 74 V118"/>
+    <path class="arrow" d="M450 190 V214"/>
+    <path class="arrow" d="M296 262 H250"/>
+    <path class="arrow" d="M450 262 V292"/>
+    <path class="arrow" d="M604 262 H650"/>
+    <path class="arrow" d="M450 364 V388"/>
+    <path class="arrow" d="M296 408 H250"/>
+    <path class="arrow" d="M450 408 V438"/>
+    <path class="arrow" d="M604 408 H650"/>
+    <path class="arrow" d="M450 510 V546"/>
+    <path class="arrow" d="M250 545 L250 566 V600 H450"/>
+    <path class="arrow" d="M650 545 L650 566 V600 H450"/>
+    <rect class="mask" x="446" y="84" width="56" height="22" rx="4"/>
+    <text class="lbl" x="474" y="100" text-anchor="middle">开始</text>
+    <rect class="mask" x="426" y="198" width="80" height="22" rx="4"/>
+    <text class="lbl" x="466" y="214" text-anchor="middle">c = 0 ?</text>
+    <rect class="mask" x="232" y="230" width="46" height="22" rx="4"/>
+    <text class="lbl" x="255" y="246" text-anchor="middle">是</text>
+    <rect class="mask" x="480" y="272" width="44" height="22" rx="4"/>
+    <text class="lbl" x="502" y="288" text-anchor="middle">否</text>
+    <rect class="mask" x="566" y="230" width="44" height="22" rx="4"/>
+    <text class="lbl" x="588" y="246" text-anchor="middle">否</text>
+    <rect class="mask" x="426" y="372" width="86" height="22" rx="4"/>
+    <text class="lbl" x="469" y="388" text-anchor="middle">b = 0 ?</text>
+    <rect class="mask" x="232" y="376" width="46" height="22" rx="4"/>
+    <text class="lbl" x="255" y="392" text-anchor="middle">是</text>
+    <rect class="mask" x="480" y="418" width="44" height="22" rx="4"/>
+    <text class="lbl" x="502" y="434" text-anchor="middle">否</text>
+    <rect class="mask" x="566" y="376" width="44" height="22" rx="4"/>
+    <text class="lbl" x="588" y="392" text-anchor="middle">否</text>
+    <rect class="mask" x="426" y="518" width="56" height="22" rx="4"/>
+    <text class="lbl" x="454" y="534" text-anchor="middle">结束</text>
+    <ellipse class="term" cx="450" cy="52" rx="64" ry="24"/>
+    <text x="450" y="57" text-anchor="middle">ax² + bx + c = 0</text>
+    <polygon class="decision" points="450,170 522,222 450,274 378,222"/>
+    <text x="450" y="226" text-anchor="middle">缺常数项？</text>
+    <rect class="box focal" x="168" y="262" width="164" height="52" rx="8"/>
+    <text x="250" y="284" text-anchor="middle">提公因式</text>
+    <text class="formula" x="250" y="304" text-anchor="middle">x(ax+b)=0</text>
+    <polygon class="decision" points="450,292 522,344 450,396 378,344"/>
+    <text x="450" y="348" text-anchor="middle">缺一次项？</text>
+    <rect class="box" x="168" y="408" width="164" height="52" rx="8"/>
+    <text x="250" y="430" text-anchor="middle">直接开平方</text>
+    <text class="formula" x="250" y="450" text-anchor="middle">x = ±√(−c/a)</text>
+    <polygon class="decision" points="450,438 522,490 450,542 378,490"/>
+    <text x="450" y="494" text-anchor="middle">能因式分解？</text>
+    <rect class="box" x="576" y="408" width="148" height="52" rx="8"/>
+    <text x="650" y="430" text-anchor="middle">十字相乘</text>
+    <text class="formula" x="650" y="450" text-anchor="middle">(x+p)(x+q)=0</text>
+    <rect class="box focal" x="346" y="546" width="208" height="60" rx="8"/>
+    <text x="450" y="572" text-anchor="middle">求根公式</text>
+    <text class="formula" x="450" y="594" text-anchor="middle">x = (−b±√Δ)/2a</text>
+  </svg>
