@@ -296,7 +296,7 @@
   .drawer-block{border-top:1px solid var(--line);padding-top:12px;margin-top:14px}
   .drawer-block h4{font-size:13px;font-weight:600;margin:0 0 8px}
   .drow{display:flex;gap:10px;font-size:13px;padding:4px 0;align-items:baseline}
-  .drow .k{font-family:var(--mono);font-size:11px;color:var(--ink-2);flex:none;width:70px}
+  .drow .k{font-family:var(--mono);font-size:12px;color:var(--ink-2);flex:none;width:70px}
   .drow .v{color:var(--ink);min-width:0;word-break:break-word}
 
   /* ===== 四层档案 ===== */
@@ -1382,6 +1382,7 @@ function openDrawer(name){
     ${casesHtml}
     ${l4Html}
     <div class="drawer-block"><h4>其他</h4>
+      ${s.reg?`<div class="drow"><span class="k">注册名</span><span class="v mono" style="word-break:break-all">${esc(s.reg)}</span></div>`:""}
       <div class="drow"><span class="k">来源</span><span class="v">${s.source?`<a href="${s.source}" target="_blank" rel="noopener" style="word-break:break-all">${esc(s.source.replace(/^https?:\/\//,""))}</a>`:"本地 / 内部"}</span></div>
       <div class="drow"><span class="k">备份</span><span class="v">${esc(s.backup||"—")}</span></div>
       <div class="drow"><span class="k">最近试用</span><span class="v">${esc(s.last||"未试用")}</span></div>
