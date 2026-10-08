@@ -4,7 +4,9 @@
 # 所需 GitHub Secrets：
 #   CLOUDFLARE_ACCOUNT_ID   = d00a6dabc469e8be820bd6904357421c
 #   CLOUDFLARE_API_TOKEN    = 你在 Cloudflare 创建的 API Token
-#   APP_ID / APP_SECRET     = 飞书自建应用凭证（wrangler 注入为 Worker 机密变量）
+#   APP_ID / APP_SECRET     = 飞书自建应用凭证（注入为 Worker 机密变量）
+# 说明：先 wrangler deploy（应用 wrangler.toml 的 KV 绑定），
+#       再 echo | wrangler secret put 注入飞书凭证，顺序保证 KV 不丢。
 # ============================================================
 name: deploy-skill-center-worker
 
@@ -19,16 +21,23 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy Worker
-        uses: cloudflare/wrangler-action@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # 飞书凭证以机密变量方式注入 Worker（不落仓库明文）
-          secrets: |
-            APP_ID
-            APP_SECRET
+          node-version: "20"
+
+      - name: Deploy Worker (wrangler deploy, KV 绑定来自 wrangler.toml)
+        run: npx -y wrangler@4 deploy
+
+      - name: Inject secret APP_ID
+        run: echo "${{ secrets.APP_ID }}" | npx -y wrangler@4 secret put APP_ID --name skill-center-api
+
+      - name: Inject secret APP_SECRET
+        run: echo "${{ secrets.APP_SECRET }}" | npx -y wrangler@4 secret put APP_SECRET --name skill-center-api
