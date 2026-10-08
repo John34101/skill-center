@@ -2608,7 +2608,87 @@
    "output": "符合规范的视觉/内容",
    "pitfalls": "只适用 Anthropic 品牌场景",
    "diff": "1分钟内上手"
+  },
+  "xiaozhi-teach-math-lesson-planner": {
+   "scene": "备课出完整教案；公开课/赛课需要结构化教学设计",
+   "tpl": "用 xiaozhi-teach-math-lesson-planner 出「人教版七上 一元一次方程」的完整教案",
+   "input": "给教材版本+年级+课题（如「人教版七上 一元一次方程」），可附班级层次",
+   "output": "结构化教案（概念建构→例题示范→变式训练）",
+   "pitfalls": "默认输出面向常态课堂；要分层教学需明确说明；知识点需核对课标防超纲",
+   "diff": "1分钟内上手"
+  },
+  "xiaozhi-teach-math-error-analyzer": {
+   "scene": "家长发错题图求分析；期中期末前弱项盘点",
+   "tpl": "家长发来错题，用 xiaozhi-teach-math-error-analyzer 分析错因并给报告",
+   "input": "学生错题照片或题目+错误过程，建议累积 5 题以上",
+   "output": "错因分类+弱项报告+针对练习建议",
+   "pitfalls": "单题推断弱项有局限，错因分类是通用框架需结合学生实际",
+   "diff": "1分钟内上手"
+  },
+  "coteach": {
+   "scene": "课件/讲义配图；讲分数、面积、坐标系时出教具图",
+   "tpl": "用 coteach 生成「分数 3/4 的面积模型图」",
+   "input": "说清要哪种图（数轴/面积模型/坐标平面/分数模型）+数据或题目",
+   "output": "可插入课件的图表（SVG/图片）",
+   "pitfalls": "图表面向课堂展示；复杂图像生成后建议二次核对数值",
+   "diff": "1分钟内上手"
+  },
+  "k12-smart-teacher": {
+   "scene": "错题闭环（判对错→错因→讲解→组卷）；家长要「针对薄弱点出几道题」",
+   "tpl": "用 k12-smart-teacher 对学生错题做闭环分析并出 5 道巩固题",
+   "input": "学生错题/试题+年级学科，可附当前薄弱点",
+   "output": "判定+错因+讲解+巩固卷（可打印）",
+   "pitfalls": "组卷建议需按课标核对；过程类题目判定有局限，答案类更稳",
+   "diff": "1分钟内上手"
+  },
+  "i-have-adhd": {
+   "scene": "代写家长回复/学生反馈/口播文案，要结论先行不废话",
+   "tpl": "用 i-have-adhd 规则把这段回复改成结论先行、直给结论",
+   "input": "要改写/生成的文本，或直接要求「按 ADHD 规则输出」",
+   "output": "极简要点文本（结论先行+编号步骤）",
+   "pitfalls": "适合要点类内容；情感细腻的沟通文本需人工调语气",
+   "diff": "1分钟内上手"
+  },
+  "everything-claude-code": {
+   "scene": "用 Claude Code 时查命令/工作流/排错；研究 agent 工程实践",
+   "tpl": "查 everything-claude-code 里 Claude Code 的「多文件编辑」最佳实践",
+   "input": "问具体问题即可（某命令/工作流/报错）",
+   "output": "知识点解答/代码片段/工作流指引",
+   "pitfalls": "内容随版本更新，老命令可能过时；大而全需检索式提问",
+   "diff": "1分钟内上手"
+  },
+  "awesome-claude-code": {
+   "scene": "找 Claude Code 生态现成技能/工具；了解社区最佳实践",
+   "tpl": "在 awesome-claude-code 里找「文档写作」相关现成技能",
+   "input": "给需求方向（技能/插件/工具）",
+   "output": "资源清单+链接",
+   "pitfalls": "精选列表覆盖主流，小众需求可能没有；链接需自行核对版本",
+   "diff": "1分钟内上手"
+  },
+  "diagram-design": {
+   "scene": "题目解析配图/知识地图/概念关系图，要编辑级质感",
+   "tpl": "用 diagram-design 做「初中几何辅助线策略」的鱼骨图",
+   "input": "主题+想要的图型（Sankey/鱼骨/Wardley/流程图等 42 种）",
+   "output": "HTML/SVG 图表，可嵌入文档/网页",
+   "pitfalls": "选错图型会误导理解；复杂关系先文字描述清楚再画",
+   "diff": "1分钟内上手"
+  },
+  "react-best-practices": {
+   "scene": "写/维护 React 代码；评审前端实现",
+   "tpl": "用 react-best-practices 检查这段组件代码的 hooks 用法",
+   "input": "给要优化的 React 场景/代码片段",
+   "output": "最佳实践要点+示例代码",
+   "pitfalls": "面向 React 开发者；最佳实践需结合实际项目版本",
+   "diff": "1分钟内上手"
+  },
+  "agent-browser-core": {
+   "scene": "批量抓取网页/截图；自动化填表；调研同行内容",
+   "tpl": "用 agent-browser-core 打开某网页自动截图并提取正文",
+   "input": "说清要自动化的网页操作（点/填/截图/多标签）",
+   "output": "自动化脚本+执行结果（截图/数据）",
+   "pitfalls": "依赖 CDP 与目标站点结构，改版后需调整；登录/支付等敏感操作谨慎自动化",
+   "diff": "1分钟内上手"
   }
  },
- "updated": "2026-10-08 09:47"
+ "updated": "2026-10-08 10:02"
 }
