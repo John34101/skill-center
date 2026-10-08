@@ -11,7 +11,8 @@
    "status": "已安装",
    "backup": "无需备份",
    "hot": null,
-   "source": "",
+   "source": "https://github.com/manimate",
+   "reg": "无公开注册名（本机已装）",
    "biz": [
     "口播视频",
     "教学备课"
@@ -32,7 +33,8 @@
    "status": "被环境清除",
    "backup": "已备份",
    "hot": null,
-   "source": "",
+   "source": "https://skills.sh/heygen-com/hyperframes/hyperframes",
+   "reg": "heygen-com/hyperframes@hyperframes",
    "biz": [
     "口播视频"
    ],
@@ -52,6 +54,7 @@
    "backup": "已备份",
    "hot": 75228,
    "source": "https://skilld.dev/skills/trending",
+   "reg": "",
    "biz": [
     "题目解析",
     "教学备课"
@@ -72,6 +75,7 @@
    "backup": "已备份",
    "hot": 39631,
    "source": "https://skilld.dev/skills/trending",
+   "reg": "",
    "biz": [
     "教学备课"
    ],
@@ -91,6 +95,7 @@
    "backup": "无需备份",
    "hot": 63179,
    "source": "https://skilld.dev/skills/trending",
+   "reg": "",
    "biz": [
     "内容创作",
     "家长答疑"
@@ -110,7 +115,8 @@
    "status": "已安装",
    "backup": "无需备份",
    "hot": null,
-   "source": "",
+   "source": "https://skills.sh/op7418/humanizer-zh/humanizer-zh",
+   "reg": "op7418/humanizer-zh@humanizer-zh",
    "biz": [
     "家长答疑",
     "内容创作"
@@ -130,7 +136,8 @@
    "status": "已安装",
    "backup": "无需备份",
    "hot": 33069,
-   "source": "https://www.openagentskill.com/best/open-source-ai-agent-skills",
+   "source": "https://skills.sh/huntsyea/thinking-skills/book-to-skill",
+   "reg": "huntsyea/thinking-skills@book-to-skill",
    "biz": [
     "教学备课"
    ],
@@ -151,6 +158,7 @@
    "backup": "无需备份",
    "hot": 51959,
    "source": "https://skilld.dev/skills/trending",
+   "reg": "",
    "biz": [
     "内容创作"
    ],
@@ -170,6 +178,7 @@
    "backup": "已备份",
    "hot": 208000,
    "source": "https://github.com/obra/superpowers",
+   "reg": "",
    "biz": [
     "效率管理"
    ],
@@ -189,6 +198,7 @@
    "backup": "已备份",
    "hot": 9955,
    "source": "https://lobehub.com/skills/nicobailon-visual-explainer",
+   "reg": "",
    "biz": [
     "题目解析",
     "教学备课"
@@ -209,6 +219,7 @@
    "backup": "已备份",
    "hot": 2475,
    "source": "https://skilld.dev/skills/trending",
+   "reg": "",
    "biz": [
     "家长答疑",
     "效率管理"
@@ -230,6 +241,7 @@
    "backup": "已备份",
    "hot": 407,
    "source": "https://skills.sh/nousresearch/hermes-agent/manim-video",
+   "reg": "",
    "biz": [
     "口播视频",
     "教学备课"
@@ -251,6 +263,7 @@
    "backup": "已备份",
    "hot": 563000,
    "source": "https://skills.sh/remotion-dev/skills/remotion-best-practices",
+   "reg": "",
    "biz": [
     "口播视频",
     "内容创作"
@@ -271,6 +284,7 @@
    "backup": "已备份",
    "hot": 57372,
    "source": "https://skilld.dev/gh/hugohe3/ppt-master",
+   "reg": "",
    "biz": [
     "教学备课",
     "内容创作"
@@ -292,6 +306,7 @@
    "backup": "未备份",
    "hot": 13068,
    "source": "https://skilld.dev/gh/latent-spaces/brag",
+   "reg": "",
    "biz": [
     "口播视频",
     "内容创作"
@@ -312,6 +327,7 @@
    "backup": "未备份",
    "hot": 4839,
    "source": "https://skilld.dev/gh/humanlayer/skills/show-me",
+   "reg": "",
    "biz": [
     "题目解析",
     "教学备课"
@@ -332,6 +348,7 @@
    "backup": "未备份",
    "hot": 800,
    "source": "https://skilld.dev/gh/lemomo-ai/lemo-opuscar",
+   "reg": "",
    "biz": [
     "口播视频",
     "教学备课"
@@ -353,6 +370,7 @@
    "backup": "已备份",
    "hot": 7435,
    "source": "https://skilld.dev/gh/lijigang/ljg-skills/ljg-map",
+   "reg": "",
    "biz": [
     "教学备课",
     "题目解析"
@@ -373,6 +391,7 @@
    "backup": "未备份",
    "hot": null,
    "source": "https://skilld.dev/gh/cloudflare/security-audit-skill",
+   "reg": "",
    "biz": [
     "效率管理"
    ],
@@ -392,6 +411,7 @@
    "backup": "未备份",
    "hot": null,
    "source": "https://skilld.dev/gh/othmanadi/planning-with-files/planning-with-files",
+   "reg": "",
    "biz": [
     "教学备课",
     "效率管理"
@@ -413,6 +433,7 @@
    "backup": "未备份",
    "hot": null,
    "source": "https://skilld.dev/gh/microsoft/playwright-cli/playwright-cli",
+   "reg": "",
    "biz": [
     "家长答疑",
     "内容创作"
@@ -433,6 +454,7 @@
    "backup": "未备份",
    "hot": null,
    "source": "https://skills.sh/pbakaus/impeccable/teach-impeccable",
+   "reg": "",
    "biz": [
     "家长答疑",
     "内容创作"
@@ -453,6 +475,7 @@
    "backup": "未备份",
    "hot": null,
    "source": "https://skills.sh/googleworkspace/cli/recipe-create-classroom-course",
+   "reg": "",
    "biz": [
     "教学备课"
    ],
@@ -473,6 +496,7 @@
    "backup": "未备份",
    "hot": null,
    "source": "https://skills.sh/101-skills/superpowers/ai-video-generation",
+   "reg": "",
    "biz": [
     "口播视频",
     "内容创作"
@@ -494,6 +518,7 @@
    "backup": "未备份",
    "hot": null,
    "source": "https://skills.sh/mattpocock/skills/scaffold-exercises",
+   "reg": "",
    "biz": [
     "教学备课",
     "题目解析"
@@ -514,6 +539,7 @@
    "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/mattpocock/skills/writing-shape",
+   "reg": "",
    "biz": [
     "内容创作",
     "家长答疑"
@@ -534,6 +560,7 @@
    "backup": "未备份",
    "hot": null,
    "source": "https://skills.sh/anthropics/skills/doc-coauthoring",
+   "reg": "",
    "biz": [
     "教学备课",
     "效率管理"
@@ -554,7 +581,8 @@
    "status": "未安装",
    "backup": "未备份",
    "hot": null,
-   "source": "https://www.openagentskill.com/blog",
+   "source": "未取得可靠安装源（skills.sh 无此注册名）",
+   "reg": "",
    "biz": [
     "内容创作",
     "效率管理"
@@ -575,6 +603,7 @@
    "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/mattpocock/skills/writing-beats",
+   "reg": "",
    "biz": [
     "内容创作",
     "家长答疑"
@@ -595,6 +624,7 @@
    "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/jimliu/baoyu-skills/baoyu-comic",
+   "reg": "",
    "biz": [
     "内容创作",
     "教学备课"
@@ -615,6 +645,7 @@
    "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/coreyhaines31/marketingskills/content-strategy",
+   "reg": "",
    "biz": [
     "内容创作"
    ],
@@ -634,6 +665,7 @@
    "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/github/awesome-copilot/documentation-writer",
+   "reg": "",
    "biz": [
     "教学备课",
     "效率管理"
@@ -654,6 +686,7 @@
    "backup": "已备份",
    "hot": null,
    "source": "https://skills.sh/anthropics/skills/webapp-testing",
+   "reg": "",
    "biz": [
     "效率管理",
     "内容创作"
@@ -674,6 +707,7 @@
    "backup": "未备份",
    "hot": null,
    "source": "https://agskills.dev/jamesrochabrun/skills/math-teacher",
+   "reg": "",
    "biz": [
     "教学备课",
     "题目解析"
@@ -694,7 +728,8 @@
    "status": "未安装",
    "backup": "未备份",
    "hot": null,
-   "source": "https://felloai.com/the-30-best-claude-code-skills-to-add-picked-by-use-case/",
+   "source": "未取得可靠安装源（skills.sh 无此注册名）",
+   "reg": "",
    "biz": [
     "家长答疑",
     "内容创作"
@@ -714,7 +749,8 @@
    "status": "未安装",
    "backup": "未备份",
    "hot": null,
-   "source": "https://www.openagentskill.com/best/content-automation",
+   "source": "https://skills.sh/filtrix-ai/filtrix-skills/seedance-2-0-prompting-skills",
+   "reg": "filtrix-ai/filtrix-skills@seedance-2-0-prompting-skills",
    "biz": [
     "口播视频"
    ],
@@ -734,6 +770,7 @@
    "backup": "已备份",
    "hot": null,
    "source": "https://lobehub.com/skills",
+   "reg": "",
    "biz": [
     "内容创作",
     "家长答疑"
@@ -754,7 +791,8 @@
    "status": "已安装",
    "backup": "已备份",
    "hot": null,
-   "source": "https://top-agent-skills.com/",
+   "source": "https://skills.sh/anthropics/skills/frontend-design",
+   "reg": "anthropics/skills@frontend-design",
    "biz": [
     "效率管理"
    ],
@@ -773,7 +811,8 @@
    "status": "已安装",
    "backup": "已备份",
    "hot": null,
-   "source": "https://blog.csdn.net/giszz/article/details/166995902",
+   "source": "https://github.com/mattpocock/skills",
+   "reg": "mattpocock/skills（系列：grill-me/grill-with-docs 等）",
    "biz": [
     "效率管理"
    ],
@@ -792,7 +831,8 @@
    "status": "未安装",
    "backup": "未备份",
    "hot": null,
-   "source": "https://agentconn.com/skills/",
+   "source": "https://skills.sh/szkocot/andrej-karpathy-skills/karpathy-guidelines",
+   "reg": "szkocot/andrej-karpathy-skills@karpathy-guidelines",
    "biz": [
     "效率管理"
    ],
@@ -812,7 +852,8 @@
    "status": "未安装",
    "backup": "未备份",
    "hot": null,
-   "source": "https://blog.csdn.net/giszz/article/details/166995902",
+   "source": "https://skills.sh/dietrichgebert/ponytail/ponytail",
+   "reg": "dietrichgebert/ponytail@ponytail",
    "biz": [
     "效率管理"
    ],
@@ -831,7 +872,8 @@
    "status": "未安装",
    "backup": "未备份",
    "hot": null,
-   "source": "https://dev.to/sarantoon/30-github-repos-ai-aela-agentic-ai-thiikamlangepn-trend-singhaakhm-2026-18h2",
+   "source": "https://github.com/addyosmani/agent-skills",
+   "reg": "addyosmani/agent-skills（系列）",
    "biz": [
     "效率管理"
    ],
@@ -851,7 +893,8 @@
    "status": "未安装",
    "backup": "未备份",
    "hot": null,
-   "source": "https://blog.csdn.net/giszz/article/details/166995902",
+   "source": "https://skills.sh/nvidia/openshell/openshell-cli",
+   "reg": "nvidia/openshell@openshell-cli",
    "biz": [
     "效率管理"
    ],
@@ -871,6 +914,7 @@
    "backup": "已备份",
    "hot": 37000,
    "source": "https://github.com/eternity4719/HowToLiveBetter",
+   "reg": "",
    "biz": [
     "内容创作"
    ],
@@ -890,6 +934,7 @@
    "backup": "已备份",
    "hot": 14000,
    "source": "https://github.com/titanwings/colleague-skill",
+   "reg": "",
    "biz": [
     "家长答疑"
    ],
@@ -908,7 +953,8 @@
    "status": "未安装",
    "backup": "未备份",
    "hot": null,
-   "source": "https://blog.csdn.net/porschev/article/details/161344503",
+   "source": "https://skills.sh/hezkvectory/hermes-edu-skills/civil-service-essay",
+   "reg": "hezkvectory/hermes-edu-skills（系列）",
    "biz": [
     "教学备课"
    ],
@@ -927,7 +973,8 @@
    "status": "已安装",
    "backup": "已备份",
    "hot": 20000,
-   "source": "https://blog.brightcoding.dev/2026/06/12/stop-building-chatbots-deeptutor-is-the-agent-native-tutor-you-actually-need",
+   "source": "https://skills.sh/hkuds/deeptutor/deeptutor-cli",
+   "reg": "hkuds/deeptutor@deeptutor-cli",
    "biz": [
     "教学备课"
    ],
@@ -946,7 +993,8 @@
    "status": "已安装",
    "backup": "已备份",
    "hot": null,
-   "source": "https://www.ailinklab.com/en/opensource/math-to-manim/",
+   "source": "https://skills.sh/harleycoops/math-to-manim/math-to-manim",
+   "reg": "harleycoops/math-to-manim@math-to-manim",
    "biz": [
     "口播视频"
    ],
@@ -965,7 +1013,8 @@
    "status": "未安装",
    "backup": "未备份",
    "hot": null,
-   "source": "https://www.iesdouyin.com/share/video/7688601528101375241",
+   "source": "https://skills.sh/harry0703/moneyprinterturbo/moneyprinterturbo-video",
+   "reg": "harry0703/moneyprinterturbo@moneyprinterturbo-video",
    "biz": [
     "口播视频"
    ],
@@ -984,7 +1033,8 @@
    "status": "已安装",
    "backup": "已备份",
    "hot": null,
-   "source": "https://agentskillslist.com/top/",
+   "source": "https://skills.sh/skills.volces.com/self-improving-agent",
+   "reg": "skills.volces.com@self-improving-agent",
    "biz": [
     "效率管理"
    ],
@@ -1003,7 +1053,8 @@
    "status": "未安装",
    "backup": "未备份",
    "hot": 179000,
-   "source": "https://www.openagentskill.com/best/open-source-ai-agent-skills",
+   "source": "https://skills.sh/jst-well-dan/skill-box/anthropic-brand-guidelines",
+   "reg": "jst-well-dan/skill-box@Anthropic-brand-guidelines",
    "biz": [
     "内容创作"
    ],
@@ -1023,6 +1074,7 @@
    "backup": "已备份",
    "hot": null,
    "source": "https://github.com/Lord1Egypt/RA-Skills",
+   "reg": "",
    "biz": [
     "教学备课"
    ],
@@ -1041,7 +1093,8 @@
    "status": "已安装",
    "backup": "已备份",
    "hot": null,
-   "source": "https://www.toolify.ai/openclaw-skills/xiaozhi-teach-math-error-analyzer-74180",
+   "source": "https://skills.sh/qizhitang/xiaozhi-skills/xiaozhi-teach-math-error-analyzer",
+   "reg": "qizhitang/xiaozhi-skills@xiaozhi-teach-math-error-analyzer",
    "biz": [
     "家长答疑"
    ],
@@ -1061,6 +1114,7 @@
    "backup": "未备份",
    "hot": null,
    "source": "https://claude.com/connectors/coteach",
+   "reg": "",
    "biz": [
     "教学备课"
    ],
@@ -1080,6 +1134,7 @@
    "backup": "未备份",
    "hot": null,
    "source": "https://skillhub.cloud.tencent.com/skills/k12-smart-teacher",
+   "reg": "",
    "biz": [
     "家长答疑"
    ],
@@ -1099,6 +1154,7 @@
    "backup": "已备份",
    "hot": 37367,
    "source": "https://github.com/ayghri/i-have-adhd",
+   "reg": "",
    "biz": [
     "内容创作"
    ],
@@ -1118,6 +1174,7 @@
    "backup": "已备份",
    "hot": 169700,
    "source": "https://github.com/affaan-m/everything-claude-code",
+   "reg": "",
    "biz": [
     "效率管理"
    ],
@@ -1137,6 +1194,7 @@
    "backup": "未备份",
    "hot": 43400,
    "source": "https://github.com/hesreallyhim/awesome-claude-code",
+   "reg": "",
    "biz": [
     "效率管理"
    ],
@@ -1156,6 +1214,7 @@
    "backup": "已备份",
    "hot": 43635,
    "source": "https://github.com/cathrynlavery/diagram-design",
+   "reg": "",
    "biz": [
     "题目解析"
    ],
@@ -1175,6 +1234,7 @@
    "backup": "已备份",
    "hot": null,
    "source": "https://agenticskills.io/learn/what-are-claude-skills",
+   "reg": "",
    "biz": [
     "效率管理"
    ],
@@ -1194,6 +1254,7 @@
    "backup": "已备份",
    "hot": 38000,
    "source": "https://www.getclaudeskills.com/blog/best-productivity-skills",
+   "reg": "",
    "biz": [
     "效率管理"
    ],
@@ -2810,5 +2871,5 @@
    "diff": "1分钟内上手"
   }
  },
- "updated": "2026-10-08 10:27"
+ "updated": "2026-10-08 12:29"
 }

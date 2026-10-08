@@ -289,6 +289,29 @@ def select(date_str):
 def run_cli(args):
     return subprocess.run(["lark-cli"] + args, capture_output=True, text=True)
 
+# ---------- 来源合规校验（防历史债再犯） ----------
+# 白名单 = 技能真实托管/分发的安装源。盘点类文章站（csdn/openagentskill/felloai/top-agent-skills
+# /agentconn/dev.to/brightcoding/ailinklab/agentskillslist/toolify 等）一律视为不合规，
+# 不能作为"安装入口"，挡在台账补录/推荐写入之前。
+ALLOWED_SOURCE_DOMAINS = {
+    "skills.sh", "skilld.dev", "github.com", "lobehub.com", "agskills.dev",
+    "claude.com", "getclaudeskills.com", "agenticskills.io",
+    "skillhub.cloud.tencent.com", "aka.doubaocdn.com",
+}
+
+def source_ok(source):
+    """来源必须是白名单域名且非空；支持 markdown 链接或裸 URL。"""
+    s = (source or "").strip()
+    if not s:
+        return False
+    m = re.search(r"https?://([^/\"\s\)\]]+)", s)
+    if not m:
+        return False
+    dom = m.group(1).lower()
+    # 去掉 www. 前缀后比对；主域名精确匹配
+    core = dom[4:] if dom.startswith("www.") else dom
+    return core in ALLOWED_SOURCE_DOMAINS or dom in ALLOWED_SOURCE_DOMAINS
+
 def ledger_map():
     r = run_cli(["base", "+record-list", "--base-token", BASE_TOKEN, "--table-id", TBL_LEDGER,
                  "--as", "user", "--format", "json", "--limit", "200"])
@@ -310,9 +333,14 @@ def add_ledger(items, dry):
     """补录不在台账的技能，返回 name -> rec_id"""
     m = ledger_map()
     need = []
+    blocked = []
     for it in items:
         name = it["name"]
         if name in m:
+            continue
+        if not source_ok(it.get("source") or ""):
+            blocked.append(name)
+            print(f"[write] 拦截补录 {name}：来源不合规（非安装源白名单/空来源）→ {str(it.get('source'))[:60]}")
             continue
         cat = "效率工具"
         biz = ["内容创作"]
@@ -338,12 +366,14 @@ def add_ledger(items, dry):
         }
         need.append(rec)
     if not need:
-        print("[write] 台账无需补录"); return m
+        print("[write] 台账无需补录" + (f"；另有 {len(blocked)} 条因来源不合规被拦截" if blocked else ""))
+        return m
     if dry:
-        print(f"[write][dry] 将补录台账 {len(need)} 条：{[r['技能名称'] for r in need]}")
+        print(f"[write][dry] 将补录台账 {len(need)} 条：{[r['技能名称'] for r in need]}"
+              + (f"；拦截 {len(blocked)} 条：{blocked}" if blocked else ""))
         return m
     r = run_cli(["base", "+record-batch-create", "--base-token", BASE_TOKEN, "--table-id", TBL_LEDGER,
-                 "--create-records", json.dumps(need, ensure_ascii=False), "--as", "user"])
+                 "--json", json.dumps({"create_records": need}, ensure_ascii=False), "--as", "user"])
     print("[write] 台账补录：", r.stdout[:300], r.stderr[:300])
     return ledger_map()  # 重读拿新 rec_id
 
@@ -374,7 +404,7 @@ def write(date_str, dry):
         print(f"[write][dry] 将写推荐记录 {len(recs)} 条（批次 {date_str} 推荐）")
         return
     r = run_cli(["base", "+record-batch-create", "--base-token", BASE_TOKEN, "--table-id", TBL_RECS,
-                 "--create-records", json.dumps(recs, ensure_ascii=False), "--as", "user"])
+                 "--json", json.dumps({"create_records": recs}, ensure_ascii=False), "--as", "user"])
     print("[write] 推荐记录：", r.stdout[:400], r.stderr[:400])
     # 回读确认
     r2 = run_cli(["base", "+record-list", "--base-token", BASE_TOKEN, "--table-id", TBL_RECS,

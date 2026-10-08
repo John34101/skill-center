@@ -44,6 +44,9 @@ def extract_url(x):
         return ""
     m = re.match(r"^\s*\[[^\]]*\]\(([^)]+)\)\s*$", str(x))
     if m:
+        # "未取得可靠安装源" 这类标注文本被 URL 字段包成 [text](http://text) 时，取原文文本而非假 URL
+        if m.group(1).startswith("http://未取得") or "未取得" in m.group(1):
+            return m.group(0)  # 保留整段标注，由调用方再清理
         return m.group(1).strip()
     return str(x).strip()
 
@@ -58,7 +61,10 @@ for r in load("ledger_raw"):
         "status": first(r, "安装状态") or "",
         "backup": first(r, "备份状态") or "",
         "hot": v(r, "热度(星)"),
-        "source": extract_url(v(r, "来源")) or "",
+        "source": (lambda x: (re.match(r"^\s*\[([^\]]*)\]\([^)]+\)\s*$", str(x)).group(1).strip()
+                              if re.match(r"^\s*\[([^\]]*)\]\([^)]+\)\s*$", str(x)) else str(x).strip())
+                  if "未取得" in str(v(r, "来源")) else extract_url(v(r, "来源")) or "")(v(r, "来源")),
+        "reg": v(r, "可安装注册名") or "",
         "biz": r.get("对应业务") or [],
         "last": date10(v(r, "最近试用日期")),
         "score": v(r, "效果评分"),
@@ -220,7 +226,7 @@ def js_object(obj):
 
 html = open(HTML, encoding="utf-8").read()
 
-ledger_keys = ["name","cn","cat","tags","status","backup","hot","source","biz","last","score","desc","note"]
+ledger_keys = ["name","cn","cat","tags","status","backup","hot","source","reg","biz","last","score","desc","note"]
 recs_keys = ["batch","date","skill","inst","tried","effect","hot","why","type"]
 cases_keys = ["name","skill","scene","date","effect","link","kind","steps","note","cover","bg","time","repro"]
 
