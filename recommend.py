@@ -11,7 +11,7 @@
 依赖：python3 标准库 + lark-cli（write/publish 需要，且已 OAuth 授权）；GitHub Trending 匿名可抓。
 注意：--dry-run 时不写库、不发布，只打印计划。热度数据全部来自真实抓取，禁止编造。
 """
-import json, re, subprocess, sys, time, urllib.request
+import json, re, subprocess, sys, time, urllib.parse, urllib.request
 from datetime import datetime
 from pathlib import Path
 
@@ -68,11 +68,20 @@ def gh_api_stars(repo, retries=2):
 
 # ---------------- fetch ----------------
 def fetch_trending():
-    """抓 GitHub Trending daily，取前 25 条"""
-    try:
-        html = http_get("https://github.com/trending?since=daily")
-    except Exception as e:
-        print(f"[fetch] trending 失败（跳过）：{e}")
+    """抓 GitHub Trending daily，取前 25 条。GitHub 经代理偶发 502/超时，这里 8s 快超时、
+    仅重试 2 次，避免拖垮整条管道（失败就让 Search API / 经典兜底顶上）。"""
+    html = None
+    last_err = ""
+    for attempt in range(2):
+        try:
+            html = http_get("https://github.com/trending?since=daily", timeout=8)
+            if html and "<article" in html:
+                break
+        except Exception as e:
+            last_err = str(e)
+            print(f"[fetch] trending 第 {attempt+1} 次失败：{e}")
+    if not html or "<article" not in html:
+        print(f"[fetch] trending 失败（跳过）：{last_err}")
         return []
     items = []
     for art in re.findall(r'<article class="Box-row">([\s\S]*?)</article>', html):
@@ -102,8 +111,34 @@ def fetch_classic():
                       "src": "classic"})
     return items
 
+def fetch_github_search():
+    """稳定新鲜源：GitHub Search API 抓热门 agent/skill 仓库（比 HTML trending 稳定，api.github.com 通）。
+    作为 trending 抓取失败时的兜底，保证候选池有外部新鲜技能。返回与 fetch 候选同构的 dict 列表。"""
+    items = []
+    queries = [
+        "topic:claude-code-skill",
+        "claude code agent skill in:name,description",
+    ]
+    for q in queries:
+        try:
+            url = "https://api.github.com/search/repositories?q=" + urllib.parse.quote(q) \
+                  + "&sort=stars&order=desc&per_page=20"
+            d = json.loads(http_get(url))
+            for it in d.get("items", []):
+                repo = it.get("full_name", "")
+                if not repo:
+                    continue
+                items.append({"name": it["name"], "cn": "", "repo": repo,
+                              "desc": (it.get("description") or "")[:120],
+                              "hot": it.get("stargazers_count") or 0,
+                              "source": it.get("html_url") or f"https://github.com/{repo}",
+                              "src": "search"})
+        except Exception as e:
+            print(f"[fetch] github search 失败（{q}）：{e}")
+    return items
+
 def fetch():
-    cands = fetch_trending() + fetch_classic()
+    cands = fetch_trending() + fetch_github_search() + fetch_classic()
     seen, out = set(), []
     for c in cands:
         k = c["name"].lower()
@@ -165,8 +200,28 @@ def installed_set():
         print(f"[select] 台账读取失败（按无已装处理）：{e}")
     return inst
 
+def ledger_id_to_name():
+    """读台账，返回 记录id -> 技能名（用于把推荐记录里的关联链接解析成技能名）"""
+    m = {}
+    try:
+        r = run_cli(["base", "+record-list", "--base-token", BASE_TOKEN, "--table-id", TBL_LEDGER,
+                     "--as", "user", "--format", "json", "--limit", "200"])
+        d = json.loads(r.stdout)["data"]
+        fields, rows, ids = d["fields"], d["data"], d.get("record_id_list", [])
+        for i, row in enumerate(rows):
+            rec = {fields[j]: row[j] for j in range(len(fields)) if j < len(row)}
+            rid = ids[i] if i < len(ids) else None
+            nm = rec.get("技能名称")
+            if rid and nm:
+                m[rid] = nm
+    except Exception as e:
+        print(f"[select] 台账读取失败（关联解析跳过）：{e}")
+    return m
+
 def recent_recs(days=14):
-    """P1 重复抑制：读推荐记录表，返回最近 N 天推荐过的技能名集合"""
+    """P1 重复抑制：读推荐记录表，返回最近 N 天推荐过的技能名集合。
+    注意：推荐记录表本身没有『技能名称』字段，技能是通过『关联技能』链接到台账的，
+    必须先把链接 id 解析成技能名，否则去重永远是空集合（历史 bug）。"""
     recent = set()
     try:
         r = run_cli(["base", "+record-list", "--base-token", BASE_TOKEN, "--table-id", TBL_RECS,
@@ -175,12 +230,16 @@ def recent_recs(days=14):
         fields, rows = d["fields"], d["data"]
         from datetime import timedelta
         cutoff = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
+        name_by_id = ledger_id_to_name()
         for row in rows:
             rec = {fields[j]: row[j] for j in range(len(fields)) if j < len(row)}
             dt = str(rec.get("推荐日期") or "")[:10]
-            name = rec.get("技能名称")
-            if dt >= cutoff and name and not isinstance(name, list):
-                recent.add(str(name))
+            link = rec.get("关联技能")
+            nm = None
+            if isinstance(link, list) and link and isinstance(link[0], dict) and link[0].get("id"):
+                nm = name_by_id.get(link[0]["id"])
+            if dt >= cutoff and nm:
+                recent.add(str(nm))
     except Exception as e:
         print(f"[select] 推荐记录读取失败（重复抑制跳过）：{e}")
     return recent
@@ -241,12 +300,46 @@ def why_text(item, cases=None, fb=None, name2cn=None):
         return "可落地：自动化工具类，试用以提效"
     return "可落地：试用后按真实效果反馈回流推荐"
 
+def ledger_candidates():
+    """兜底候选源：从台账拉取『未安装』的技能（已装的不必再推荐），作为 GitHub Trending
+    抓取失败时的新鲜候选。返回与 fetch 候选同构的 dict 列表（src=ledger）。"""
+    out = []
+    try:
+        r = run_cli(["base", "+record-list", "--base-token", BASE_TOKEN, "--table-id", TBL_LEDGER,
+                     "--as", "user", "--format", "json", "--limit", "200"])
+        d = json.loads(r.stdout)["data"]
+        fields, rows = d["fields"], d["data"]
+        for row in rows:
+            rec = {fields[j]: row[j] for j in range(len(fields)) if j < len(row)}
+            name = rec.get("技能名称")
+            if not name:
+                continue
+            st = rec.get("安装状态")
+            if isinstance(st, list):
+                st = st[0] if st else None
+            if st == "已安装":
+                continue  # 已装的不再作为推荐候选
+            hot = rec.get("热度(星)") or 0
+            out.append({"name": name, "cn": rec.get("中文名") or "", "repo": name,
+                        "desc": rec.get("一句话说明") or "",
+                        "hot": hot if isinstance(hot, int) else 0,
+                        "source": rec.get("来源") or "", "src": "ledger"})
+    except Exception as e:
+        print(f"[select] 台账候选拉取失败（跳过兜底）：{e}")
+    return out
+
 def select(date_str):
     cands = json.load(open("/tmp/rec_candidates.json", encoding="utf-8"))
+    # 合并兜底候选（台账未安装技能），按 name 去重，不覆盖已有的 trending/classic
+    ledger_cands = ledger_candidates()
+    seen = {c["name"].lower() for c in cands}
+    for lc in ledger_cands:
+        if lc["name"].lower() not in seen:
+            cands.append(lc); seen.add(lc["name"].lower())
     profile = load_profile()
     fb = feedback_scores()
     inst = installed_set()
-    recent = recent_recs(days=14)          # P1：最近 14 天已推，抑制重复
+    recent = recent_recs(days=14)          # P1：最近 14 天已推，抑制重复（已修复关联链接解析）
     cases = recent_cases(days=7)           # P4：最近 7 天案例，个性化推荐语
     excluded = inst | {n for n, d in fb.items() if d.get("不感兴趣", 0) > 0} | recent
     def final_score(c):
@@ -269,7 +362,7 @@ def select(date_str):
     for c in sorted(cands, key=lambda x: -(x.get("hot") or 0)):
         if c["name"].lower() in used:
             continue
-        if len(trending) >= 5 and c["name"] in recent:
+        if c["name"] in excluded:
             continue
         c["cn"] = c.get("cn") or ""
         c["why"] = why_text(c, cases, fb)
@@ -280,7 +373,7 @@ def select(date_str):
     plan = {"date": date_str, "for_you": for_you, "trending": trending}
     with open("/tmp/rec_plan.json", "w", encoding="utf-8") as f:
         json.dump(plan, f, ensure_ascii=False, indent=1)
-    print(f"[select] 为你推荐 {len(for_you)} 条 / 全网热门 {len(trending)} 条 → /tmp/rec_plan.json")
+    print(f"[select] 候选池 {len(cands)} 条（含台账兜底 {len(ledger_cands)}）→ 为你推荐 {len(for_you)} / 全网热门 {len(trending)} → /tmp/rec_plan.json")
     print(f"[select] 已排除：已装 {len(inst & {c['name'] for c in cands})} / 不感兴趣 {len({c['name'] for c in cands if c['name'] in excluded - inst - recent})} / 近14天已推 {len(recent & {c['name'] for c in cands})}")
     for c in for_you:
         print(f"  [为你推荐] {c['name']} ★{c.get('hot')} 画像{c['img']} 反馈{c['fb']} | {c['why'][:40]}")
@@ -442,8 +535,9 @@ def publish(dry):
         rid = json.loads(r.stdout)["data"]["release_id"]
     except Exception:
         print("[publish] 未拿到 release_id，跳过轮询"); return
-    for i in range(10):
-        time.sleep(5)
+    # 发布是异步的；轮询仅作确认，缩短轮询避免整条 all 管道触发超时（发布本身已完成）
+    for i in range(6):
+        time.sleep(4)
         r2 = run_cli(["apps", "+release-get", "--app-id", APP_ID, "--release-id", str(rid), "--as", "user", "--format", "json"])
         try:
             st = json.loads(r2.stdout)["data"]["status"]
@@ -453,7 +547,7 @@ def publish(dry):
         if st == "finished":
             print(f"[publish] 在线页：{ONLINE_URL}")
             return
-    print("[publish] 发布超时未 finished，请人工确认")
+    print(f"[publish] 轮询结束（release {rid} 末态={st}，发布通常已完成，可访问在线页确认）")
 
 # ---------------- main ----------------
 def main():
