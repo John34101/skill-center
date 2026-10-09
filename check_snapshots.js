@@ -1,5 +1,7 @@
 const fs = require('fs');
-const s = fs.readFileSync('/home/user/Doubao/chats/38444168961292802/skill-center/Skill管理中心.html', 'utf8');
+const path = require('path');
+// 自动定位脚本所在目录（跨平台：Mac/Linux 都能跑），不再写死豆包的工作区路径
+const s = fs.readFileSync(path.join(__dirname, 'Skill管理中心.html'), 'utf8');
 function grab(name) {
   const re = new RegExp('const ' + name + ' = (\\[.*?\\]);', 's');
   const m = s.match(re);

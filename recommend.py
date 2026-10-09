@@ -15,7 +15,8 @@ import json, re, subprocess, sys, time, urllib.request
 from datetime import datetime
 from pathlib import Path
 
-BASE = Path("/home/user/Doubao/chats/38444168961292802/skill-center")
+# 脚本自动定位自身所在目录（跨平台：Mac/Linux 都能跑），不再写死豆包的工作区路径
+BASE = Path(__file__).resolve().parent
 PROFILE = BASE / "profile.json"
 BASE_TOKEN = "VRA1bfbiaaiUjRsK0ekcwAdsnHd"
 TBL_LEDGER = "tblnkqaoYXg7j0dj"     # 技能台账

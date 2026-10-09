@@ -33,7 +33,19 @@
 
 ## [Unreleased]
 
-（等待下一次变更记录）
+#### 2026-10-09 — WorkBuddy（贾维斯 1 号）— 跨平台适配 + 发布自动化 + 视觉验证基建
+
+**A. 修复脚本路径硬编码（Mac 适配）** ✅
+- 把 `sync_from_base.py`、`recommend.py`、`check_snapshots.js`、`cases-1010/gen_15cases.py` 中写死的豆包 Linux 工作区路径 `/home/user/Doubao/chats/38444168961292802/skill-center` 改为脚本自动定位自身目录（`__file__` / `__dirname`），Mac / Linux 通用，业务逻辑零改动
+- 验证：沙盒实跑 `sync_from_base.py`，确认 `data.json` 落到脚本所在目录而非旧 Linux 路径
+
+**B. 新增 GitHub Release 自动化** ✅
+- 新增 `.github/workflows/release.yml`：推送 `v*` tag 时自动校验根目录 `VERSION` 与 tag 一致、从 `CHANGELOG.md` 提取对应版本段作 Release 说明并建 Release
+- 与 `AGENTS.md` §13 版本流程衔接（递增 VERSION → 提交 → 打 `v<VERSION>` tag → 推送 → 自动建 Release）
+
+**C. 安装 Chromium + 发布后视觉验证脚本** ✅
+- 隔离 node workspace 安装 `playwright` npm 包；**复用本机已装的 Google Chrome**（脚本用 `executablePath` 指向 `/Applications/Google Chrome.app`），无需从国外 CDN 下载 Playwright 自带 chromium（实测 38 KB/s 龟速，185 MB 需 ~70 分钟，已放弃该路）
+- 新增 `verify_publish.mjs`：node Playwright 启动 Chrome 截图核对页面（拦截外网字体省流量），支持在线 URL 或本地 HTML 绝对路径（自动转 `file://`），实跑通过（已截出 `verify-shot.png`）
 
 ---
 

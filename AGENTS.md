@@ -51,7 +51,7 @@ skill-center/
 ```
 
 配套目录（在 skill-center 之外）：
-- `/home/user/Doubao/chats/38444168961292802/skills-backup/`：安装备份 tar（含日期）
+- 安装备份 tar（含日期）目录：原 Linux 工作区为 `/home/user/Doubao/chats/38444168961292802/skills-backup/`；**新机器 / Mac 上请替换为实际仓库位置**（如 `~/skill-center/skills-backup/`）。脚本已自动定位自身目录，无需固定 cd 到该路径。
 - `~/.claude/skills/`：npx skills 实际安装目录
 - `~/.doubao/agent_mode/workspace/.user_skills/`：安装副本（agent 可读的 skill 目录）
 
@@ -151,14 +151,15 @@ cd /home/user && npx -y skills remove <技能> -g -y
 ## 8. 发布与验证链路
 
 ```bash
-cd /home/user/Doubao/chats/38444168961292802/skill-center
+cd <skill-center 仓库根目录>      # 脚本会自动定位自身目录，无需写死固定路径
 python3 sync_from_base.py                      # 需先导出 4 表 JSON 到 /tmp 再运行
 cp Skill管理中心.html /tmp/index.html
 lark-cli apps +html-publish --path /tmp/index.html --app-id app_17f88vb743c --as user --format json
 # 取返回 release_id，轮询直到 status=finished：
 lark-cli apps +release-get --app-id app_17f88vb743c --release-id <id> --as user
-# 在线验证：python playwright + executable_path=/usr/local/bin/chromium，route abort fonts.*/gstatic/googleapis
-# （node playwright 不可用，必须用 python playwright）
+# 在线验证：用 node Playwright 启动**本机已装的 Google Chrome** 截图核对页面（route abort fonts.*/gstatic/googleapis 省流量，避免外网字体阻塞）
+#   - 复用系统 Chrome：verify_publish.mjs 用 `executablePath` 指向 /Applications/Google Chrome.app，无需下载 Playwright 自带 chromium（国外 CDN 龟速）
+#   - 运行：node verify_publish.mjs [在线URL 或 本地HTML绝对路径]（playwright 装在隔离 node workspace，脚本内用 createRequire 显式加载）
 ```
 
 在线页：https://s0zel9adg2.doubaoapps.com/app/app_17f88vb743c
@@ -182,7 +183,7 @@ python3 recommend.py all      --date YYYY-MM-DD            # fetch→select→wr
 ## 9. 已知问题与坑（必读，别再踩）
 
 - 台账「对应业务」无「家长沟通」选项 → 用「家长答疑」。
-- `+record-batch-update --yes` 是未知 flag；node playwright 不可用（用 python playwright）。
+- `+record-batch-update --yes` 是未知 flag。（旧记录「node playwright 不可用」已过时：现用 node playwright + 本机 Google Chrome，见 §8）
 - GitHub REST API 匿名限流（45.78.x rate limit exceeded）→ 用 skills CLI / raw.githubusercontent 取数据。
 - 页面请求 data.json 返回 404 属旧问题：页面实际数据源是 HTML 内置快照（sync 覆写），不是线上 data.json。
 - 禁 BootCDN；renderer 最外层必须 `<html style="margin:0;padding:0;">`。
@@ -192,8 +193,8 @@ python3 recommend.py all      --date YYYY-MM-DD            # fetch→select→wr
 
 ## 10. 环境差异（Linux 工作区 → 新机器/Claude Code 本机）
 
-- 原项目运行在 Linux 工作区 `/home/user/Doubao/chats/38444168961292802/skill-center/`；Claude Code 在本机（Mac）终端运行。
-- 新环境需要：`node + npm`（npx skills）、`python3`、`chromium`（playwright 验证）、`lark-cli`（**必须重新 OAuth 授权一次**，user 身份，飞书个人版 tenant）、Claude Code 本体（npm i -g @anthropic-ai/claude-code 或 brew 安装，在项目目录运行 `claude`）。
+- 脚本已改为**自动定位自身所在目录**（`sync_from_base.py` / `recommend.py` / `check_snapshots.js` / `cases-1010/gen_15cases.py` 均用 `__file__`/`__dirname`，跨平台）；原项目曾固定在 Linux 工作区 `/home/user/Doubao/chats/38444168961292802/skill-center/`，现不再依赖该路径。Claude Code 在本机（Mac）终端运行。
+- 新环境需要：`node + npm`（npx skills）、`python3`、本机已装 Google Chrome（playwright 验证复用它，无需单独装 chromium）、`lark-cli`（**必须重新 OAuth 授权一次**，user 身份，飞书个人版 tenant）、Claude Code 本体（npm i -g @anthropic-ai/claude-code 或 brew 安装，在项目目录运行 `claude`）。
 - 豆包 cron（每日推荐调度）在豆包平台，Claude Code 无法管理；**调度外置方案**（GitHub Actions cron 跑 recommend.py）是后续可选迁移项，未开始。
 - 在线验证截图、发布链路在 Mac 上同样适用（装好 lark-cli + OAuth 后）。
 
