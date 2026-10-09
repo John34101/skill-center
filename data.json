@@ -1382,6 +1382,206 @@
    "score": null,
    "desc": "全站爆款：按正文回答该不该做、值不值",
    "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "antivibe",
+   "cn": "",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 1118,
+   "source": "https://github.com/mohi-devhub/antivibe",
+   "reg": "",
+   "biz": [
+    "教学备课"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Learn what AI writes, not just accept it. A Claude Code skill that turns AI-generated code into educational deep dives.",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "ECC",
+   "cn": "",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 275486,
+   "source": "https://github.com/affaan-m/ECC",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development f",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "appllama-skills",
+   "cn": "",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 2477,
+   "source": "https://github.com/Appllama/appllama-skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "A builder, not just a researcher. Agent skills that turn top-grossing app patterns into native-quality mobile screens.",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "context-mode",
+   "cn": "",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 25776,
+   "source": "https://github.com/mksglu/context-mode",
+   "reg": "",
+   "biz": [
+    "教学备课"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Context window optimization for AI coding agents. Sandboxes tool output (98% reduction), persists session memory, and   ",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "khazix-skills",
+   "cn": "",
+   "cat": "内容创作",
+   "tags": [
+    "写作润色"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 21261,
+   "source": "https://github.com/KKKKhazix/khazix-skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "数字生命卡兹克开源的 AI Skills 合集 | Agent Skills: leader（帮你定义目标）, neat-freak 洁癖, hv-analysis, khazix-writer & more — Claude Code, ",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "skills",
+   "cn": "",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 281376,
+   "source": "https://github.com/trending?since=daily",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Skills for Real Engineers. Straight from my .agents directory.",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "claude-mem",
+   "cn": "",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 98635,
+   "source": "https://github.com/trending?since=daily",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Persistent Context Across Sessions for Every Agent – Captures everything your agent does during sessions, compresses it ",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "scientific-agent-skills",
+   "cn": "",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 48078,
+   "source": "https://github.com/K-Dense-AI/scientific-agent-skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Turn any AI agent into an AI Scientist. The #1 Agent Skills library for science, used by 250,000+ scientists worldwide. ",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "awesome-agent-skills",
+   "cn": "",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 35395,
+   "source": "https://github.com/VoltAgent/awesome-agent-skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "Anthropic-Cybersecurity-Skills",
+   "cn": "",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 33976,
+   "source": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "817 structured cybersecurity skills for AI agents · Mapped to 6 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3F",
+   "note": "2026-10-09 recommend.py 自动补录"
   }
  ],
  "recs": [
@@ -2037,45 +2237,111 @@
   {
    "batch": "2026-10-09 推荐",
    "date": "2026-10-09",
-   "skill": "security-audit",
+   "skill": "antivibe",
    "inst": "待定",
    "tried": "未试用",
    "effect": "未试用",
-   "hot": "281324 stars",
+   "hot": "1118 stars",
+   "why": "可落地：家长/学生回复去 AI 味、代写口播稿",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "ECC",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "275486 stars",
+   "why": "可落地：调研初中生家长高频问题、抓选题素材",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "appllama-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "2477 stars",
+   "why": "可落地：调研初中生家长高频问题、抓选题素材",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "context-mode",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "25776 stars",
+   "why": "可落地：备课、知识点讲解、出题与答疑",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "khazix-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "21261 stars",
+   "why": "可落地：家长/学生回复去 AI 味、代写口播稿",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "281376 stars",
+   "why": "可落地：自动化工具类，试用以提效",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "claude-mem",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "98635 stars",
    "why": "可落地：试用后按真实效果反馈回流推荐",
    "type": "trending"
   },
   {
    "batch": "2026-10-09 推荐",
    "date": "2026-10-09",
-   "skill": "frontend-design",
+   "skill": "scientific-agent-skills",
    "inst": "待定",
    "tried": "未试用",
    "effect": "未试用",
-   "hot": "180022 stars",
-   "why": "你标记过感兴趣，同赛道技能值得一试",
+   "hot": "48078 stars",
+   "why": "可落地：试用后按真实效果反馈回流推荐",
    "type": "trending"
   },
   {
    "batch": "2026-10-09 推荐",
    "date": "2026-10-09",
-   "skill": "webapp-testing",
+   "skill": "awesome-agent-skills",
    "inst": "待定",
    "tried": "未试用",
    "effect": "未试用",
-   "hot": "180022 stars",
-   "why": "你标记过感兴趣，同赛道技能值得一试",
+   "hot": "35395 stars",
+   "why": "可落地：自动化工具类，试用以提效",
    "type": "trending"
   },
   {
    "batch": "2026-10-09 推荐",
    "date": "2026-10-09",
-   "skill": "colleague-skill",
+   "skill": "Anthropic-Cybersecurity-Skills",
    "inst": "待定",
    "tried": "未试用",
    "effect": "未试用",
-   "hot": "25421 stars",
-   "why": "你标记过感兴趣，同赛道技能值得一试",
+   "hot": "33976 stars",
+   "why": "可落地：试用后按真实效果反馈回流推荐",
    "type": "trending"
   }
  ],
@@ -2778,7 +3044,17 @@
   "pdf": "未评价",
   "docx": "未评价",
   "pptx": "未评价",
-  "life-decision-guide": "未评价"
+  "life-decision-guide": "未评价",
+  "antivibe": "未评价",
+  "ECC": "未评价",
+  "appllama-skills": "未评价",
+  "context-mode": "未评价",
+  "khazix-skills": "未评价",
+  "skills": "未评价",
+  "claude-mem": "未评价",
+  "scientific-agent-skills": "未评价",
+  "awesome-agent-skills": "未评价",
+  "Anthropic-Cybersecurity-Skills": "未评价"
  },
  "interest": {
   "mattpocock-skills": "感兴趣",
@@ -3369,5 +3645,5 @@
    "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-09 12:18"
+ "updated": "2026-10-09 13:08"
 }
