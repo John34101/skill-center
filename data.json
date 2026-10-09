@@ -1400,7 +1400,7 @@
    ],
    "last": null,
    "score": null,
-   "desc": "Learn what AI writes, not just accept it. A Claude Code skill that turns AI-generated code into educational deep dives.",
+   "desc": "把任何代码（尤其 AI 生成的）转成「教学级深讲」或架构审查——讲清是什么/为什么/什么时候用/还有哪些替代，不再照抄 AI 输出",
    "note": "2026-10-09 recommend.py 自动补录"
   },
   {
@@ -1420,7 +1420,7 @@
    ],
    "last": null,
    "score": null,
-   "desc": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development f",
+   "desc": "一套给 AI 编码助手「提速调优」的系统，配齐技能、直觉、记忆、安全与「调研先行」的开发规范，让 Claude Code / Codex 干活更稳",
    "note": "2026-10-09 recommend.py 自动补录"
   },
   {
@@ -1440,7 +1440,7 @@
    ],
    "last": null,
    "score": null,
-   "desc": "A builder, not just a researcher. Agent skills that turn top-grossing app patterns into native-quality mobile screens.",
+   "desc": "把爆款 App 的界面设计套路，直接变成原生级质量的移动端界面（React Native / Expo），做界面不再靠灵感",
    "note": "2026-10-09 recommend.py 自动补录"
   },
   {
@@ -1460,7 +1460,7 @@
    ],
    "last": null,
    "score": null,
-   "desc": "Context window optimization for AI coding agents. Sandboxes tool output (98% reduction), persists session memory, and   ",
+   "desc": "管住 AI 的「上下文」——把工具输出压缩约 98%、跨会话保留记忆，让长任务不因上下文爆掉而跑偏",
    "note": "2026-10-09 recommend.py 自动补录"
   },
   {
@@ -1480,7 +1480,7 @@
    ],
    "last": null,
    "score": null,
-   "desc": "数字生命卡兹克开源的 AI Skills 合集 | Agent Skills: leader（帮你定义目标）, neat-freak 洁癖, hv-analysis, khazix-writer & more — Claude Code, ",
+   "desc": "数字生命卡兹克日常在用的 6 个实用 AI 技能合集（定义目标 leader、文档洁癖 neat-freak、分析 hv-analysis、写作 khazix-writer 等），都是跑通才开源的",
    "note": "2026-10-09 recommend.py 自动补录"
   },
   {
@@ -1500,7 +1500,7 @@
    ],
    "last": null,
    "score": null,
-   "desc": "Skills for Real Engineers. Straight from my .agents directory.",
+   "desc": "TypeScript 名师 Matt Pocock 直接从自己 .agents 目录开源的一套工程师实用技能，面向「真工程师」的日常任务",
    "note": "2026-10-09 recommend.py 自动补录"
   },
   {
@@ -1520,7 +1520,7 @@
    ],
    "last": null,
    "score": null,
-   "desc": "Persistent Context Across Sessions for Every Agent – Captures everything your agent does during sessions, compresses it ",
+   "desc": "给 AI 装上跨会话长期记忆——自动记录它做过的一切、用 AI 压缩归档，并在以后的会话里把相关内容重新注入，越用越懂你",
    "note": "2026-10-09 recommend.py 自动补录"
   },
   {
@@ -1540,7 +1540,7 @@
    ],
    "last": null,
    "score": null,
-   "desc": "Turn any AI agent into an AI Scientist. The #1 Agent Skills library for science, used by 250,000+ scientists worldwide. ",
+   "desc": "把 AI 变成「AI 科学家」的科研技能库（177 个技能、接入 100+ 数据库），覆盖文献、数据分析等科研全流程，25 万+ 科研人员在用",
    "note": "2026-10-09 recommend.py 自动补录"
   },
   {
@@ -1560,7 +1560,7 @@
    ],
    "last": null,
    "score": null,
-   "desc": "A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex",
+   "desc": "1000+ agent 技能的精选合集，来自官方团队与社区，兼容 Claude Code / Codex / Gemini CLI / Cursor 等，找技能来这翻",
    "note": "2026-10-09 recommend.py 自动补录"
   },
   {
@@ -1580,7 +1580,7 @@
    ],
    "last": null,
    "score": null,
-   "desc": "817 structured cybersecurity skills for AI agents · Mapped to 6 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3F",
+   "desc": "817 个结构化网络安全技能，对齐 MITRE ATT&CK / NIST CSF 等 6 大框架、覆盖 29 个安全领域，适配 20+ 平台",
    "note": "2026-10-09 recommend.py 自动补录"
   }
  ],
@@ -2242,7 +2242,7 @@
    "tried": "未试用",
    "effect": "未试用",
    "hot": "1118 stars",
-   "why": "可落地：家长/学生回复去 AI 味、代写口播稿",
+   "why": "把 AI 生成的内容/代码讲成「教学深讲」——备课讲原理、不再照抄 AI 输出",
    "type": "for_you"
   },
   {
@@ -2253,7 +2253,7 @@
    "tried": "未试用",
    "effect": "未试用",
    "hot": "275486 stars",
-   "why": "可落地：调研初中生家长高频问题、抓选题素材",
+   "why": "让 AI 助手干活更稳、少瞎猜：技能+记忆+安全+调研先行的规范系统",
    "type": "for_you"
   },
   {
@@ -2264,7 +2264,7 @@
    "tried": "未试用",
    "effect": "未试用",
    "hot": "2477 stars",
-   "why": "可落地：调研初中生家长高频问题、抓选题素材",
+   "why": "做小程序/App 界面不再从零想，照爆款套路直接出原生质感界面",
    "type": "for_you"
   },
   {
@@ -2275,7 +2275,7 @@
    "tried": "未试用",
    "effect": "未试用",
    "hot": "25776 stars",
-   "why": "可落地：备课、知识点讲解、出题与答疑",
+   "why": "长任务上下文不爆、跨会话记得住，AI 聊久了也不「忘」",
    "type": "for_you"
   },
   {
@@ -2286,7 +2286,7 @@
    "tried": "未试用",
    "effect": "未试用",
    "hot": "21261 stars",
-   "why": "可落地：家长/学生回复去 AI 味、代写口播稿",
+   "why": "卡兹克日常在用的写作/整理/分析技能，现成可用",
    "type": "for_you"
   },
   {
@@ -2297,7 +2297,7 @@
    "tried": "未试用",
    "effect": "未试用",
    "hot": "281376 stars",
-   "why": "可落地：自动化工具类，试用以提效",
+   "why": "资深工程师的实用技能集，可借鉴其 AI 技能组织方式",
    "type": "trending"
   },
   {
@@ -2308,7 +2308,7 @@
    "tried": "未试用",
    "effect": "未试用",
    "hot": "98635 stars",
-   "why": "可落地：试用后按真实效果反馈回流推荐",
+   "why": "给 AI 装上长期记忆，记住你的项目与偏好，不用每次重讲",
    "type": "trending"
   },
   {
@@ -2319,7 +2319,7 @@
    "tried": "未试用",
    "effect": "未试用",
    "hot": "48078 stars",
-   "why": "可落地：试用后按真实效果反馈回流推荐",
+   "why": "文献调研/数据分析/课题梳理的科研技能库（177 技能+100 数据库）",
    "type": "trending"
   },
   {
@@ -2330,7 +2330,7 @@
    "tried": "未试用",
    "effect": "未试用",
    "hot": "35395 stars",
-   "why": "可落地：自动化工具类，试用以提效",
+   "why": "1000+ agent 技能精选索引，找现成技能先来这翻",
    "type": "trending"
   },
   {
@@ -2341,7 +2341,7 @@
    "tried": "未试用",
    "effect": "未试用",
    "hot": "33976 stars",
-   "why": "可落地：试用后按真实效果反馈回流推荐",
+   "why": "发布内容/网页前的安全自查，817 个结构化安全技能",
    "type": "trending"
   }
  ],
@@ -3572,6 +3572,86 @@
    "output": "自动化脚本+执行结果（截图/数据）",
    "pitfalls": "依赖 CDP 与目标站点结构，改版后需调整；登录/支付等敏感操作谨慎自动化",
    "diff": "1分钟内上手"
+  },
+  "antivibe": {
+   "scene": "想搞懂 AI 帮你写/改的代码或解法；把 AI 生成的内容讲透讲给学生前自己先吃透；备课要讲原理而非结论",
+   "tpl": "用 antivibe 把这段 AI 生成的代码/解题过程讲成教学深讲",
+   "input": "一段代码/文件/目录，或 AI 生成的解题过程",
+   "output": "教学深讲文档（原理+替代方案）或架构审查报告",
+   "pitfalls": "面向代码/技术内容；纯文字类内容收益有限",
+   "diff": "1分钟内上手"
+  },
+  "ECC": {
+   "scene": "AI 助手输出不稳、爱瞎猜；想给它配长期记忆与安全约束；搭建规范化 AI 工作流",
+   "tpl": "按 ECC 的规范帮我配置这套 AI 工作流",
+   "input": "你的 AI 助手（Claude Code/Codex/Cursor 等）与要规范化的场景",
+   "output": "配置好的技能/记忆/规范文件",
+   "pitfalls": "偏工程配置，需要一定命令行基础",
+   "diff": "需简单配置"
+  },
+  "appllama-skills": {
+   "scene": "做小程序/App 界面没头绪；想快速产出像样的移动端 UI；照抄爆款 App 的界面结构",
+   "tpl": "用 appllama-skills 把「读书打卡」做成一个原生质感的移动端界面",
+   "input": "想做的界面功能描述或参考的 App 截图",
+   "output": "移动端界面代码（React Native / Expo）",
+   "pitfalls": "面向移动端 UI；需基本前端环境",
+   "diff": "需依赖环境"
+  },
+  "context-mode": {
+   "scene": "AI 聊着就「忘」前文；长任务上下文被塞满；想让 AI 跨会话接着干",
+   "tpl": "用 context-mode 压缩这次长任务的上下文并保留记忆",
+   "input": "一个较长的 AI 会话/任务",
+   "output": "压缩后的上下文 + 持久化的会话记忆",
+   "pitfalls": "面向 AI 编码代理；效果依赖具体环境",
+   "diff": "需简单配置"
+  },
+  "khazix-skills": {
+   "scene": "需要现成的写作/整理/分析类 AI 技能；把模糊想法定义成清晰目标",
+   "tpl": "用 khazix-skills 的 leader 把这个模糊想法定义成清晰目标",
+   "input": "你的写作/整理/分析需求",
+   "output": "依具体子技能而定（目标文档/整理结果/文章）",
+   "pitfalls": "合集类，含 6 个子技能，按需选取",
+   "diff": "1分钟内上手"
+  },
+  "skills": {
+   "scene": "做技术/工程类自动化；想借鉴成熟工程师的 AI 技能组织方式",
+   "tpl": "看看 skills 里有哪些能用在内容生产/自动化上",
+   "input": "你的工程/自动化任务",
+   "output": "依具体子技能而定",
+   "pitfalls": "偏工程向；部分技能需开发环境",
+   "diff": "1分钟内上手"
+  },
+  "claude-mem": {
+   "scene": "想让它记住项目背景/个人偏好，不用每次重讲；多轮项目要保持连贯",
+   "tpl": "用 claude-mem 记住我的项目和常用偏好",
+   "input": "需长期跟踪的项目/偏好信息",
+   "output": "持久化的记忆库（跨会话注入）",
+   "pitfalls": "需按说明安装到对应 AI 环境",
+   "diff": "需简单配置"
+  },
+  "scientific-agent-skills": {
+   "scene": "文献调研、数据分析、课题梳理等科研类任务",
+   "tpl": "用 scientific-agent-skills 帮我梳理这个课题的文献",
+   "input": "研究课题/数据集",
+   "output": "调研综述/分析结果（依子技能）",
+   "pitfalls": "面向科研场景；部分技能需外部数据源",
+   "diff": "需依赖环境"
+  },
+  "awesome-agent-skills": {
+   "scene": "想找现成技能时先来这检索；了解某类需求有没有现成方案",
+   "tpl": "在 awesome-agent-skills 里找有没有做短视频的技能",
+   "input": "你的需求关键词",
+   "output": "技能清单/推荐链接",
+   "pitfalls": "是索引合集（awesome list），本身不含可执行技能",
+   "diff": "1分钟内上手"
+  },
+  "Anthropic-Cybersecurity-Skills": {
+   "scene": "发布内容/网页前的安全自查；安全类教学；攻防/渗透研究",
+   "tpl": "用 Anthropic-Cybersecurity-Skills 给这个网页做一次安全自查",
+   "input": "待检测的网页/代码/目标",
+   "output": "安全评估/攻防分析报告",
+   "pitfalls": "仅限合法授权范围内的安全测试；面向安全从业场景",
+   "diff": "需依赖环境"
   }
  },
  "polish": [
@@ -3646,5 +3726,5 @@
    "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-09 14:14"
+ "updated": "2026-10-09 14:53"
 }
