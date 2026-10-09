@@ -55,7 +55,9 @@
 - 原 `export_tables()` 只导出 4 张（ledger/recs/cases/feedback），但 `sync_from_base.py` 实际需要 6 张，缺 `polish_raw`（技能打磨记录）与 `handbook_raw`（技能手册）
 - 新增表 ID 常量 `TBL_POLISH="tblfWDIjED46UGFx"`、`TBL_HANDBOOK="tblifZ7KdXaj7GbZ"`，导出字典补齐为 6 张
 - 复跑 `recommend.py publish` 验证：`data.json written … handbook=61 polish=5`，HTML 7 处快照全刷新（含 POLISH_RECORDS / HANDBOOK_MAP），重新发布 release `7694516672430623698` 已 finished
-- ⚠️ **教训**：上次 `all` 回填时 write 已成功入库，仅 publish 的 sync 崩溃；**只重跑 `publish` 即可，切勿重跑 `all`**，否则 recent_recs 14 天去重会把今天已推的 10 条抑制掉、写出另一批，造成重复推荐
+- ⚠️ **教训（原写法，已更正见 G 段）**：上次 `all` 回填时 write 已成功入库，仅 publish 的 sync 崩溃；**只重跑 `publish` 即可，切勿重跑 `all`**。
+  - ❌ **原解释错误**：当时写的是"recent_recs 14 天去重会把今天已推的 10 条抑制掉"——这个前提是"去重生效"，但**彼时去重根本没生效**（见 G 段根因）。原"勿重跑 all"的真正原因其实是：去重失效时重跑 all 会**原样再写一遍同一批 10 条 → 制造精确重复推荐**（这正是老板看到"今日推荐 4 个全是推过的"的根因之一）。
+  - ✅ **现在去重已真正生效（G 段修复）**：此约束反而更成立——同天重跑 all 会被去重压掉当天已推的 10 条、再写出另一批，造成当天推荐被替换/混乱，且无必要。结论不变：**sync 崩只重跑 `publish`，不重跑 `all`**。
 
 **E. 新增「每日推荐接管」自动化（替代豆包 9 点调度）** ✅
 - WorkBuddy 自动化 `id=563ac448-23a1-46e1-9548-27a0017c7a95`，名称「Skill中心每日推荐接管（原豆包调度）」，recurring `FREQ=DAILY;BYHOUR=9;BYMINUTE=0`，状态 ACTIVE，cwd=skill-center
@@ -65,6 +67,29 @@
 **F. 豆包额度恢复后的协调约定（单一调度原则）** ✅
 - 现状：**WorkBuddy 自动化为唯一每日调度方**（豆包停跑时由它兜底；豆包恢复后双方都跑有 14 天去重兜底，不会重复推荐）
 - 长期建议（待老板拍板）：明确 **单一调度方**，另一方只做「推荐后的 LLM 精修」（如豆包恢复后负责把 rule 选出的 10 条做个性化文案润色），避免资源浪费与口径冲突；届时在 `AGENTS.md` §1.5 角色分工处固化
+
+#### 2026-10-09 — WorkBuddy（贾维斯 1 号）— 根治推荐去重失效 + 候选池健壮化 + 管道超时安全
+
+> **用户投诉触发排查**：老板看线上页发现"不是最新数据"，且"今日推荐 4 个全是之前推过的"。深挖后定位两个叠加根因（sync 崩残留 + 去重从未生效），本批次一次性根治。
+
+**G. 修复 `recent_recs` 14 天去重从未生效（项目级历史 bug，真正的根因）** 🔴→✅
+- **根因**：推荐记录表**本身没有「技能名称」字段**，技能是通过「关联技能」链接到台账（link 到台账 rec_id）。原 `recent_recs()` 却读 `rec.get("技能名称")` → 永远为空 → 去重集合永远是空集。**自项目诞生起，14 天重复抑制从未真正生效过**，每天都能自由重复推老技能。
+- 这正是老板看到"今日推荐 4 个全是之前推过的"的直接代码层原因：去重形同虚设。
+- **修复**：新增 `ledger_id_to_name()` 把关联链接 id 解析成技能名；`recent_recs()` 改为先解析关联技能名、再按 14 天窗口剔除。实测修复后正确抑制 62 个近期已推技能，新选 10 条零混入（验证："混入近期推过的：无 ✅ 全部新鲜"）。
+- 同步更正了 D 段建立在错误前提上的"教训"说明（见上）。
+
+**H. 候选池健壮化（Trending 抓取不稳 → 稳定新鲜源兜底）** ✅
+- **问题**：GitHub Trending HTML 经代理常 502 / IncompleteRead 失败；去重修好后，候选塌缩为 10 个经典 skill 且全在近期推过 → `select` 产出 0 条，当日推荐开天窗。
+- **修复**：
+  - 新增 `fetch_github_search()`：用稳定的 `api.github.com/search/repositories`（实测 HTTP 200）替代飘忽的 HTML trending 作兜底新鲜源（query: `topic:claude-code-skill`、`claude code agent skill in:name,description`）。
+  - 新增 `ledger_candidates()`：从台账拉「未安装」技能兜底候选（src=ledger）。
+  - `select()` 合并 ledger 候选 + trending 也做 excluded 检查。
+- 实测即便 Trending 全挂，也能凑 ~49 候选、稳定产出双档 10 条满额，杜绝开天窗。
+
+**I. 管道超时安全（避免 `all` 被 SIGTERM 杀掉）** ✅
+- `fetch_trending()` 快失败（8s×2 次尝试）；`publish()` 轮询缩短为 6×4s，确保每日自动化 `all` 在超时线内跑完，不再出现"输出全空、库里 0 条"的崩坏批次。
+- 已清理崩坏批次产生的错误/重复推荐记录（分两批共删除 10 条错误记录），并真实写入 2026-10-09 的 10 条新鲜推荐（5 for_you：antivibe / ECC / appllama-skills / context-mode / khazix-skills；5 trending：skills / claude-mem / scientific-agent-skills / awesome-agent-skills / Anthropic-Cybersecurity-Skills）。
+- 重新发布 release `7694529232202091479` finished，线上页刷新至 DATA_UPDATED=`2026-10-09 13:08`（curl 验证 HTTP 200 + 数据真值一致）。
 
 ---
 
