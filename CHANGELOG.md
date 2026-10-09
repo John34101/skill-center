@@ -91,6 +91,13 @@
 - 已清理崩坏批次产生的错误/重复推荐记录（分两批共删除 10 条错误记录），并真实写入 2026-10-09 的 10 条新鲜推荐（5 for_you：antivibe / ECC / appllama-skills / context-mode / khazix-skills；5 trending：skills / claude-mem / scientific-agent-skills / awesome-agent-skills / Anthropic-Cybersecurity-Skills）。
 - 重新发布 release `7694529232202091479` finished，线上页刷新至 DATA_UPDATED=`2026-10-09 13:08`（curl 验证 HTTP 200 + 数据真值一致）。
 
+**J. 补齐推荐中文名（老板反馈：卡片全显示英文名，丢了豆包时代的中文名）** ✅
+- **根因**：豆包时代推荐经 LLM 起中文名写入台账「中文名」字段；WorkBuddy 接管后 `fetch_trending`/`fetch_github_search` 路径候选 `cn` 恒为空（recommend.py:97/131），写库后台账中文名为空，页面 `CN_OF` 回退成英文名做主标题。
+- **修复**：为 2026-10-09 批次 10 个技能按「一句话说明」真实功能补中文名（antivibe→AI代码深讲 / ECC→智能体调优 / appllama-skills→爆款界面师 / context-mode→上下文管家 / khazix-skills→卡兹克技能集 / skills→工程师技能集 / claude-mem→长期记忆 / scientific-agent-skills→科研智能体 / awesome-agent-skills→精选技能榜 / Anthropic-Cybersecurity-Skills→安全攻防集），`+record-batch-update` 写回后重跑 publish（release `7694547121328098266` finished，DATA_UPDATED=2026-10-09 14:14），Chrome 截图视觉验证卡片标题已恢复「中文主标题 + 英文小字」样式。
+- ⚠️ **踩坑记录**：`+record-list` 读回有缓存延迟，批量更新后立即 list 读会假报「未写入」，以 `+record-get` 直读为准。
+- **防复发**：每日接管自动化（§8.6，id 563ac448）已加固定步骤——管道跑完检查当日新补录台账的中文名，为空则按真实功能命名写回，再重跑一次 publish。
+- ⚠️ **已知质量缺口（待老板拍板）**：推荐卡「可落地：…」一行来自规则生成的推荐理由（profile 关键词匹配），可能与技能真实功能不符（如 antivibe 真实功能是"把 AI 生成代码转成教学深讲"，卡片却显示"家长/学生回复去AI味"）。长期解法即 §F 所述「LLM 精修」环节。
+
 ---
 
 ## [0.1.0] — 2026-10-09

@@ -1385,7 +1385,7 @@
   },
   {
    "name": "antivibe",
-   "cn": "",
+   "cn": "AI代码深讲",
    "cat": "教学与教研",
    "tags": [
     "教学讲解"
@@ -1405,7 +1405,7 @@
   },
   {
    "name": "ECC",
-   "cn": "",
+   "cn": "智能体调优",
    "cat": "效率工具",
    "tags": [
     "自动化"
@@ -1425,7 +1425,7 @@
   },
   {
    "name": "appllama-skills",
-   "cn": "",
+   "cn": "爆款界面师",
    "cat": "效率工具",
    "tags": [
     "自动化"
@@ -1445,7 +1445,7 @@
   },
   {
    "name": "context-mode",
-   "cn": "",
+   "cn": "上下文管家",
    "cat": "教学与教研",
    "tags": [
     "教学讲解"
@@ -1465,7 +1465,7 @@
   },
   {
    "name": "khazix-skills",
-   "cn": "",
+   "cn": "卡兹克技能集",
    "cat": "内容创作",
    "tags": [
     "写作润色"
@@ -1485,7 +1485,7 @@
   },
   {
    "name": "skills",
-   "cn": "",
+   "cn": "工程师技能集",
    "cat": "效率工具",
    "tags": [
     "自动化"
@@ -1505,7 +1505,7 @@
   },
   {
    "name": "claude-mem",
-   "cn": "",
+   "cn": "长期记忆",
    "cat": "效率工具",
    "tags": [
     "自动化"
@@ -1525,7 +1525,7 @@
   },
   {
    "name": "scientific-agent-skills",
-   "cn": "",
+   "cn": "科研智能体",
    "cat": "效率工具",
    "tags": [
     "自动化"
@@ -1545,7 +1545,7 @@
   },
   {
    "name": "awesome-agent-skills",
-   "cn": "",
+   "cn": "精选技能榜",
    "cat": "效率工具",
    "tags": [
     "自动化"
@@ -1565,7 +1565,7 @@
   },
   {
    "name": "Anthropic-Cybersecurity-Skills",
-   "cn": "",
+   "cn": "安全攻防集",
    "cat": "效率工具",
    "tags": [
     "自动化"
@@ -3081,7 +3081,8 @@
   "xiaozhi-teach-math-lesson-planner": "感兴趣",
   "xiaozhi-teach-math-error-analyzer": "感兴趣",
   "coteach": "不感兴趣",
-  "hyperframes": "感兴趣"
+  "hyperframes": "感兴趣",
+  "khazix-skills": "感兴趣"
  },
  "handbook": {
   "manimate": {
@@ -3645,5 +3646,5 @@
    "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-09 13:08"
+ "updated": "2026-10-09 14:14"
 }
