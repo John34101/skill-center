@@ -1262,6 +1262,126 @@
    "score": null,
    "desc": "CDP 协议控制浏览器：点选/填表/截图/多标签并行，不依赖 Playwright",
    "note": "2026-10-08 案例试跑安装（agent-browser-core 等价环境验证）"
+  },
+  {
+   "name": "excel",
+   "cn": "Excel处理",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 180022,
+   "source": "https://github.com/anthropics/skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Excel 表格读写分析可视化",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "setup-matt-pocock-skills",
+   "cn": "Matt Pocock技能集",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 281324,
+   "source": "https://github.com/mattpocock/skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "TypeScript 名师的生产级 Claude Code 技能集合",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "pdf",
+   "cn": "PDF处理",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 180022,
+   "source": "https://github.com/anthropics/skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "PDF 读写编辑转换全流程处理",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "docx",
+   "cn": "Word处理",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 180022,
+   "source": "https://github.com/anthropics/skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Office Word 阅读新建修改",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "pptx",
+   "cn": "PPT处理",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 180022,
+   "source": "https://github.com/anthropics/skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "PowerPoint 创建编辑导出",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "life-decision-guide",
+   "cn": "高性价比人生指南",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 55283,
+   "source": "https://github.com/eternity4719/HowToLiveBetter",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "全站爆款：按正文回答该不该做、值不值",
+   "note": "2026-10-09 recommend.py 自动补录"
   }
  ],
  "recs": [
@@ -1912,6 +2032,50 @@
    "effect": "未试用",
    "hot": "38,000★（2026-08）",
    "why": "CDP 控制浏览器点选/填表/截图，调研同行内容/抓取素材自动化",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "security-audit",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "281324 stars",
+   "why": "可落地：试用后按真实效果反馈回流推荐",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "frontend-design",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "180022 stars",
+   "why": "你标记过感兴趣，同赛道技能值得一试",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "webapp-testing",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "180022 stars",
+   "why": "你标记过感兴趣，同赛道技能值得一试",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "colleague-skill",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "25421 stars",
+   "why": "你标记过感兴趣，同赛道技能值得一试",
    "type": "trending"
   }
  ],
@@ -2608,7 +2772,13 @@
   "awesome-claude-code": "未评价",
   "diagram-design": "未评价",
   "react-best-practices": "未评价",
-  "agent-browser-core": "未评价"
+  "agent-browser-core": "未评价",
+  "excel": "未评价",
+  "setup-matt-pocock-skills": "未评价",
+  "pdf": "未评价",
+  "docx": "未评价",
+  "pptx": "未评价",
+  "life-decision-guide": "未评价"
  },
  "interest": {
   "mattpocock-skills": "感兴趣",
@@ -3199,5 +3369,5 @@
    "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-09 00:23"
+ "updated": "2026-10-09 12:18"
 }

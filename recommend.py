@@ -5,7 +5,7 @@
   python3 recommend.py fetch    --date 2026-10-07            # 抓取候选 → /tmp/rec_candidates.json
   python3 recommend.py select   --date 2026-10-07 --dry-run  # 规则打分 → /tmp/rec_plan.json（为你推荐5+全网热门5）
   python3 recommend.py write    --date 2026-10-07 --dry-run  # 写 Base：台账补录+推荐记录+link+回读
-  python3 recommend.py publish  --date 2026-10-07 --dry-run  # 导出4表 → sync → 发布 → 轮询 → 验证
+  python3 recommend.py publish  --date 2026-10-07 --dry-run  # 导出6表 → sync → 发布 → 轮询 → 验证
   python3 recommend.py all      --date 2026-10-07 --dry-run  # fetch→select→write→publish 一条链
 
 依赖：python3 标准库 + lark-cli（write/publish 需要，且已 OAuth 授权）；GitHub Trending 匿名可抓。
@@ -23,6 +23,8 @@ TBL_LEDGER = "tblnkqaoYXg7j0dj"     # 技能台账
 TBL_RECS = "tblMWvCyEcrhxbyu"       # 推荐记录
 TBL_CASES = "tblgLIx9pFpojjW1"      # 用法案例
 TBL_FEEDBACK = "tblLQqY1V17uA6Ql"   # 技能反馈
+TBL_POLISH = "tblfWDIjED46UGFx"     # 技能打磨记录（Skill Lab）
+TBL_HANDBOOK = "tblifZ7KdXaj7GbZ"   # 技能手册（L2 使用手册）
 APP_ID = "app_17f88vb743c"
 ONLINE_URL = "https://s0zel9adg2.doubaoapps.com/app/app_17f88vb743c"
 
@@ -418,12 +420,13 @@ def write(date_str, dry):
 
 # ---------------- publish ----------------
 def export_tables():
-    tables = {"ledger_raw": TBL_LEDGER, "recs_raw": TBL_RECS, "cases_raw": TBL_CASES, "feedback_raw": TBL_FEEDBACK}
+    tables = {"ledger_raw": TBL_LEDGER, "recs_raw": TBL_RECS, "cases_raw": TBL_CASES,
+              "feedback_raw": TBL_FEEDBACK, "polish_raw": TBL_POLISH, "handbook_raw": TBL_HANDBOOK}
     for fn, tid in tables.items():
         r = run_cli(["base", "+record-list", "--base-token", BASE_TOKEN, "--table-id", tid,
                      "--as", "user", "--format", "json", "--limit", "200"])
         Path(f"/tmp/{fn}.json").write_text(r.stdout, encoding="utf-8")
-    print("[publish] 4 表导出完成")
+    print("[publish] 6 表导出完成（台账/推荐/案例/反馈/打磨/手册）")
 
 def publish(dry):
     export_tables()
