@@ -471,7 +471,18 @@ def add_ledger(items, dry):
     r = run_cli(["base", "+record-batch-create", "--base-token", BASE_TOKEN, "--table-id", TBL_LEDGER,
                  "--json", json.dumps({"create_records": need}, ensure_ascii=False), "--as", "user"])
     print("[write] 台账补录：", r.stdout[:300], r.stderr[:300])
-    return ledger_map()  # 重读拿新 rec_id
+    # 直接用 create 响应里的 record_id_list（与 need 同序）建映射，避免 +record-list 缓存延迟：
+    # 刚建的记录立刻回读常常读不到，会让 write() 误判「台账无记录」而跳过整条推荐记录（2026-10-10 实测踩坑）。
+    try:
+        created = json.loads(r.stdout)["data"]["record_id_list"]
+        if len(created) != len(need):
+            raise ValueError(f"created {len(created)} != need {len(need)}")
+        for rec, cid in zip(need, created):
+            m[rec["技能名称"]] = cid
+    except Exception as e:
+        print(f"[write] 补录 id 解析失败（{e}），回读台账兜底")
+        m = ledger_map()
+    return m
 
 def write(date_str, dry):
     plan = json.load(open("/tmp/rec_plan.json", encoding="utf-8"))

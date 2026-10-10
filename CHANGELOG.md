@@ -33,6 +33,30 @@
 
 ## [Unreleased]
 
+#### 2026-10-10 — WorkBuddy（贾维斯 1 号）— 每日推荐执行 + 内容精修 + 修复台账补录缓存延迟 bug
+
+**A. 执行 2026-10-10 每日推荐管道** ✅
+- 运行 `recommend.py all --date 2026-10-10`（代理 + 放开沙箱）：候选 60 → 池 81（含台账兜底 41）→ 选 10 条（为你推荐 5 / 全网热门 5）
+- 发布 release `7694885537510264013` finished；随后内容精修后重跑 `publish`（release `7694886686001482992` finished），线上 DATA_UPDATED=`2026-10-10 12:15`
+- 今日 10 条：为你推荐=excel / Auto-claude-code-research-in-sleep / AI-Research-SKILLs / anything2explainer / huashu-design；全网热门=setup-matt-pocock-skills / pdf / docx / pptx / agent-skills
+
+**B. 修复 `recommend.py` 台账补录后回读缓存延迟 bug（当日实测踩坑）** 🔴→✅
+- **现象**：`add_ledger()` 新建 5 条台账成功后，`write()` 却打印「跳过 xxx：台账无记录且补录失败」→ 当天 10 条只写进 5 条推荐记录（5 个新技能推荐记录全部丢失）。
+- **根因**：`add_ledger()` 结尾用 `ledger_map()`（走 `+record-list`）回读新 rec_id，而 `+record-list` 有缓存延迟，刚建的记录立刻读不到 → `m.get(name)` 返回 None → 误判跳过。
+- **修复**：改用 `+record-batch-create` 响应里的 `data.record_id_list`（与 `need` **同序**）直接建 name→id 映射，不再依赖回读；长度不符时回退 `ledger_map()` 兜底。
+- **当日补救**：手动用 create 响应里的 id 补建 5 条推荐记录（`reczz28LZWWyRpig` 等）并 `+record-get` 逐条核验通过，今日补满 10 条。
+
+**C. 内容精修（对照豆包时代卡片水准）** ✅
+- 5 个新增技能补 **中文名**：Auto-claude-code-research-in-sleep→睡后科研 / AI-Research-SKILLs→AI科研库 / anything2explainer→知识解说片 / huashu-design→一句话设计 / agent-skills→开发流水线；`agent-skills` 来源修正为真实仓库 `https://github.com/addyosmani/agent-skills`（原为 trending 页）
+- 5 个新增技能 **一句话说明** 由英文原文改写为丰富中文（是什么+对你的价值）
+- **手册表**新增 **10 条**（当日全部推荐技能，覆盖 触发场景/调用模板/输入准备/产出格式/坑与边界/上手难度）：5 新增 + excel/pdf/docx/pptx/setup-matt-pocock-skills（后 5 个此前无手册、卡片会空）
+- 推荐记录 **推荐理由与帮助**：新建 5 条 + 修正已有 5 条（规则生成的错误文案 → 正确中文一句话），今日 10 条全部为真实中文说明
+- 文案均基于 GitHub README / SKILL.md 真实功能撰写（经代理抓取 raw.githubusercontent.com），非望文生义
+
+**遗留 / 注意**
+- 卡片「案例」区块仍空：案例表为**真实使用记录**，不能编造，待真正试用后补（沿用 J/K 段口径）
+- 建议后续把 B 段修复与「内容精修」步骤固化进每日接管自动化的固定流程
+
 #### 2026-10-09 — WorkBuddy（贾维斯 1 号）— 跨平台适配 + 发布自动化 + 视觉验证基建
 
 **A. 修复脚本路径硬编码（Mac 适配）** ✅

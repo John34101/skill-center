@@ -1582,6 +1582,106 @@
    "score": null,
    "desc": "817 个结构化网络安全技能，对齐 MITRE ATT&CK / NIST CSF 等 6 大框架、覆盖 29 个安全领域，适配 20+ 平台",
    "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "Auto-claude-code-research-in-sleep",
+   "cn": "睡后科研",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 17196,
+   "source": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "让 AI 在你睡觉时自动跑完一整套调研流程——找方向、读文献、复现/搭代码，再由另一个模型交叉审稿挑毛病；专治「调研没时间、结果没人复核」。",
+   "note": "2026-10-10 recommend.py 自动补录"
+  },
+  {
+   "name": "AI-Research-SKILLs",
+   "cn": "AI科研库",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 13398,
+   "source": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "近 100 个 AI 研究与工程技能的开源全集，覆盖 23 大类（模型架构、微调、训练、评测、RAG…），让 agent 从找 idea 一路做到论文；做技术调研/开发的按需取用。",
+   "note": "2026-10-10 recommend.py 自动补录"
+  },
+  {
+   "name": "anything2explainer",
+   "cn": "知识解说片",
+   "cat": "视频制作",
+   "tags": [
+    "视频生成"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 2379,
+   "source": "https://github.com/Vincentwei1021/anything2explainer",
+   "reg": "",
+   "biz": [
+    "口播视频"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "给一个知识点或一篇文章，自动产出带配音、字幕、章节条的讲解视频（1280×720 MP4）——代码逐帧绘制，中英文皆可，不用拍素材、不用生成式视频模型，适合做口播/讲解素材。",
+   "note": "2026-10-10 recommend.py 自动补录"
+  },
+  {
+   "name": "huashu-design",
+   "cn": "一句话设计",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 24744,
+   "source": "https://github.com/alchaincyf/huashu-design",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "在 agent 里打一句话，拿回能交付的设计——信息图、可编辑 PPT、可点击原型、发布动画，3–30 分钟出稿；内置多套 HTML 原生风格库，避免「一眼 AI 味」。",
+   "note": "2026-10-10 recommend.py 自动补录"
+  },
+  {
+   "name": "agent-skills",
+   "cn": "开发流水线",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 104101,
+   "source": "https://github.com/addyosmani/agent-skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "一套生产级工程技能，把资深工程师的工作流固化成 9 个命令——定需求 / 拆任务 / 增量实现 / 验证 / 审代码 / 发布，让 AI 写代码有章法、不再「氛围编程」。",
+   "note": "2026-10-10 recommend.py 自动补录"
   }
  ],
  "recs": [
@@ -2343,6 +2443,116 @@
    "hot": "33976 stars",
    "why": "发布内容/网页前的安全自查，817 个结构化安全技能",
    "type": "trending"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "excel",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "180195 stars",
+   "why": "表格清洗、算公式、做图表一次到位，学生成绩表/统计表都能用",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "setup-matt-pocock-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "282971 stars",
+   "why": "TypeScript 名师的小而可组合工程技能集，适合正经开发迭代",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "pdf",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "180195 stars",
+   "why": "讲义/试卷 PDF 合并拆分加水印、扫描件转可搜索，一栈搞定",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "docx",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "180195 stars",
+   "why": "讲义/家长通知一键排成规范 Word，带目录和页眉",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "pptx",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "180195 stars",
+   "why": "课件/公开课 PPT 从大纲一键成稿，改版也不用重做",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "Auto-claude-code-research-in-sleep",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "17196 stars",
+   "why": "让 AI 夜里自动跑调研、另一模型交叉复核，适合快速摸清新方向",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "AI-Research-SKILLs",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "13398 stars",
+   "why": "近百个 AI 科研技能全集，做技术调研/开发时按需取用",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "anything2explainer",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "2379 stars",
+   "why": "知识点/文章一键变成带配音字幕的讲解视频，适合做口播素材",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "huashu-design",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "24744 stars",
+   "why": "一句话生成信息图/PPT/发布动画，替代模板化 AI 设计",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "agent-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "104101 stars",
+   "why": "9 个命令固化软件开发全流程，写代码先规格后实现，质量更稳",
+   "type": "trending"
   }
  ],
  "cases": [
@@ -3054,7 +3264,12 @@
   "claude-mem": "未评价",
   "scientific-agent-skills": "未评价",
   "awesome-agent-skills": "未评价",
-  "Anthropic-Cybersecurity-Skills": "未评价"
+  "Anthropic-Cybersecurity-Skills": "未评价",
+  "Auto-claude-code-research-in-sleep": "未评价",
+  "AI-Research-SKILLs": "未评价",
+  "anything2explainer": "未评价",
+  "huashu-design": "未评价",
+  "agent-skills": "未评价"
  },
  "interest": {
   "mattpocock-skills": "感兴趣",
@@ -3652,6 +3867,86 @@
    "output": "安全评估/攻防分析报告",
    "pitfalls": "仅限合法授权范围内的安全测试；面向安全从业场景",
    "diff": "需依赖环境"
+  },
+  "Auto-claude-code-research-in-sleep": {
+   "scene": "想系统调研一个新方向/新工具却没时间盯；或需要「一个模型干活、另一个模型挑刺」的交叉复核",
+   "tpl": "用 ARIS 调研 <主题>，跑一轮找方向+复现，并让另一个模型复核结论",
+   "input": "一个明确的研究方向/问题；被执行 agent 与复核 agent 各自可用的模型（默认 Codex MCP 复核）",
+   "output": "Markdown 研究报告 + 可跑代码 + 复核意见（工作流产物，非现成平台）",
+   "pitfalls": "是方法论/工作流不是平台，需接入支持 skill 的 agent；ML 研究导向，教育/自媒体场景需自行迁移；交叉复核要配第二个模型",
+   "diff": "需依赖环境"
+  },
+  "AI-Research-SKILLs": {
+   "scene": "要系统了解/落地 AI 研究相关技术（微调、训练、评测、RAG 等），想让 agent 按标准流程干活",
+   "tpl": "用 AI-Research-SKILLs 里的 <某类技能> 完成 <任务>",
+   "input": "明确要做的技术环节（如微调/RAG/评测）；对应环境依赖（GPU、框架）",
+   "output": "按技能分类的流程 / 代码 / 报告",
+   "pitfalls": "研究/开发向，纯教学备课用不上；部分技能重依赖（GPU/训练环境）；按需挑单个技能而非全装",
+   "diff": "需依赖环境"
+  },
+  "anything2explainer": {
+   "scene": "要把一个知识点或一篇文章做成口播讲解视频（数学概念、模型讲解、选题科普）",
+   "tpl": "用 anything2explainer 把 <知识点/文章> 做成 <时长/语言> 的解说视频",
+   "input": "主题或现成文稿；时长与语言；TTS 音色（自带 kokoro 或对接火山 TTS 2.0）",
+   "output": "1280×720 H.264 MP4（配音+字幕+章节进度条）+ 研究稿/分镜/QC 报告等全套中间产物",
+   "pitfalls": "基于 Remotion（React+TS）需能跑渲染环境；视频为代码绘制的黑底动效而非真人；中文配音走 BYO-TTS 更稳",
+   "diff": "需依赖环境"
+  },
+  "huashu-design": {
+   "scene": "要做视觉成品（封面/信息图/原型/动画/PPT）却没有设计师；或想摆脱模板化 AI 设计感",
+   "tpl": "用 huashu-design 做一张 <主题> 的信息图 / 一套 <主题> 的 PPT / 一段 <主题> 发布动画",
+   "input": "一个主题或文案；可选投喂品牌资产（logo、色板、UI 截图）让产出更贴品牌",
+   "output": "HTML 原生设计稿（可导出 PPT、动画 MP4、信息图等）",
+   "pitfalls": "安装后需确认 references/assets/scripts/demos 子目录齐全（旧版 skills CLI 只同步单文件）；产出为 HTML 原生，微调需懂一点 HTML",
+   "diff": "需简单配置"
+  },
+  "agent-skills": {
+   "scene": "让 agent 写/改一个正经项目，希望它按「先规格→再计划→再实现→再测试→再评审→再发布」的工程流程走",
+   "tpl": "用 agent-skills 先 /spec 把需求写成规格，再 /plan 拆分，然后 /build 实现",
+   "input": "一个开发需求；项目代码仓",
+   "output": "规格文档、任务计划、增量提交的代码与测试",
+   "pitfalls": "面向软件工程（Web/前端/后端），非教学或内容技能；命令与具体 agent 的 slash-command 机制绑定；对非开发者价值有限",
+   "diff": "需简单配置"
+  },
+  "excel": {
+   "scene": "要读写/修改/清洗 Excel、CSV 表格，或建新表、算公式、做图表",
+   "tpl": "用 xlsx 技能把 <文件> 的 <需求> 处理一下（清洗/算公式/加图表）",
+   "input": "待处理的 .xlsx/.xlsm/.csv/.tsv 文件，或要建表的字段/数据来源",
+   "output": "规范化 Excel 工作簿（含公式/格式/图表）",
+   "pitfalls": "交付物必须是表格文件；大数据量走 pandas、格式/公式走 openpyxl；别用它产出 Word/网页报表",
+   "diff": "1分钟内上手"
+  },
+  "pdf": {
+   "scene": "要合并/拆分/旋转 PDF、加水印、填表单、抽图片，或把扫描件 OCR 成可搜索",
+   "tpl": "用 pdf 技能把这几份 PDF 合并，并给每页加水印",
+   "input": "待处理的 .pdf 文件；表单类需知字段",
+   "output": "处理后的 PDF（或抽出的文本/图片）",
+   "pitfalls": "扫描件 OCR 需要可用 OCR 环境；加密 PDF 需先解密；只处理 PDF，别拿来做 Word/表格",
+   "diff": "1分钟内上手"
+  },
+  "docx": {
+   "scene": "要新建/编辑 Word 文档（讲义、通知、报告），或从现有 .docx 提内容、改格式",
+   "tpl": "用 docx 技能把这份 Markdown 整理成带目录的 Word 讲义",
+   "input": "内容来源（Markdown/文本/已有 .docx）；排版要求（标题、目录、页眉页脚）",
+   "output": "排版规范的 .docx",
+   "pitfalls": "改已有文档要 unzip→改 word/document.xml→zip（docx-js 打不开已有文件）；读内容用 pandoc；不处理 PDF/表格",
+   "diff": "需简单配置"
+  },
+  "pptx": {
+   "scene": "要做/改 PPT（课件、汇报、公开课），或读现有 .pptx/.potx 提取内容",
+   "tpl": "用 pptx 技能把这份大纲做成一套 <主题> 课件",
+   "input": "大纲/内容；模板（可选 .potx）",
+   "output": ".pptx 演示文稿",
+   "pitfalls": "新建用 pptxgenjs、改已有需拆 XML；读稿用 markitdown；图片排版要给素材路径",
+   "diff": "需简单配置"
+  },
+  "setup-matt-pocock-skills": {
+   "scene": "想让 agent 按「小而可组合」的工程规范做真正的开发（而非 vibe coding）",
+   "tpl": "装上 mattpocock 技能集，按它的规范帮我重构这个项目",
+   "input": "一个具体开发任务；项目代码仓；只装一个 agent 版本（避免重复）",
+   "output": "小步、可组合的代码改动与规范文档",
+   "pitfalls": "偏 TypeScript/工程向，非开发者价值有限；同一 agent 只装一版（Claude/Codex/Copilot 三选一），装两个会重复",
+   "diff": "需简单配置"
   }
  },
  "polish": [
@@ -3726,5 +4021,5 @@
    "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-09 14:53"
+ "updated": "2026-10-10 12:15"
 }
