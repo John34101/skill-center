@@ -11,7 +11,7 @@
 依赖：python3 标准库 + lark-cli（write/publish 需要，且已 OAuth 授权）；GitHub Trending 匿名可抓。
 注意：--dry-run 时不写库、不发布，只打印计划。热度数据全部来自真实抓取，禁止编造。
 """
-import json, re, subprocess, sys, time, urllib.parse, urllib.request
+import json, os, re, subprocess, sys, time, urllib.parse, urllib.request
 from datetime import datetime
 from pathlib import Path
 
@@ -382,8 +382,12 @@ def select(date_str):
     return plan
 
 # ---------------- write（Base） ----------------
+# lark-cli 可执行文件路径可用环境变量 LARK_CLI 覆盖（默认走 PATH）。
+# 云端/Linux 沙箱里 lark-cli 未必在 PATH，可用 LARK_CLI=/abs/path/lark-cli 指定。
+LARK_CLI = os.environ.get("LARK_CLI", "lark-cli")
+
 def run_cli(args):
-    return subprocess.run(["lark-cli"] + args, capture_output=True, text=True)
+    return subprocess.run([LARK_CLI] + args, capture_output=True, text=True)
 
 # ---------- 来源合规校验（防历史债再犯） ----------
 # 白名单 = 技能真实托管/分发的安装源。盘点类文章站（csdn/openagentskill/felloai/top-agent-skills
