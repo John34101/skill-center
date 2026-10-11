@@ -36,6 +36,29 @@
 | 持久化 | 项目资料库（5GB） | 服务器本地盘 |
 | 落地难度 | 中（需解决凭证持久化） | 低（有持久盘，凭证可常驻） |
 
+## 第 0 步：先做「探针任务」摸清沙箱（强烈建议）
+
+正式搭之前，先在**云上模式**里发一个一次性任务（不是定时任务），把下面提示词整段粘贴运行，看真实输出。这一步决定后面怎么走，务必先做。
+
+```
+请在这台云端沙箱里做一次环境速查，逐条回答，贴出真实输出，不要省略：
+1. 系统：uname -a
+2. Python：python3 --version
+3. git：git --version
+4. node/npm：node -v ; npm -v
+5. curl：curl --version | head -1
+6. HOME 与当前目录：echo $HOME ; pwd
+7. 联网与克隆：git clone --depth 1 https://github.com/John34101/skill-center.git /tmp/sc && ls /tmp/sc | head
+8. lark-cli：which lark-cli || echo "lark-cli 不存在"
+9. 你当前可用哪些连接器/技能？特别是有没有飞书（lark / 多维表格）相关的？
+10. /tmp 可写吗？
+```
+
+看结果决定路线：
+- 若 **lark-cli 存在** → 走「首次授权」把凭证落到项目资产。
+- 若 **lark-cli 不存在、但有飞书连接器** → 考虑改用连接器写飞书库（需改造 `recommend.py` 的 write/publish）。
+- 若 **网络受限** → 改用项目资产上传仓库压缩包。
+
 ## 启用步骤（云上模式）
 
 1. 建/进入「Skill 管理中心」**项目**；把本仓库放入**项目资产**（或允许任务直接 clone）。
