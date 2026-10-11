@@ -17,6 +17,15 @@
 - `+record-batch-update` 的 flag 是 `--json`（内含 `update_records` 包裹），**不是** `--update-records`。
 
 ## 历次执行
+### 2026-10-11
+- 管道 all 成功（候选 61→池 83；为你推荐 5 / 全网热门 5）；推荐记录 create 一次到位（无缓存延迟 bug）
+- 当日 10 条：为你推荐=oh-my-mermaid / nano-banana-pro-prompts-recommend-skill / rea / claude-skills / AnyPS5；全网热门=andrej-karpathy-skills / tensorflow / flutter / transformers / pytorch
+- 内容精修 10 条全量：中文名（图解架构/配图提示词/逆向分析/技能大合集/PS5移植/防翻车准则/谷歌AI框架/跨端App框架/大模型工具箱/深度学习框架）+ 台账说明 + 手册条目 + 推荐理由；均经 7897 代理抓 GitHub README 核对真实功能
+- 写出用 `+record-batch-update`/`+record-batch-create` 带 `--json` 包裹；`+record-get` 逐条核验全通过
+- 只重跑 publish（release 7695224386739686582 finished，DATA_UPDATED 2026-10-11 10:07）；Chrome 截图确认 10 卡片中文标题+说明+场景+怎么用齐全
+- CHANGELOG 记 2026-10-11；commit 9ecce68 已 push origin/main（先 rebase 5d7c6ad）
+- 注意：`+record-get` 返回 `data.data` 为按 field 顺序的二维数组 + `data.fields` 名单，需自行 zip；不是 dict
+
 ### 2026-10-10
 - 管道 all 成功（release 7694885537510264013）；当日 10 条：为你推荐=excel / Auto-claude-code-research-in-sleep / AI-Research-SKILLs / anything2explainer / huashu-design；全网热门=setup-matt-pocock-skills / pdf / docx / pptx / agent-skills
 - 遇上述「补录回读缓存延迟」bug：手动补建 5 条推荐记录 + 精修 5 中文名/说明 + 10 条手册 + 修正 5 条理由；重跑 publish（release 7694886686001482992，DATA_UPDATED 2026-10-10 12:15）；Chrome 截图核验 10 卡片均有中文标题+说明+场景+怎么用
