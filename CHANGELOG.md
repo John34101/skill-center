@@ -33,6 +33,18 @@
 
 ## [Unreleased]
 
+#### 2026-10-11 — WorkBuddy（贾维斯 1 号）— 每日推荐执行 + 内容精修（10 条全量）
+
+- 运行 `recommend.py all --date 2026-10-11`（7897 代理 + 放开沙箱）：候选 61 → 池 83（含台账兜底 46）→ 选 10 条（为你推荐 5 / 全网热门 5）；发布 release `7695223875080965303` finished
+- 内容精修（对齐豆包卡片水准，全部基于 GitHub README 真实功能，经 7897 代理抓取核对）：
+  - 台账「中文名」+「一句话说明」10 条：图解架构 / 配图提示词 / 逆向分析 / 技能大合集 / PS5移植 / 防翻车准则 / 谷歌AI框架 / 跨端App框架 / 大模型工具箱 / 深度学习框架
+  - 手册表新增 10 条（触发场景 + 调用模板 + 输入准备 + 产出格式 + 坑与边界 + 上手难度）
+  - 推荐记录表 10 条「推荐理由与帮助」改为正确中文（替换规则生成的错误文案）
+  - 全部用 `+record-batch-update`/`+record-batch-create` 写回，`+record-get` 逐条核验通过
+- 精修后**只重跑 `publish`**（release `7695224386739686582` finished），线上 DATA_UPDATED=`2026-10-11 10:07`；Chrome 截图核验今日 10 卡片均有中文标题+说明+场景+怎么用
+- 今日 10 条：为你推荐=oh-my-mermaid / nano-banana-pro-prompts-recommend-skill / rea / claude-skills / AnyPS5；全网热门=andrej-karpathy-skills / tensorflow / flutter / transformers / pytorch
+- 承接自豆包 cron（额度问题），本 automation 为过渡期调度方；豆包恢复后需显式交接停止本任务（单一调度方原则）
+
 #### 2026-10-10 — WorkBuddy（贾维斯 1 号）— 每日推荐执行 + 内容精修 + 修复台账补录缓存延迟 bug
 
 **A. 执行 2026-10-10 每日推荐管道** ✅

@@ -1682,6 +1682,206 @@
    "score": null,
    "desc": "一套生产级工程技能，把资深工程师的工作流固化成 9 个命令——定需求 / 拆任务 / 增量实现 / 验证 / 审代码 / 发布，让 AI 写代码有章法、不再「氛围编程」。",
    "note": "2026-10-10 recommend.py 自动补录"
+  },
+  {
+   "name": "oh-my-mermaid",
+   "cn": "图解架构",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 2882,
+   "source": "https://github.com/oh-my-mermaid/oh-my-mermaid",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "一句话把复杂项目或知识结构自动画成清晰的流程图与关系图；备课、讲题、做方案时「一张图讲清逻辑」，省去手动画图的功夫。",
+   "note": "2026-10-11 recommend.py 自动补录"
+  },
+  {
+   "name": "nano-banana-pro-prompts-recommend-skill",
+   "cn": "配图提示词",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 1872,
+   "source": "https://github.com/YouMind-OpenLab/nano-banana-pro-prompts-recommend-skill",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "内置 1 万+ 条精选 AI 生图提示词，一句话说需求就帮你匹配最合适的画法；公众号封面、课件配图、短视频封面不用再干想提示词。",
+   "note": "2026-10-11 recommend.py 自动补录"
+  },
+  {
+   "name": "rea",
+   "cn": "逆向分析",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 73994,
+   "source": "https://github.com/trending?since=daily",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "一个「拆黑盒」的逆向分析工具，能从软件运行行为一路分析到二进制底层；教学用不上，属技术兴趣项。",
+   "note": "2026-10-11 recommend.py 自动补录"
+  },
+  {
+   "name": "claude-skills",
+   "cn": "技能大合集",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 27977,
+   "source": "https://github.com/alirezarezvani/claude-skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "一个装了 380+ 个现成技能的「技能超市」，覆盖写作、营销、效率、调研等；可从里面挑适合教学备课与内容创作的技能直接拿来用。",
+   "note": "2026-10-11 recommend.py 自动补录"
+  },
+  {
+   "name": "AnyPS5",
+   "cn": "PS5移植",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 27013,
+   "source": "https://github.com/trending?since=daily",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "把 PS5 游戏程序移植到 Windows/Linux 上运行的开源工具（非模拟器）；纯技术围观，与本职无关。",
+   "note": "2026-10-11 recommend.py 自动补录"
+  },
+  {
+   "name": "andrej-karpathy-skills",
+   "cn": "防翻车准则",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 218316,
+   "source": "https://github.com/trending?since=daily",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "把 Karpathy 总结的「AI 写代码三大毛病」凝成四条铁律（先想清楚再动手/能简不繁/只改该改/目标可验证）；一份 CLAUDE.md 让你的 AI 少翻车。",
+   "note": "2026-10-11 recommend.py 自动补录"
+  },
+  {
+   "name": "tensorflow",
+   "cn": "谷歌AI框架",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 200737,
+   "source": "https://github.com/trending?since=daily",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "谷歌开源的机器学习框架，训练与部署 AI 模型的工业级底座；想懂「AI 怎么炼成」的技术兴趣项。",
+   "note": "2026-10-11 recommend.py 自动补录"
+  },
+  {
+   "name": "flutter",
+   "cn": "跨端App框架",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 179540,
+   "source": "https://github.com/trending?since=daily",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "谷歌的跨平台 App 开发框架，一套代码同时生成安卓和苹果应用；想把教学工具做成手机 App 时的主流选择。",
+   "note": "2026-10-11 recommend.py 自动补录"
+  },
+  {
+   "name": "transformers",
+   "cn": "大模型工具箱",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 167281,
+   "source": "https://github.com/trending?since=daily",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Hugging Face 的模型调用框架，集成了文本/图像/语音海量现成 AI 模型；想给项目接具体 AI 能力时从这里调。",
+   "note": "2026-10-11 recommend.py 自动补录"
+  },
+  {
+   "name": "pytorch",
+   "cn": "深度学习框架",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 104150,
+   "source": "https://github.com/trending?since=daily",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Meta 开源的深度学习框架，AI 训练最主流的工具之一；偏底层研发，属技术兴趣项。",
+   "note": "2026-10-11 recommend.py 自动补录"
   }
  ],
  "recs": [
@@ -2553,6 +2753,116 @@
    "hot": "104101 stars",
    "why": "9 个命令固化软件开发全流程，写代码先规格后实现，质量更稳",
    "type": "trending"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "oh-my-mermaid",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "2882 stars",
+   "why": "把知识结构/解题流程自动画成流程图，备课配图、讲题演示省时，和你「一张图讲清逻辑」的教学思路很搭",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "nano-banana-pro-prompts-recommend-skill",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "1872 stars",
+   "why": "内置 1 万+ 生图提示词，公众号封面/课件配图不用再干想提示词，直接挑现成的",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "rea",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "73994 stars",
+   "why": "逆向分析工具，能拆解软件底层实现；教学用不上，属技术兴趣项",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "claude-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "27977 stars",
+   "why": "380+ 现成技能超市，能从里面挑教学备课/内容创作/效率类直接用",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "AnyPS5",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "27013 stars",
+   "why": "PS5 游戏移植工具，跟教学创作无关，纯技术围观",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "andrej-karpathy-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "218316 stars",
+   "why": "四条 AI 编码铁律（先想清楚/能简不繁/只改该改/目标可验证），给你在用的「行为准则」找了个权威出处",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "tensorflow",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "200737 stars",
+   "why": "谷歌 AI 框架，想懂 AI 底层原理的技术兴趣项",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "flutter",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "179540 stars",
+   "why": "跨端 App 框架，把教学工具做成手机应用的主流选择",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "transformers",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "167281 stars",
+   "why": "大模型工具箱，想给项目接具体 AI 能力时用",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "pytorch",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "104150 stars",
+   "why": "深度学习框架，AI 训练主流工具，技术兴趣项",
+   "type": "trending"
   }
  ],
  "cases": [
@@ -3269,7 +3579,17 @@
   "AI-Research-SKILLs": "未评价",
   "anything2explainer": "未评价",
   "huashu-design": "未评价",
-  "agent-skills": "未评价"
+  "agent-skills": "未评价",
+  "oh-my-mermaid": "未评价",
+  "nano-banana-pro-prompts-recommend-skill": "未评价",
+  "rea": "未评价",
+  "claude-skills": "未评价",
+  "AnyPS5": "未评价",
+  "andrej-karpathy-skills": "未评价",
+  "tensorflow": "未评价",
+  "flutter": "未评价",
+  "transformers": "未评价",
+  "pytorch": "未评价"
  },
  "interest": {
   "mattpocock-skills": "感兴趣",
@@ -3947,6 +4267,86 @@
    "output": "小步、可组合的代码改动与规范文档",
    "pitfalls": "偏 TypeScript/工程向，非开发者价值有限；同一 agent 只装一版（Claude/Codex/Copilot 三选一），装两个会重复",
    "diff": "需简单配置"
+  },
+  "oh-my-mermaid": {
+   "scene": "要把知识结构/解题流程/知识脉络画成流程图、关系图时；备课或做教案配图",
+   "tpl": "用 oh-my-mermaid 把「一元二次方程解法步骤」画成一张流程图",
+   "input": "一句话说清要画的主题和层级/先后关系即可",
+   "output": "Mermaid 源码 + 可渲染的流程图/结构图（可嵌文档、PPT）",
+   "pitfalls": "擅长流程/结构/关系类图，写实插画不行；配色偏工程风，教学用可后期美化；抽象推导需先自己拆清层级",
+   "diff": "需简单配置"
+  },
+  "nano-banana-pro-prompts-recommend-skill": {
+   "scene": "要生成封面/配图但不会写提示词；想让 AI 按文章内容自动配图",
+   "tpl": "用 nano-banana-pro 提示词，给我的「二次函数」文章配一张公众号封面",
+   "input": "一句话说清用途与风格，或直接贴文章/脚本让它自动改写",
+   "output": "3 条候选提示词 + 示例图 + 可直接生图的英文提示词",
+   "pitfalls": "只给提示词，真正出图仍需接 Gemini/Nano Banana 等生图模型；以英文提示词为准",
+   "diff": "1分钟内上手"
+  },
+  "rea": {
+   "scene": "好奇某软件/工具底层怎么实现；做技术向内容时拆解产品原理",
+   "tpl": "用 rea 分析一下 XX 软件的核心功能是怎么实现的",
+   "input": "一个要分析的目标（应用 / 二进制文件 / 运行进程）",
+   "output": "结构化分析报告 / 调用链 / 行为说明",
+   "pitfalls": "属逆向工程，务必只用于合法合规的互操作/研究场景，勿碰商业软件授权红线；与教学无关",
+   "diff": "需依赖环境"
+  },
+  "claude-skills": {
+   "scene": "想给 AI 一次装上一批现成技能；找某类任务（写作/调研/效率）的现成方案",
+   "tpl": "从 claude-skills 里挑几个适合初中数学老师的内容创作技能装一下",
+   "input": "想清楚需要的技能类别（写作润色/调研/效率）",
+   "output": "一批可直接调用的 skill（.claude/skills 目录）+ 对应命令",
+   "pitfalls": "量大而杂，需自行甄别；部分面向程序员；装太多会稀释 AI 注意力，按需取用",
+   "diff": "需简单配置"
+  },
+  "AnyPS5": {
+   "scene": "关注游戏移植/系统兼容技术；纯技术兴趣探索",
+   "tpl": "（教学/创作场景无适用调用）",
+   "input": "需自行准备合法获取的游戏二进制文件",
+   "output": "可在 PC 上运行的目标程序",
+   "pitfalls": "需自行编译配置，门槛高；仅供互操作/研究，注意版权合规；与本职无关",
+   "diff": "需依赖环境"
+  },
+  "andrej-karpathy-skills": {
+   "scene": "让 AI 改代码/写脚本时老自作主张、越改越复杂；想给 AI 立明确规矩",
+   "tpl": "把这份 CLAUDE.md 规则挂到项目里，约束 AI 写代码的行为",
+   "input": "一个用 AI 编码的项目目录",
+   "output": "一份 CLAUDE.md 规则文件（放进项目即生效）",
+   "pitfalls": "面向代码任务，非代码场景（如写公众号）收益有限；规则是「提醒」不是「强制」，仍需自己把关",
+   "diff": "1分钟内上手"
+  },
+  "tensorflow": {
+   "scene": "想自己训练模型 / 深入理解 AI 底层原理",
+   "tpl": "用 tensorflow 搭一个识别手写数字的入门模型",
+   "input": "会 Python，理解矩阵/导数等基础数学",
+   "output": "可训练/部署的机器学习模型",
+   "pitfalls": "门槛高、体系大，与日常教学创作无直接关系；建议当科普兴趣项",
+   "diff": "需依赖环境"
+  },
+  "flutter": {
+   "scene": "想把教学内容/小工具做成手机 App；开发跨端应用",
+   "tpl": "用 flutter 做一个「每日一题」的手机小应用",
+   "input": "会 Dart（或愿意学）；有 App 设计想法",
+   "output": "可打包上架的安卓/iOS App",
+   "pitfalls": "需写代码 + 配开发环境；与「Skills 管理台」这类网页项目定位不同，别混用",
+   "diff": "需依赖环境"
+  },
+  "transformers": {
+   "scene": "想给项目接入具体 AI 能力（摘要/翻译/识图）",
+   "tpl": "用 transformers 调一个中文摘要模型，把长文压成要点",
+   "input": "会 Python；按需下载模型（注意显存/网速）",
+   "output": "可直接调用的 AI 模型 / 推理结果",
+   "pitfalls": "依赖 Python 环境与模型下载，对网络和硬件有要求；日常用现成 AI 工具更省事",
+   "diff": "需依赖环境"
+  },
+  "pytorch": {
+   "scene": "研究/训练神经网络模型；技术向学习",
+   "tpl": "用 pytorch 写一个最简单的神经网络做分类",
+   "input": "会 Python + 基础线性代数",
+   "output": "训练好的深度学习模型",
+   "pitfalls": "门槛高，非本职工作刚需；建议仅在技术学习时了解",
+   "diff": "需依赖环境"
   }
  },
  "polish": [
@@ -4021,5 +4421,5 @@
    "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-10 12:15"
+ "updated": "2026-10-11 10:07"
 }
