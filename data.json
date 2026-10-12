@@ -1882,6 +1882,208 @@
    "score": null,
    "desc": "Meta 开源的深度学习框架，AI 训练最主流的工具之一；偏底层研发，属技术兴趣项。",
    "note": "来源待核：非 Agent Skill（ML 框架仓库，来源为 GitHub Trending 占位链接）。2026-10-12 清理标记"
+  },
+  {
+   "name": "education-agent-skills",
+   "cn": "教育技能库（131个循证教学skill）",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 250,
+   "source": "https://github.com/GarethManning/education-agent-skills",
+   "reg": "",
+   "biz": [
+    "教学备课"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "131个循证教学法技能包：课程设计、备课、评估，为教师与agent编排打造",
+   "note": "2026-10-12 每日推荐新增（为你推荐）"
+  },
+  {
+   "name": "edulab",
+   "cn": "数学3D交互课件",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解",
+    "可视化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://www.ailinklab.com/en/skills/skill-edulab/",
+   "reg": "",
+   "biz": [
+    "题目解析",
+    "教学备课"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "把数学题转成 MathJax+Three.js 3D 交互课件，立体几何可视化讲清",
+   "note": "2026-10-12 每日推荐新增（为你推荐）"
+  },
+  {
+   "name": "create-lecture",
+   "cn": "课件生成（带教学审核）",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://agskills.dev/pedrohcgs/claude-code-my-workflow/create-lecture",
+   "reg": "",
+   "biz": [
+    "教学备课"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "生成课件/讲义，内置14个专项审核agent（含教学法审查）保证质量",
+   "note": "2026-10-12 每日推荐新增（为你推荐）"
+  },
+  {
+   "name": "learn-anything-with-AI",
+   "cn": "Learn Anything 学习私教",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://github.com/read2017/learn-anything-with-AI",
+   "reg": "",
+   "biz": [
+    "教学备课"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "让AI成为顶级私教：诊断起点、制定计划、项目化练习、检查掌握度",
+   "note": "2026-10-12 每日推荐新增（为你推荐）"
+  },
+  {
+   "name": "flysheep-ai-education-skills",
+   "cn": "教育技能合集（渐进式辅导）",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://github.com/flysheep-ai/education-skills",
+   "reg": "",
+   "biz": [
+    "教学备课"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "模拟资深辅导老师，用渐进式教学法引导学生独立思考解题",
+   "note": "2026-10-12 每日推荐新增（为你推荐）"
+  },
+  {
+   "name": "skill-vetter",
+   "cn": "Skill 安全审查员",
+   "cat": "AI开发",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://agentskillslist.com/skills/skill-vetter/",
+   "reg": "",
+   "biz": [
+    "效率管理"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "安装任何第三方 skill 前先做安全审查：红旗标记、权限范围、可疑模式",
+   "note": "2026-10-12 每日推荐新增（全网热门）"
+  },
+  {
+   "name": "github",
+   "cn": "GitHub 操作（gh CLI）",
+   "cat": "AI开发",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://agentskillslist.com/skills/github/",
+   "reg": "",
+   "biz": [
+    "效率管理"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "用 gh CLI 操作 GitHub：issue、PR、CI 运行与高级查询",
+   "note": "2026-10-12 每日推荐新增（全网热门）"
+  },
+  {
+   "name": "ontology",
+   "cn": "结构化知识图谱记忆",
+   "cat": "AI开发",
+   "tags": [
+    "可视化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://agentskillslist.com/skills/ontology/",
+   "reg": "",
+   "biz": [
+    "效率管理"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "类型化知识图谱：结构化 agent 记忆与可组合技能",
+   "note": "2026-10-12 每日推荐新增（全网热门）"
+  },
+  {
+   "name": "proactive-agent",
+   "cn": "主动型 Agent（Proactive）",
+   "cat": "AI开发",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://agentskillslist.com/skills/proactive-agent/",
+   "reg": "",
+   "biz": [
+    "效率管理"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "把 agent 从被动执行变成主动伙伴：预判需求、持续改进、自主任务",
+   "note": "2026-10-12 每日推荐新增（全网热门）"
+  },
+  {
+   "name": "multi-search-engine",
+   "cn": "多引擎搜索",
+   "cat": "AI开发",
+   "tags": [
+    "调研检索"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://agentskillslist.com/skills/multi-search-engine/",
+   "reg": "",
+   "biz": [
+    "效率管理"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "16个搜索引擎集成（7中文+9全球），支持高级操作符、时间过滤、站内搜索",
+   "note": "2026-10-12 每日推荐新增（全网热门）"
   }
  ],
  "recs": [
@@ -2863,6 +3065,116 @@
    "hot": "104150 stars",
    "why": "深度学习框架，AI 训练主流工具，技术兴趣项",
    "type": "trending"
+  },
+  {
+   "batch": "2026-10-12 推荐",
+   "date": "2026-10-12",
+   "skill": "education-agent-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "GitHub 250★（SkillsLLM 2026-05）",
+   "why": "备课时直接调用循证教学技能包，课堂设计/评估一步到位",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-12 推荐",
+   "date": "2026-10-12",
+   "skill": "edulab",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "开源（ailinklab 2026-06 收录）",
+   "why": "把立体几何难题生成可旋转3D课件，发给学生秒懂空间关系",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-12 推荐",
+   "date": "2026-10-12",
+   "skill": "create-lecture",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "agskills.dev 收录（2026-08）",
+   "why": "做口播课件或讲义时自动过教学法审核，避免讲错讲浅",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-12 推荐",
+   "date": "2026-10-12",
+   "skill": "learn-anything-with-AI",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "中文社区传播（微博 2026-09）",
+   "why": "给学生当私教：先诊断起点再定制练习，适合课后补差",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-12 推荐",
+   "date": "2026-10-12",
+   "skill": "flysheep-ai-education-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "中文社区传播（微博 2026-09）",
+   "why": "渐进式教学法辅导，代写答疑时引导思考而非直接给答案",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-12 推荐",
+   "date": "2026-10-12",
+   "skill": "skill-vetter",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "ClawHub 275.9K 下载（#02）",
+   "why": "以后装任何第三方 skill 前先过一遍安全检查",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-12 推荐",
+   "date": "2026-10-12",
+   "skill": "github",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "ClawHub 200K 下载（#04）",
+   "why": "让 agent 直接管 issue/PR/CI，配合你的 skill-center 仓库维护",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-12 推荐",
+   "date": "2026-10-12",
+   "skill": "ontology",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "ClawHub 199.6K 下载（#05）",
+   "why": "用知识图谱组织教学素材与技能关系，沉淀个人知识库",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-12 推荐",
+   "date": "2026-10-12",
+   "skill": "proactive-agent",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "ClawHub 176.7K 下载（#08）",
+   "why": "让 agent 主动预判你下一件要做的事，减少重复指挥",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-12 推荐",
+   "date": "2026-10-12",
+   "skill": "multi-search-engine",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "ClawHub 162.3K 下载（#10）",
+   "why": "调研教学资料/最新skill时一次搜16个引擎，信息更全",
+   "type": "trending"
   }
  ],
  "cases": [
@@ -3589,7 +3901,17 @@
   "tensorflow": "未评价",
   "flutter": "未评价",
   "transformers": "未评价",
-  "pytorch": "未评价"
+  "pytorch": "未评价",
+  "education-agent-skills": "未评价",
+  "edulab": "未评价",
+  "create-lecture": "未评价",
+  "learn-anything-with-AI": "未评价",
+  "flysheep-ai-education-skills": "未评价",
+  "skill-vetter": "未评价",
+  "github": "未评价",
+  "ontology": "未评价",
+  "proactive-agent": "未评价",
+  "multi-search-engine": "未评价"
  },
  "interest": {
   "mattpocock-skills": "感兴趣",
@@ -4421,5 +4743,5 @@
    "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-12 16:09"
+ "updated": "2026-10-12 16:19"
 }
