@@ -1,0 +1,524 @@
+[
+ {
+  "name": "skills",
+  "cn": "",
+  "repo": "mattpocock/skills",
+  "desc": "Skills for Real Engineers. Straight from my .agents directory.",
+  "hot": 281543,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "setup-matt-pocock-skills",
+  "cn": "Matt Pocock技能集",
+  "repo": "mattpocock/skills",
+  "desc": "TypeScript 名师的生产级 Claude Code 技能集合",
+  "hot": 281543,
+  "source": "https://github.com/mattpocock/skills",
+  "src": "classic"
+ },
+ {
+  "name": "security-audit",
+  "cn": "安全审计",
+  "repo": "mattpocock/skills",
+  "desc": "代码安全漏洞审查",
+  "hot": 281543,
+  "source": "https://github.com/mattpocock/skills",
+  "src": "classic"
+ },
+ {
+  "name": "ECC",
+  "cn": "",
+  "repo": "affaan-m/ECC",
+  "desc": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development f",
+  "hot": 275536,
+  "source": "https://github.com/affaan-m/ECC",
+  "src": "search"
+ },
+ {
+  "name": "frontend-design",
+  "cn": "前端设计",
+  "repo": "anthropics/skills",
+  "desc": "Anthropic 官方前端设计规范，避免模板化 UI",
+  "hot": 180043,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "pdf",
+  "cn": "PDF处理",
+  "repo": "anthropics/skills",
+  "desc": "PDF 读写编辑转换全流程处理",
+  "hot": 180043,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "docx",
+  "cn": "Word处理",
+  "repo": "anthropics/skills",
+  "desc": "Office Word 阅读新建修改",
+  "hot": 180043,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "pptx",
+  "cn": "PPT处理",
+  "repo": "anthropics/skills",
+  "desc": "PowerPoint 创建编辑导出",
+  "hot": 180043,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "excel",
+  "cn": "Excel处理",
+  "repo": "anthropics/skills",
+  "desc": "Excel 表格读写分析可视化",
+  "hot": 180043,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "webapp-testing",
+  "cn": "网页测试",
+  "repo": "anthropics/skills",
+  "desc": "Playwright 网页自动化测试",
+  "hot": 180043,
+  "source": "https://github.com/anthropics/skills",
+  "src": "classic"
+ },
+ {
+  "name": "claude-mem",
+  "cn": "",
+  "repo": "thedotmack/claude-mem",
+  "desc": "Persistent Context Across Sessions for Every Agent – Captures everything your agent does during sessions, compresses it ",
+  "hot": 98713,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "archify",
+  "cn": "",
+  "repo": "tt-a1i/archify",
+  "desc": "Turn any idea, plan, or codebase into a beautiful interactive diagram. An agent skill for Claude Code, Codex, and more.",
+  "hot": 80493,
+  "source": "https://github.com/tt-a1i/archify",
+  "src": "search"
+ },
+ {
+  "name": "life-decision-guide",
+  "cn": "高性价比人生指南",
+  "repo": "eternity4719/HowToLiveBetter",
+  "desc": "全站爆款：按正文回答该不该做、值不值",
+  "hot": 55708,
+  "source": "https://github.com/eternity4719/HowToLiveBetter",
+  "src": "classic"
+ },
+ {
+  "name": "awesome-claude-code",
+  "cn": "",
+  "repo": "hesreallyhim/awesome-claude-code",
+  "desc": "A hand-picked collection of the finest of resources for the most awesome of agents, Claude Code, the undisputed champion",
+  "hot": 55292,
+  "source": "https://github.com/hesreallyhim/awesome-claude-code",
+  "src": "search"
+ },
+ {
+  "name": "marketingskills",
+  "cn": "",
+  "repo": "coreyhaines31/marketingskills",
+  "desc": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
+  "hot": 53824,
+  "source": "https://github.com/coreyhaines31/marketingskills",
+  "src": "search"
+ },
+ {
+  "name": "scientific-agent-skills",
+  "cn": "",
+  "repo": "K-Dense-AI/scientific-agent-skills",
+  "desc": "Turn any AI agent into an AI Scientist. The #1 Agent Skills library for science, used by 250,000+ scientists worldwide. ",
+  "hot": 48092,
+  "source": "https://github.com/K-Dense-AI/scientific-agent-skills",
+  "src": "search"
+ },
+ {
+  "name": "diagram-design",
+  "cn": "",
+  "repo": "cathrynlavery/diagram-design",
+  "desc": "Editorial diagram design for Claude Code, Codex, GitHub Copilot, Factory Droid, and Pi. 42 diagram types. Self-contained",
+  "hot": 46876,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "awesome-agent-skills",
+  "cn": "",
+  "repo": "VoltAgent/awesome-agent-skills",
+  "desc": "A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex",
+  "hot": 35401,
+  "source": "https://github.com/VoltAgent/awesome-agent-skills",
+  "src": "search"
+ },
+ {
+  "name": "Anthropic-Cybersecurity-Skills",
+  "cn": "",
+  "repo": "mukul975/Anthropic-Cybersecurity-Skills",
+  "desc": "817 structured cybersecurity skills for AI agents · Mapped to 6 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3F",
+  "hot": 33990,
+  "source": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
+  "src": "search"
+ },
+ {
+  "name": "rea",
+  "cn": "",
+  "repo": "morluto/rea",
+  "desc": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+  "hot": 31067,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "claude-skills",
+  "cn": "",
+  "repo": "alirezarezvani/claude-skills",
+  "desc": "380 Claude Code skills & agent skills & plugins (30+ Agents, 70+ custom commands, 380+ skills, customizable references, ",
+  "hot": 27890,
+  "source": "https://github.com/alirezarezvani/claude-skills",
+  "src": "search"
+ },
+ {
+  "name": "knowledge-work-plugins",
+  "cn": "",
+  "repo": "anthropics/knowledge-work-plugins",
+  "desc": "Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork",
+  "hot": 27846,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "planning-with-files",
+  "cn": "",
+  "repo": "OthmanAdi/planning-with-files",
+  "desc": "Persistent file-based planning for AI coding agents and long-running tasks. Crash-proof markdown plans, session recovery",
+  "hot": 27349,
+  "source": "https://github.com/OthmanAdi/planning-with-files",
+  "src": "search"
+ },
+ {
+  "name": "Claude-Code-Game-Studios",
+  "cn": "",
+  "repo": "Donchitos/Claude-Code-Game-Studios",
+  "desc": "Turn Claude Code into a full game dev studio — 49 AI agents, 72 workflow skills, and a complete coordination system mirr",
+  "hot": 25948,
+  "source": "https://github.com/Donchitos/Claude-Code-Game-Studios",
+  "src": "search"
+ },
+ {
+  "name": "context-mode",
+  "cn": "",
+  "repo": "mksglu/context-mode",
+  "desc": "Context window optimization for AI coding agents. Sandboxes tool output (98% reduction), persists session memory, and   ",
+  "hot": 25811,
+  "source": "https://github.com/mksglu/context-mode",
+  "src": "search"
+ },
+ {
+  "name": "colleague-skill",
+  "cn": "同事蒸馏",
+  "repo": "titanwings/colleague-skill",
+  "desc": "把同事/关系人蒸馏成可复用人物画像",
+  "hot": 25423,
+  "source": "https://github.com/titanwings/colleague-skill",
+  "src": "classic"
+ },
+ {
+  "name": "system-design-notes",
+  "cn": "",
+  "repo": "liquidslr/system-design-notes",
+  "desc": "Notes of the book System Desgin Interview - An Insider's Guide",
+  "hot": 24948,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "huashu-design",
+  "cn": "",
+  "repo": "alchaincyf/huashu-design",
+  "desc": "Huashu Design · HTML-native design skill for Claude Code · Claude Code 里 HTML 原生的设计 skill · 高保真原型 / 幻灯片 / 动画 + 20 设计哲学 +",
+  "hot": 24706,
+  "source": "https://github.com/alchaincyf/huashu-design",
+  "src": "search"
+ },
+ {
+  "name": "khazix-skills",
+  "cn": "",
+  "repo": "KKKKhazix/khazix-skills",
+  "desc": "数字生命卡兹克开源的 AI Skills 合集 | Agent Skills: leader（帮你定义目标）, neat-freak 洁癖, hv-analysis, khazix-writer & more — Claude Code, ",
+  "hot": 21263,
+  "source": "https://github.com/KKKKhazix/khazix-skills",
+  "src": "search"
+ },
+ {
+  "name": "ai-guide",
+  "cn": "",
+  "repo": "liyupi/ai-guide",
+  "desc": "程序员鱼皮的 AI 资源大全 + Vibe Coding 零基础教程，分享 OpenClaw 保姆级教程、大模型玩法（DeepSeek / GPT / Gemini / Claude / GLM）、最新 AI 资讯、Prompt 提示词大全",
+  "hot": 20883,
+  "source": "https://github.com/liyupi/ai-guide",
+  "src": "search"
+ },
+ {
+  "name": "SkillSpector",
+  "cn": "",
+  "repo": "NVIDIA/SkillSpector",
+  "desc": "Security scanner for AI agent skills. Detect vulnerabilities, malicious patterns, security risks, prompt injection, data",
+  "hot": 19737,
+  "source": "https://github.com/NVIDIA/SkillSpector",
+  "src": "search"
+ },
+ {
+  "name": "notebooklm-py",
+  "cn": "",
+  "repo": "teng-lin/notebooklm-py",
+  "desc": "Unofficial Python API and agentic skill for Google Gemini Notebook. Full programmatic access to NotebookLM's features—in",
+  "hot": 19658,
+  "source": "https://github.com/teng-lin/notebooklm-py",
+  "src": "search"
+ },
+ {
+  "name": "claude-seo",
+  "cn": "",
+  "repo": "AgriciDaniel/claude-seo",
+  "desc": "Universal SEO skill for Claude Code. 26 sub-skills + 19 sub-agents covering technical SEO, E-E-A-T, schema, GEO/AEO, age",
+  "hot": 18574,
+  "source": "https://github.com/AgriciDaniel/claude-seo",
+  "src": "search"
+ },
+ {
+  "name": "Auto-claude-code-research-in-sleep",
+  "cn": "",
+  "repo": "wanshuiyin/Auto-claude-code-research-in-sleep",
+  "desc": "ARIS ⚔️ (Auto-Research-In-Sleep) — Lightweight Markdown-only skills for autonomous ML research: cross-model review loops",
+  "hot": 17157,
+  "source": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+  "src": "search"
+ },
+ {
+  "name": "AnyPS5",
+  "cn": "",
+  "repo": "boykopovar/AnyPS5",
+  "desc": "Tool for automatic PS5 executables porting to Linux and Windows",
+  "hot": 17104,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "claude-obsidian",
+  "cn": "",
+  "repo": "AgriciDaniel/claude-obsidian",
+  "desc": "Self-organizing AI second brain for Obsidian + Claude Code. Drop any source and Claude reads, links, and files it into o",
+  "hot": 15419,
+  "source": "https://github.com/AgriciDaniel/claude-obsidian",
+  "src": "search"
+ },
+ {
+  "name": "cc-haha",
+  "cn": "",
+  "repo": "NanmiCoder/cc-haha",
+  "desc": "Local-first cross-platform desktop workspace for Claude Code / agents: multi-agent, Git worktrees, code diffs, skill mar",
+  "hot": 14927,
+  "source": "https://github.com/NanmiCoder/cc-haha",
+  "src": "search"
+ },
+ {
+  "name": "AI-Research-SKILLs",
+  "cn": "",
+  "repo": "Orchestra-Research/AI-Research-SKILLs",
+  "desc": "Comprehensive open-source library of AI research and engineering skills for any AI model. Package the skills and your cl",
+  "hot": 13372,
+  "source": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+  "src": "search"
+ },
+ {
+  "name": "claude-code-infrastructure-showcase",
+  "cn": "",
+  "repo": "diet103/claude-code-infrastructure-showcase",
+  "desc": "Examples of my Claude Code infrastructure with skill auto-activation, hooks, and agents",
+  "hot": 10031,
+  "source": "https://github.com/diet103/claude-code-infrastructure-showcase",
+  "src": "search"
+ },
+ {
+  "name": "claude-ads",
+  "cn": "",
+  "repo": "AgriciDaniel/claude-ads",
+  "desc": "Claude-first paid-media operations skill for Claude Code across 12 ad platforms (Google, Meta, YouTube, LinkedIn, TikTok",
+  "hot": 9828,
+  "source": "https://github.com/AgriciDaniel/claude-ads",
+  "src": "search"
+ },
+ {
+  "name": "artcraft",
+  "cn": "",
+  "repo": "storytold/artcraft",
+  "desc": "ArtCraft is an intentional crafting engine for artists, designers, and filmmakers",
+  "hot": 8904,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "raddebugger",
+  "cn": "",
+  "repo": "EpicGames/raddebugger",
+  "desc": "A native, user-mode, multi-process, graphical debugger.",
+  "hot": 8179,
+  "source": "https://github.com/trending?since=daily",
+  "src": "trending"
+ },
+ {
+  "name": "godogen",
+  "cn": "",
+  "repo": "htdt/godogen",
+  "desc": "Autonomous game development for Godot, Bevy, and Babylon.js with Claude Code and Codex",
+  "hot": 7068,
+  "source": "https://github.com/htdt/godogen",
+  "src": "search"
+ },
+ {
+  "name": "GPT-Image2-Skill",
+  "cn": "",
+  "repo": "wuyoscar/GPT-Image2-Skill",
+  "desc": "GPT Image 2/2.5 prompt gallery, image prompt library, agentic skill, and CLI for OpenAI image generation/editing",
+  "hot": 5682,
+  "source": "https://github.com/wuyoscar/GPT-Image2-Skill",
+  "src": "search"
+ },
+ {
+  "name": "obsidian-second-brain",
+  "cn": "",
+  "repo": "eugeniughelbur/obsidian-second-brain",
+  "desc": "Persistent memory for Claude Code and 6 other CLI agents, stored as plain markdown in your Obsidian vault. Stop re-expla",
+  "hot": 4701,
+  "source": "https://github.com/eugeniughelbur/obsidian-second-brain",
+  "src": "search"
+ },
+ {
+  "name": "pinme",
+  "cn": "",
+  "repo": "glitternetwork/pinme",
+  "desc": "Deploy Your Frontend in a Single Command. Claude Code Skills supported.",
+  "hot": 3748,
+  "source": "https://github.com/glitternetwork/pinme",
+  "src": "search"
+ },
+ {
+  "name": "claude-code",
+  "cn": "",
+  "repo": "codeaashu/claude-code",
+  "desc": "Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster ",
+  "hot": 3372,
+  "source": "https://github.com/codeaashu/claude-code",
+  "src": "search"
+ },
+ {
+  "name": "one-skill-to-rule-them-all",
+  "cn": "",
+  "repo": "rebelytics/one-skill-to-rule-them-all",
+  "desc": "The meta-skill that builds and improves all your skills, including itself. Watches your work sessions (autonomous or hum",
+  "hot": 3216,
+  "source": "https://github.com/rebelytics/one-skill-to-rule-them-all",
+  "src": "search"
+ },
+ {
+  "name": "narrator-ai-cli-skill",
+  "cn": "",
+  "repo": "NarratorAI-Studio/narrator-ai-cli-skill",
+  "desc": "AI 解说大师 — Agent skill；封装 narrator-ai-cli 供 Claude/Codex 等工具调用",
+  "hot": 3030,
+  "source": "https://github.com/NarratorAI-Studio/narrator-ai-cli-skill",
+  "src": "search"
+ },
+ {
+  "name": "token-optimizer",
+  "cn": "",
+  "repo": "alexgreensh/token-optimizer",
+  "desc": "Find the ghost tokens. Fix them. Survive compaction. Avoid context quality decay. ",
+  "hot": 2520,
+  "source": "https://github.com/alexgreensh/token-optimizer",
+  "src": "search"
+ },
+ {
+  "name": "oh-my-mermaid",
+  "cn": "",
+  "repo": "oh-my-mermaid/oh-my-mermaid",
+  "desc": "Turn complex codebases into clear, navigable architecture diagrams with Claude Code.",
+  "hot": 2517,
+  "source": "https://github.com/oh-my-mermaid/oh-my-mermaid",
+  "src": "search"
+ },
+ {
+  "name": "appllama-skills",
+  "cn": "",
+  "repo": "Appllama/appllama-skills",
+  "desc": "A builder, not just a researcher. Agent skills that turn top-grossing app patterns into native-quality mobile screens.",
+  "hot": 2478,
+  "source": "https://github.com/Appllama/appllama-skills",
+  "src": "search"
+ },
+ {
+  "name": "answer-me-with-html",
+  "cn": "",
+  "repo": "QingYunA/answer-me-with-html",
+  "desc": "Answer me with HTML — an agent skill that answers hard questions with a one-page HTML you can actually read. 让 AI Agent ",
+  "hot": 2387,
+  "source": "https://github.com/QingYunA/answer-me-with-html",
+  "src": "search"
+ },
+ {
+  "name": "anything2explainer",
+  "cn": "",
+  "repo": "Vincentwei1021/anything2explainer",
+  "desc": "Topic in, narrated explainer video out. A Claude Code / Codex skill that turns any topic into a black-canvas motion-grap",
+  "hot": 2352,
+  "source": "https://github.com/Vincentwei1021/anything2explainer",
+  "src": "search"
+ },
+ {
+  "name": "claude-blog",
+  "cn": "",
+  "repo": "AgriciDaniel/claude-blog",
+  "desc": "Claude Code blog skill suite: 30 sub-skills, 5 agents, 5-gate v1.9.0 Blog Delivery Contract, dual-optimized for Google r",
+  "hot": 2347,
+  "source": "https://github.com/AgriciDaniel/claude-blog",
+  "src": "search"
+ },
+ {
+  "name": "nano-banana-pro-prompts-recommend-skill",
+  "cn": "",
+  "repo": "YouMind-OpenLab/nano-banana-pro-prompts-recommend-skill",
+  "desc": "AI skill for OpenClaw & Claude Code — recommend from 10000+ Nano Banana Pro (Gemini) image prompts. Smart search by use ",
+  "hot": 1872,
+  "source": "https://github.com/YouMind-OpenLab/nano-banana-pro-prompts-recommend-skill",
+  "src": "search"
+ },
+ {
+  "name": "lemo-opuscar",
+  "cn": "",
+  "repo": "lemomo-ai/lemo-opuscar",
+  "desc": "Claude Code skill for short films with no video model: 43 film styles, each a style prompt plus a demo film made entirel",
+  "hot": 1434,
+  "source": "https://github.com/lemomo-ai/lemo-opuscar",
+  "src": "search"
+ },
+ {
+  "name": "antivibe",
+  "cn": "",
+  "repo": "mohi-devhub/antivibe",
+  "desc": "Learn what AI writes, not just accept it. A Claude Code skill that turns AI-generated code into educational deep dives.",
+  "hot": 1118,
+  "source": "https://github.com/mohi-devhub/antivibe",
+  "src": "search"
+ }
+]

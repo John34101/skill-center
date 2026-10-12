@@ -3,7 +3,8 @@
 """15 个已安装技能试跑产物生成器"""
 import os, html
 
-OUT = "/home/user/Doubao/chats/38444168961292802/skill-center/cases-1010"
+# 自动定位脚本所在目录（跨平台：Mac/Linux 都能跑），不再写死豆包的工作区路径
+OUT = os.path.dirname(os.path.abspath(__file__))
 
 TMPL = """<!DOCTYPE html>
 <html lang="zh-CN">

@@ -6,8 +6,10 @@
 """
 import json, re, sys
 from datetime import datetime
+from pathlib import Path
 
-BASE = "/home/user/Doubao/chats/38444168961292802/skill-center"
+# 脚本自动定位自身所在目录（跨平台：Mac/Linux 都能跑），不再写死豆包的工作区路径
+BASE = str(Path(__file__).resolve().parent)
 HTML = f"{BASE}/Skill管理中心.html"
 
 def load(f):

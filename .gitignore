@@ -10,3 +10,6 @@ node_modules/
 
 # 本地验收产物不入库
 验收截图-kebab重做/
+
+# 发布验证截图产物不入库
+verify-shot.png
