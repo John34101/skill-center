@@ -1262,6 +1262,626 @@
    "score": null,
    "desc": "CDP 协议控制浏览器：点选/填表/截图/多标签并行，不依赖 Playwright",
    "note": "2026-10-08 案例试跑安装（agent-browser-core 等价环境验证）"
+  },
+  {
+   "name": "excel",
+   "cn": "Excel处理",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 180022,
+   "source": "https://github.com/anthropics/skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Excel 表格读写分析可视化",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "setup-matt-pocock-skills",
+   "cn": "Matt Pocock技能集",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 281324,
+   "source": "未取得可靠安装源（为技能集合/盘点仓库，非单一可安装 skill 入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "TypeScript 名师的生产级 Claude Code 技能集合",
+   "note": "来源待核：为技能集合/盘点仓库，非单一可安装 skill 入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "pdf",
+   "cn": "PDF处理",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 180022,
+   "source": "https://github.com/anthropics/skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "PDF 读写编辑转换全流程处理",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "docx",
+   "cn": "Word处理",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 180022,
+   "source": "https://github.com/anthropics/skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Office Word 阅读新建修改",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "pptx",
+   "cn": "PPT处理",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 180022,
+   "source": "https://github.com/anthropics/skills",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "PowerPoint 创建编辑导出",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "life-decision-guide",
+   "cn": "高性价比人生指南",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 55283,
+   "source": "https://github.com/eternity4719/HowToLiveBetter",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "全站爆款：按正文回答该不该做、值不值",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "antivibe",
+   "cn": "AI代码深讲",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 1118,
+   "source": "https://github.com/mohi-devhub/antivibe",
+   "reg": "",
+   "biz": [
+    "教学备课"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "把任何代码（尤其 AI 生成的）转成「教学级深讲」或架构审查——讲清是什么/为什么/什么时候用/还有哪些替代，不再照抄 AI 输出",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "ECC",
+   "cn": "智能体调优",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 275486,
+   "source": "https://github.com/affaan-m/ECC",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "一套给 AI 编码助手「提速调优」的系统，配齐技能、直觉、记忆、安全与「调研先行」的开发规范，让 Claude Code / Codex 干活更稳",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "appllama-skills",
+   "cn": "爆款界面师",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 2477,
+   "source": "未取得可靠安装源（为技能集合/盘点仓库，非单一可安装 skill 入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "把爆款 App 的界面设计套路，直接变成原生级质量的移动端界面（React Native / Expo），做界面不再靠灵感",
+   "note": "来源待核：为技能集合/盘点仓库，非单一可安装 skill 入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "context-mode",
+   "cn": "上下文管家",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 25776,
+   "source": "https://github.com/mksglu/context-mode",
+   "reg": "",
+   "biz": [
+    "教学备课"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "管住 AI 的「上下文」——把工具输出压缩约 98%、跨会话保留记忆，让长任务不因上下文爆掉而跑偏",
+   "note": "2026-10-09 recommend.py 自动补录"
+  },
+  {
+   "name": "khazix-skills",
+   "cn": "卡兹克技能集",
+   "cat": "内容创作",
+   "tags": [
+    "写作润色"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 21261,
+   "source": "未取得可靠安装源（为技能集合/盘点仓库，非单一可安装 skill 入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "数字生命卡兹克日常在用的 6 个实用 AI 技能合集（定义目标 leader、文档洁癖 neat-freak、分析 hv-analysis、写作 khazix-writer 等），都是跑通才开源的",
+   "note": "来源待核：为技能集合/盘点仓库，非单一可安装 skill 入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "skills",
+   "cn": "工程师技能集",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 281376,
+   "source": "未取得可靠安装源（来源为 GitHub Trending 列表页占位链接，非真实安装入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "TypeScript 名师 Matt Pocock 直接从自己 .agents 目录开源的一套工程师实用技能，面向「真工程师」的日常任务",
+   "note": "来源待核：来源为 GitHub Trending 列表页占位链接，非真实安装入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "claude-mem",
+   "cn": "长期记忆",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 98635,
+   "source": "未取得可靠安装源（来源为 GitHub Trending 列表页占位链接，非真实安装入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "给 AI 装上跨会话长期记忆——自动记录它做过的一切、用 AI 压缩归档，并在以后的会话里把相关内容重新注入，越用越懂你",
+   "note": "来源待核：来源为 GitHub Trending 列表页占位链接，非真实安装入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "scientific-agent-skills",
+   "cn": "科研智能体",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 48078,
+   "source": "未取得可靠安装源（为技能集合/盘点仓库，非单一可安装 skill 入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "把 AI 变成「AI 科学家」的科研技能库（177 个技能、接入 100+ 数据库），覆盖文献、数据分析等科研全流程，25 万+ 科研人员在用",
+   "note": "来源待核：为技能集合/盘点仓库，非单一可安装 skill 入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "awesome-agent-skills",
+   "cn": "精选技能榜",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 35395,
+   "source": "未取得可靠安装源（为技能集合/盘点仓库，非单一可安装 skill 入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "1000+ agent 技能的精选合集，来自官方团队与社区，兼容 Claude Code / Codex / Gemini CLI / Cursor 等，找技能来这翻",
+   "note": "来源待核：为技能集合/盘点仓库，非单一可安装 skill 入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "Anthropic-Cybersecurity-Skills",
+   "cn": "安全攻防集",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 33976,
+   "source": "未取得可靠安装源（为技能集合/盘点仓库，非单一可安装 skill 入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "817 个结构化网络安全技能，对齐 MITRE ATT&CK / NIST CSF 等 6 大框架、覆盖 29 个安全领域，适配 20+ 平台",
+   "note": "来源待核：为技能集合/盘点仓库，非单一可安装 skill 入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "Auto-claude-code-research-in-sleep",
+   "cn": "睡后科研",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 17196,
+   "source": "未取得可靠安装源（为技能集合/盘点仓库，非单一可安装 skill 入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "让 AI 在你睡觉时自动跑完一整套调研流程——找方向、读文献、复现/搭代码，再由另一个模型交叉审稿挑毛病；专治「调研没时间、结果没人复核」。",
+   "note": "来源待核：为技能集合/盘点仓库，非单一可安装 skill 入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "AI-Research-SKILLs",
+   "cn": "AI科研库",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 13398,
+   "source": "未取得可靠安装源（为技能集合/盘点仓库，非单一可安装 skill 入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "近 100 个 AI 研究与工程技能的开源全集，覆盖 23 大类（模型架构、微调、训练、评测、RAG…），让 agent 从找 idea 一路做到论文；做技术调研/开发的按需取用。",
+   "note": "来源待核：为技能集合/盘点仓库，非单一可安装 skill 入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "anything2explainer",
+   "cn": "知识解说片",
+   "cat": "视频制作",
+   "tags": [
+    "视频生成"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 2379,
+   "source": "https://github.com/Vincentwei1021/anything2explainer",
+   "reg": "",
+   "biz": [
+    "口播视频"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "给一个知识点或一篇文章，自动产出带配音、字幕、章节条的讲解视频（1280×720 MP4）——代码逐帧绘制，中英文皆可，不用拍素材、不用生成式视频模型，适合做口播/讲解素材。",
+   "note": "2026-10-10 recommend.py 自动补录"
+  },
+  {
+   "name": "huashu-design",
+   "cn": "一句话设计",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 24744,
+   "source": "https://github.com/alchaincyf/huashu-design",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "在 agent 里打一句话，拿回能交付的设计——信息图、可编辑 PPT、可点击原型、发布动画，3–30 分钟出稿；内置多套 HTML 原生风格库，避免「一眼 AI 味」。",
+   "note": "2026-10-10 recommend.py 自动补录"
+  },
+  {
+   "name": "agent-skills",
+   "cn": "开发流水线",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 104101,
+   "source": "未取得可靠安装源（为技能集合/盘点仓库，非单一可安装 skill 入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "一套生产级工程技能，把资深工程师的工作流固化成 9 个命令——定需求 / 拆任务 / 增量实现 / 验证 / 审代码 / 发布，让 AI 写代码有章法、不再「氛围编程」。",
+   "note": "来源待核：为技能集合/盘点仓库，非单一可安装 skill 入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "oh-my-mermaid",
+   "cn": "图解架构",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 2882,
+   "source": "https://github.com/oh-my-mermaid/oh-my-mermaid",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "一句话把复杂项目或知识结构自动画成清晰的流程图与关系图；备课、讲题、做方案时「一张图讲清逻辑」，省去手动画图的功夫。",
+   "note": "2026-10-11 recommend.py 自动补录"
+  },
+  {
+   "name": "nano-banana-pro-prompts-recommend-skill",
+   "cn": "配图提示词",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 1872,
+   "source": "未取得可靠安装源（为技能集合/盘点仓库，非单一可安装 skill 入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "内置 1 万+ 条精选 AI 生图提示词，一句话说需求就帮你匹配最合适的画法；公众号封面、课件配图、短视频封面不用再干想提示词。",
+   "note": "来源待核：为技能集合/盘点仓库，非单一可安装 skill 入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "rea",
+   "cn": "逆向分析",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 73994,
+   "source": "未取得可靠安装源（来源为 GitHub Trending 列表页占位链接，非真实安装入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "一个「拆黑盒」的逆向分析工具，能从软件运行行为一路分析到二进制底层；教学用不上，属技术兴趣项。",
+   "note": "来源待核：来源为 GitHub Trending 列表页占位链接，非真实安装入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "claude-skills",
+   "cn": "技能大合集",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 27977,
+   "source": "未取得可靠安装源（为技能集合/盘点仓库，非单一可安装 skill 入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "一个装了 380+ 个现成技能的「技能超市」，覆盖写作、营销、效率、调研等；可从里面挑适合教学备课与内容创作的技能直接拿来用。",
+   "note": "来源待核：为技能集合/盘点仓库，非单一可安装 skill 入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "AnyPS5",
+   "cn": "PS5移植",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 27013,
+   "source": "未取得可靠安装源（来源为 GitHub Trending 列表页占位链接，非真实安装入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "把 PS5 游戏程序移植到 Windows/Linux 上运行的开源工具（非模拟器）；纯技术围观，与本职无关。",
+   "note": "来源待核：来源为 GitHub Trending 列表页占位链接，非真实安装入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "andrej-karpathy-skills",
+   "cn": "防翻车准则",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 218316,
+   "source": "未取得可靠安装源（来源为 GitHub Trending 列表页占位链接，非真实安装入口）",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "把 Karpathy 总结的「AI 写代码三大毛病」凝成四条铁律（先想清楚再动手/能简不繁/只改该改/目标可验证）；一份 CLAUDE.md 让你的 AI 少翻车。",
+   "note": "来源待核：来源为 GitHub Trending 列表页占位链接，非真实安装入口。2026-10-12 清理标记"
+  },
+  {
+   "name": "tensorflow",
+   "cn": "谷歌AI框架",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 200737,
+   "source": "未取得可靠安装源（非 Agent Skill（ML 框架仓库，来源为 GitHub Trending 占位链接））",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "谷歌开源的机器学习框架，训练与部署 AI 模型的工业级底座；想懂「AI 怎么炼成」的技术兴趣项。",
+   "note": "来源待核：非 Agent Skill（ML 框架仓库，来源为 GitHub Trending 占位链接）。2026-10-12 清理标记"
+  },
+  {
+   "name": "flutter",
+   "cn": "跨端App框架",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 179540,
+   "source": "未取得可靠安装源（非 Agent Skill（ML 框架仓库，来源为 GitHub Trending 占位链接））",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "谷歌的跨平台 App 开发框架，一套代码同时生成安卓和苹果应用；想把教学工具做成手机 App 时的主流选择。",
+   "note": "来源待核：非 Agent Skill（ML 框架仓库，来源为 GitHub Trending 占位链接）。2026-10-12 清理标记"
+  },
+  {
+   "name": "transformers",
+   "cn": "大模型工具箱",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 167281,
+   "source": "未取得可靠安装源（非 Agent Skill（ML 框架仓库，来源为 GitHub Trending 占位链接））",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Hugging Face 的模型调用框架，集成了文本/图像/语音海量现成 AI 模型；想给项目接具体 AI 能力时从这里调。",
+   "note": "来源待核：非 Agent Skill（ML 框架仓库，来源为 GitHub Trending 占位链接）。2026-10-12 清理标记"
+  },
+  {
+   "name": "pytorch",
+   "cn": "深度学习框架",
+   "cat": "效率工具",
+   "tags": [
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 104150,
+   "source": "未取得可靠安装源（非 Agent Skill（ML 框架仓库，来源为 GitHub Trending 占位链接））",
+   "reg": "",
+   "biz": [
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Meta 开源的深度学习框架，AI 训练最主流的工具之一；偏底层研发，属技术兴趣项。",
+   "note": "来源待核：非 Agent Skill（ML 框架仓库，来源为 GitHub Trending 占位链接）。2026-10-12 清理标记"
   }
  ],
  "recs": [
@@ -1912,6 +2532,336 @@
    "effect": "未试用",
    "hot": "38,000★（2026-08）",
    "why": "CDP 控制浏览器点选/填表/截图，调研同行内容/抓取素材自动化",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "antivibe",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "1118 stars",
+   "why": "把 AI 生成的内容/代码讲成「教学深讲」——备课讲原理、不再照抄 AI 输出",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "ECC",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "275486 stars",
+   "why": "让 AI 助手干活更稳、少瞎猜：技能+记忆+安全+调研先行的规范系统",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "appllama-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "2477 stars",
+   "why": "做小程序/App 界面不再从零想，照爆款套路直接出原生质感界面",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "context-mode",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "25776 stars",
+   "why": "长任务上下文不爆、跨会话记得住，AI 聊久了也不「忘」",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "khazix-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "21261 stars",
+   "why": "卡兹克日常在用的写作/整理/分析技能，现成可用",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "281376 stars",
+   "why": "资深工程师的实用技能集，可借鉴其 AI 技能组织方式",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "claude-mem",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "98635 stars",
+   "why": "给 AI 装上长期记忆，记住你的项目与偏好，不用每次重讲",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "scientific-agent-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "48078 stars",
+   "why": "文献调研/数据分析/课题梳理的科研技能库（177 技能+100 数据库）",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "awesome-agent-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "35395 stars",
+   "why": "1000+ agent 技能精选索引，找现成技能先来这翻",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-09 推荐",
+   "date": "2026-10-09",
+   "skill": "Anthropic-Cybersecurity-Skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "33976 stars",
+   "why": "发布内容/网页前的安全自查，817 个结构化安全技能",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "excel",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "180195 stars",
+   "why": "表格清洗、算公式、做图表一次到位，学生成绩表/统计表都能用",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "setup-matt-pocock-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "282971 stars",
+   "why": "TypeScript 名师的小而可组合工程技能集，适合正经开发迭代",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "pdf",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "180195 stars",
+   "why": "讲义/试卷 PDF 合并拆分加水印、扫描件转可搜索，一栈搞定",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "docx",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "180195 stars",
+   "why": "讲义/家长通知一键排成规范 Word，带目录和页眉",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "pptx",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "180195 stars",
+   "why": "课件/公开课 PPT 从大纲一键成稿，改版也不用重做",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "Auto-claude-code-research-in-sleep",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "17196 stars",
+   "why": "让 AI 夜里自动跑调研、另一模型交叉复核，适合快速摸清新方向",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "AI-Research-SKILLs",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "13398 stars",
+   "why": "近百个 AI 科研技能全集，做技术调研/开发时按需取用",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "anything2explainer",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "2379 stars",
+   "why": "知识点/文章一键变成带配音字幕的讲解视频，适合做口播素材",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "huashu-design",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "24744 stars",
+   "why": "一句话生成信息图/PPT/发布动画，替代模板化 AI 设计",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-10 推荐",
+   "date": "2026-10-10",
+   "skill": "agent-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "104101 stars",
+   "why": "9 个命令固化软件开发全流程，写代码先规格后实现，质量更稳",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "oh-my-mermaid",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "2882 stars",
+   "why": "把知识结构/解题流程自动画成流程图，备课配图、讲题演示省时，和你「一张图讲清逻辑」的教学思路很搭",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "nano-banana-pro-prompts-recommend-skill",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "1872 stars",
+   "why": "内置 1 万+ 生图提示词，公众号封面/课件配图不用再干想提示词，直接挑现成的",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "rea",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "73994 stars",
+   "why": "逆向分析工具，能拆解软件底层实现；教学用不上，属技术兴趣项",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "claude-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "27977 stars",
+   "why": "380+ 现成技能超市，能从里面挑教学备课/内容创作/效率类直接用",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "AnyPS5",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "27013 stars",
+   "why": "PS5 游戏移植工具，跟教学创作无关，纯技术围观",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "andrej-karpathy-skills",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "218316 stars",
+   "why": "四条 AI 编码铁律（先想清楚/能简不繁/只改该改/目标可验证），给你在用的「行为准则」找了个权威出处",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "tensorflow",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "200737 stars",
+   "why": "谷歌 AI 框架，想懂 AI 底层原理的技术兴趣项",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "flutter",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "179540 stars",
+   "why": "跨端 App 框架，把教学工具做成手机应用的主流选择",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "transformers",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "167281 stars",
+   "why": "大模型工具箱，想给项目接具体 AI 能力时用",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-11 推荐",
+   "date": "2026-10-11",
+   "skill": "pytorch",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "104150 stars",
+   "why": "深度学习框架，AI 训练主流工具，技术兴趣项",
    "type": "trending"
   }
  ],
@@ -2608,7 +3558,38 @@
   "awesome-claude-code": "未评价",
   "diagram-design": "未评价",
   "react-best-practices": "未评价",
-  "agent-browser-core": "未评价"
+  "agent-browser-core": "未评价",
+  "excel": "未评价",
+  "setup-matt-pocock-skills": "未评价",
+  "pdf": "未评价",
+  "docx": "未评价",
+  "pptx": "未评价",
+  "life-decision-guide": "未评价",
+  "antivibe": "未评价",
+  "ECC": "未评价",
+  "appllama-skills": "未评价",
+  "context-mode": "未评价",
+  "khazix-skills": "未评价",
+  "skills": "未评价",
+  "claude-mem": "未评价",
+  "scientific-agent-skills": "未评价",
+  "awesome-agent-skills": "未评价",
+  "Anthropic-Cybersecurity-Skills": "未评价",
+  "Auto-claude-code-research-in-sleep": "未评价",
+  "AI-Research-SKILLs": "未评价",
+  "anything2explainer": "未评价",
+  "huashu-design": "未评价",
+  "agent-skills": "未评价",
+  "oh-my-mermaid": "未评价",
+  "nano-banana-pro-prompts-recommend-skill": "未评价",
+  "rea": "未评价",
+  "claude-skills": "未评价",
+  "AnyPS5": "未评价",
+  "andrej-karpathy-skills": "未评价",
+  "tensorflow": "未评价",
+  "flutter": "未评价",
+  "transformers": "未评价",
+  "pytorch": "未评价"
  },
  "interest": {
   "mattpocock-skills": "感兴趣",
@@ -2635,7 +3616,8 @@
   "xiaozhi-teach-math-lesson-planner": "感兴趣",
   "xiaozhi-teach-math-error-analyzer": "感兴趣",
   "coteach": "不感兴趣",
-  "hyperframes": "感兴趣"
+  "hyperframes": "感兴趣",
+  "khazix-skills": "感兴趣"
  },
  "handbook": {
   "manimate": {
@@ -3125,6 +4107,246 @@
    "output": "自动化脚本+执行结果（截图/数据）",
    "pitfalls": "依赖 CDP 与目标站点结构，改版后需调整；登录/支付等敏感操作谨慎自动化",
    "diff": "1分钟内上手"
+  },
+  "antivibe": {
+   "scene": "想搞懂 AI 帮你写/改的代码或解法；把 AI 生成的内容讲透讲给学生前自己先吃透；备课要讲原理而非结论",
+   "tpl": "用 antivibe 把这段 AI 生成的代码/解题过程讲成教学深讲",
+   "input": "一段代码/文件/目录，或 AI 生成的解题过程",
+   "output": "教学深讲文档（原理+替代方案）或架构审查报告",
+   "pitfalls": "面向代码/技术内容；纯文字类内容收益有限",
+   "diff": "1分钟内上手"
+  },
+  "ECC": {
+   "scene": "AI 助手输出不稳、爱瞎猜；想给它配长期记忆与安全约束；搭建规范化 AI 工作流",
+   "tpl": "按 ECC 的规范帮我配置这套 AI 工作流",
+   "input": "你的 AI 助手（Claude Code/Codex/Cursor 等）与要规范化的场景",
+   "output": "配置好的技能/记忆/规范文件",
+   "pitfalls": "偏工程配置，需要一定命令行基础",
+   "diff": "需简单配置"
+  },
+  "appllama-skills": {
+   "scene": "做小程序/App 界面没头绪；想快速产出像样的移动端 UI；照抄爆款 App 的界面结构",
+   "tpl": "用 appllama-skills 把「读书打卡」做成一个原生质感的移动端界面",
+   "input": "想做的界面功能描述或参考的 App 截图",
+   "output": "移动端界面代码（React Native / Expo）",
+   "pitfalls": "面向移动端 UI；需基本前端环境",
+   "diff": "需依赖环境"
+  },
+  "context-mode": {
+   "scene": "AI 聊着就「忘」前文；长任务上下文被塞满；想让 AI 跨会话接着干",
+   "tpl": "用 context-mode 压缩这次长任务的上下文并保留记忆",
+   "input": "一个较长的 AI 会话/任务",
+   "output": "压缩后的上下文 + 持久化的会话记忆",
+   "pitfalls": "面向 AI 编码代理；效果依赖具体环境",
+   "diff": "需简单配置"
+  },
+  "khazix-skills": {
+   "scene": "需要现成的写作/整理/分析类 AI 技能；把模糊想法定义成清晰目标",
+   "tpl": "用 khazix-skills 的 leader 把这个模糊想法定义成清晰目标",
+   "input": "你的写作/整理/分析需求",
+   "output": "依具体子技能而定（目标文档/整理结果/文章）",
+   "pitfalls": "合集类，含 6 个子技能，按需选取",
+   "diff": "1分钟内上手"
+  },
+  "skills": {
+   "scene": "做技术/工程类自动化；想借鉴成熟工程师的 AI 技能组织方式",
+   "tpl": "看看 skills 里有哪些能用在内容生产/自动化上",
+   "input": "你的工程/自动化任务",
+   "output": "依具体子技能而定",
+   "pitfalls": "偏工程向；部分技能需开发环境",
+   "diff": "1分钟内上手"
+  },
+  "claude-mem": {
+   "scene": "想让它记住项目背景/个人偏好，不用每次重讲；多轮项目要保持连贯",
+   "tpl": "用 claude-mem 记住我的项目和常用偏好",
+   "input": "需长期跟踪的项目/偏好信息",
+   "output": "持久化的记忆库（跨会话注入）",
+   "pitfalls": "需按说明安装到对应 AI 环境",
+   "diff": "需简单配置"
+  },
+  "scientific-agent-skills": {
+   "scene": "文献调研、数据分析、课题梳理等科研类任务",
+   "tpl": "用 scientific-agent-skills 帮我梳理这个课题的文献",
+   "input": "研究课题/数据集",
+   "output": "调研综述/分析结果（依子技能）",
+   "pitfalls": "面向科研场景；部分技能需外部数据源",
+   "diff": "需依赖环境"
+  },
+  "awesome-agent-skills": {
+   "scene": "想找现成技能时先来这检索；了解某类需求有没有现成方案",
+   "tpl": "在 awesome-agent-skills 里找有没有做短视频的技能",
+   "input": "你的需求关键词",
+   "output": "技能清单/推荐链接",
+   "pitfalls": "是索引合集（awesome list），本身不含可执行技能",
+   "diff": "1分钟内上手"
+  },
+  "Anthropic-Cybersecurity-Skills": {
+   "scene": "发布内容/网页前的安全自查；安全类教学；攻防/渗透研究",
+   "tpl": "用 Anthropic-Cybersecurity-Skills 给这个网页做一次安全自查",
+   "input": "待检测的网页/代码/目标",
+   "output": "安全评估/攻防分析报告",
+   "pitfalls": "仅限合法授权范围内的安全测试；面向安全从业场景",
+   "diff": "需依赖环境"
+  },
+  "Auto-claude-code-research-in-sleep": {
+   "scene": "想系统调研一个新方向/新工具却没时间盯；或需要「一个模型干活、另一个模型挑刺」的交叉复核",
+   "tpl": "用 ARIS 调研 <主题>，跑一轮找方向+复现，并让另一个模型复核结论",
+   "input": "一个明确的研究方向/问题；被执行 agent 与复核 agent 各自可用的模型（默认 Codex MCP 复核）",
+   "output": "Markdown 研究报告 + 可跑代码 + 复核意见（工作流产物，非现成平台）",
+   "pitfalls": "是方法论/工作流不是平台，需接入支持 skill 的 agent；ML 研究导向，教育/自媒体场景需自行迁移；交叉复核要配第二个模型",
+   "diff": "需依赖环境"
+  },
+  "AI-Research-SKILLs": {
+   "scene": "要系统了解/落地 AI 研究相关技术（微调、训练、评测、RAG 等），想让 agent 按标准流程干活",
+   "tpl": "用 AI-Research-SKILLs 里的 <某类技能> 完成 <任务>",
+   "input": "明确要做的技术环节（如微调/RAG/评测）；对应环境依赖（GPU、框架）",
+   "output": "按技能分类的流程 / 代码 / 报告",
+   "pitfalls": "研究/开发向，纯教学备课用不上；部分技能重依赖（GPU/训练环境）；按需挑单个技能而非全装",
+   "diff": "需依赖环境"
+  },
+  "anything2explainer": {
+   "scene": "要把一个知识点或一篇文章做成口播讲解视频（数学概念、模型讲解、选题科普）",
+   "tpl": "用 anything2explainer 把 <知识点/文章> 做成 <时长/语言> 的解说视频",
+   "input": "主题或现成文稿；时长与语言；TTS 音色（自带 kokoro 或对接火山 TTS 2.0）",
+   "output": "1280×720 H.264 MP4（配音+字幕+章节进度条）+ 研究稿/分镜/QC 报告等全套中间产物",
+   "pitfalls": "基于 Remotion（React+TS）需能跑渲染环境；视频为代码绘制的黑底动效而非真人；中文配音走 BYO-TTS 更稳",
+   "diff": "需依赖环境"
+  },
+  "huashu-design": {
+   "scene": "要做视觉成品（封面/信息图/原型/动画/PPT）却没有设计师；或想摆脱模板化 AI 设计感",
+   "tpl": "用 huashu-design 做一张 <主题> 的信息图 / 一套 <主题> 的 PPT / 一段 <主题> 发布动画",
+   "input": "一个主题或文案；可选投喂品牌资产（logo、色板、UI 截图）让产出更贴品牌",
+   "output": "HTML 原生设计稿（可导出 PPT、动画 MP4、信息图等）",
+   "pitfalls": "安装后需确认 references/assets/scripts/demos 子目录齐全（旧版 skills CLI 只同步单文件）；产出为 HTML 原生，微调需懂一点 HTML",
+   "diff": "需简单配置"
+  },
+  "agent-skills": {
+   "scene": "让 agent 写/改一个正经项目，希望它按「先规格→再计划→再实现→再测试→再评审→再发布」的工程流程走",
+   "tpl": "用 agent-skills 先 /spec 把需求写成规格，再 /plan 拆分，然后 /build 实现",
+   "input": "一个开发需求；项目代码仓",
+   "output": "规格文档、任务计划、增量提交的代码与测试",
+   "pitfalls": "面向软件工程（Web/前端/后端），非教学或内容技能；命令与具体 agent 的 slash-command 机制绑定；对非开发者价值有限",
+   "diff": "需简单配置"
+  },
+  "excel": {
+   "scene": "要读写/修改/清洗 Excel、CSV 表格，或建新表、算公式、做图表",
+   "tpl": "用 xlsx 技能把 <文件> 的 <需求> 处理一下（清洗/算公式/加图表）",
+   "input": "待处理的 .xlsx/.xlsm/.csv/.tsv 文件，或要建表的字段/数据来源",
+   "output": "规范化 Excel 工作簿（含公式/格式/图表）",
+   "pitfalls": "交付物必须是表格文件；大数据量走 pandas、格式/公式走 openpyxl；别用它产出 Word/网页报表",
+   "diff": "1分钟内上手"
+  },
+  "pdf": {
+   "scene": "要合并/拆分/旋转 PDF、加水印、填表单、抽图片，或把扫描件 OCR 成可搜索",
+   "tpl": "用 pdf 技能把这几份 PDF 合并，并给每页加水印",
+   "input": "待处理的 .pdf 文件；表单类需知字段",
+   "output": "处理后的 PDF（或抽出的文本/图片）",
+   "pitfalls": "扫描件 OCR 需要可用 OCR 环境；加密 PDF 需先解密；只处理 PDF，别拿来做 Word/表格",
+   "diff": "1分钟内上手"
+  },
+  "docx": {
+   "scene": "要新建/编辑 Word 文档（讲义、通知、报告），或从现有 .docx 提内容、改格式",
+   "tpl": "用 docx 技能把这份 Markdown 整理成带目录的 Word 讲义",
+   "input": "内容来源（Markdown/文本/已有 .docx）；排版要求（标题、目录、页眉页脚）",
+   "output": "排版规范的 .docx",
+   "pitfalls": "改已有文档要 unzip→改 word/document.xml→zip（docx-js 打不开已有文件）；读内容用 pandoc；不处理 PDF/表格",
+   "diff": "需简单配置"
+  },
+  "pptx": {
+   "scene": "要做/改 PPT（课件、汇报、公开课），或读现有 .pptx/.potx 提取内容",
+   "tpl": "用 pptx 技能把这份大纲做成一套 <主题> 课件",
+   "input": "大纲/内容；模板（可选 .potx）",
+   "output": ".pptx 演示文稿",
+   "pitfalls": "新建用 pptxgenjs、改已有需拆 XML；读稿用 markitdown；图片排版要给素材路径",
+   "diff": "需简单配置"
+  },
+  "setup-matt-pocock-skills": {
+   "scene": "想让 agent 按「小而可组合」的工程规范做真正的开发（而非 vibe coding）",
+   "tpl": "装上 mattpocock 技能集，按它的规范帮我重构这个项目",
+   "input": "一个具体开发任务；项目代码仓；只装一个 agent 版本（避免重复）",
+   "output": "小步、可组合的代码改动与规范文档",
+   "pitfalls": "偏 TypeScript/工程向，非开发者价值有限；同一 agent 只装一版（Claude/Codex/Copilot 三选一），装两个会重复",
+   "diff": "需简单配置"
+  },
+  "oh-my-mermaid": {
+   "scene": "要把知识结构/解题流程/知识脉络画成流程图、关系图时；备课或做教案配图",
+   "tpl": "用 oh-my-mermaid 把「一元二次方程解法步骤」画成一张流程图",
+   "input": "一句话说清要画的主题和层级/先后关系即可",
+   "output": "Mermaid 源码 + 可渲染的流程图/结构图（可嵌文档、PPT）",
+   "pitfalls": "擅长流程/结构/关系类图，写实插画不行；配色偏工程风，教学用可后期美化；抽象推导需先自己拆清层级",
+   "diff": "需简单配置"
+  },
+  "nano-banana-pro-prompts-recommend-skill": {
+   "scene": "要生成封面/配图但不会写提示词；想让 AI 按文章内容自动配图",
+   "tpl": "用 nano-banana-pro 提示词，给我的「二次函数」文章配一张公众号封面",
+   "input": "一句话说清用途与风格，或直接贴文章/脚本让它自动改写",
+   "output": "3 条候选提示词 + 示例图 + 可直接生图的英文提示词",
+   "pitfalls": "只给提示词，真正出图仍需接 Gemini/Nano Banana 等生图模型；以英文提示词为准",
+   "diff": "1分钟内上手"
+  },
+  "rea": {
+   "scene": "好奇某软件/工具底层怎么实现；做技术向内容时拆解产品原理",
+   "tpl": "用 rea 分析一下 XX 软件的核心功能是怎么实现的",
+   "input": "一个要分析的目标（应用 / 二进制文件 / 运行进程）",
+   "output": "结构化分析报告 / 调用链 / 行为说明",
+   "pitfalls": "属逆向工程，务必只用于合法合规的互操作/研究场景，勿碰商业软件授权红线；与教学无关",
+   "diff": "需依赖环境"
+  },
+  "claude-skills": {
+   "scene": "想给 AI 一次装上一批现成技能；找某类任务（写作/调研/效率）的现成方案",
+   "tpl": "从 claude-skills 里挑几个适合初中数学老师的内容创作技能装一下",
+   "input": "想清楚需要的技能类别（写作润色/调研/效率）",
+   "output": "一批可直接调用的 skill（.claude/skills 目录）+ 对应命令",
+   "pitfalls": "量大而杂，需自行甄别；部分面向程序员；装太多会稀释 AI 注意力，按需取用",
+   "diff": "需简单配置"
+  },
+  "AnyPS5": {
+   "scene": "关注游戏移植/系统兼容技术；纯技术兴趣探索",
+   "tpl": "（教学/创作场景无适用调用）",
+   "input": "需自行准备合法获取的游戏二进制文件",
+   "output": "可在 PC 上运行的目标程序",
+   "pitfalls": "需自行编译配置，门槛高；仅供互操作/研究，注意版权合规；与本职无关",
+   "diff": "需依赖环境"
+  },
+  "andrej-karpathy-skills": {
+   "scene": "让 AI 改代码/写脚本时老自作主张、越改越复杂；想给 AI 立明确规矩",
+   "tpl": "把这份 CLAUDE.md 规则挂到项目里，约束 AI 写代码的行为",
+   "input": "一个用 AI 编码的项目目录",
+   "output": "一份 CLAUDE.md 规则文件（放进项目即生效）",
+   "pitfalls": "面向代码任务，非代码场景（如写公众号）收益有限；规则是「提醒」不是「强制」，仍需自己把关",
+   "diff": "1分钟内上手"
+  },
+  "tensorflow": {
+   "scene": "想自己训练模型 / 深入理解 AI 底层原理",
+   "tpl": "用 tensorflow 搭一个识别手写数字的入门模型",
+   "input": "会 Python，理解矩阵/导数等基础数学",
+   "output": "可训练/部署的机器学习模型",
+   "pitfalls": "门槛高、体系大，与日常教学创作无直接关系；建议当科普兴趣项",
+   "diff": "需依赖环境"
+  },
+  "flutter": {
+   "scene": "想把教学内容/小工具做成手机 App；开发跨端应用",
+   "tpl": "用 flutter 做一个「每日一题」的手机小应用",
+   "input": "会 Dart（或愿意学）；有 App 设计想法",
+   "output": "可打包上架的安卓/iOS App",
+   "pitfalls": "需写代码 + 配开发环境；与「Skills 管理台」这类网页项目定位不同，别混用",
+   "diff": "需依赖环境"
+  },
+  "transformers": {
+   "scene": "想给项目接入具体 AI 能力（摘要/翻译/识图）",
+   "tpl": "用 transformers 调一个中文摘要模型，把长文压成要点",
+   "input": "会 Python；按需下载模型（注意显存/网速）",
+   "output": "可直接调用的 AI 模型 / 推理结果",
+   "pitfalls": "依赖 Python 环境与模型下载，对网络和硬件有要求；日常用现成 AI 工具更省事",
+   "diff": "需依赖环境"
+  },
+  "pytorch": {
+   "scene": "研究/训练神经网络模型；技术向学习",
+   "tpl": "用 pytorch 写一个最简单的神经网络做分类",
+   "input": "会 Python + 基础线性代数",
+   "output": "训练好的深度学习模型",
+   "pitfalls": "门槛高，非本职工作刚需；建议仅在技术学习时了解",
+   "diff": "需依赖环境"
   }
  },
  "polish": [
@@ -3199,5 +4421,5 @@
    "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-08 19:38"
+ "updated": "2026-10-12 16:09"
 }
