@@ -4,9 +4,10 @@
 # 所需 GitHub Secrets：
 #   CLOUDFLARE_ACCOUNT_ID   = d00a6dabc469e8be820bd6904357421c
 #   CLOUDFLARE_API_TOKEN    = 你在 Cloudflare 创建的 API Token
-#   APP_ID / APP_SECRET     = 飞书自建应用凭证（注入为 Worker 机密变量）
-# 说明：先 wrangler deploy（应用 wrangler.toml 的 KV 绑定），
-#       再 echo | wrangler secret put 注入飞书凭证，顺序保证 KV 不丢。
+#   APP_ID / APP_SECRET     = 飞书自建应用凭证（注入为 Worker 机密变量，旧版兼容用）
+#   JWT_SECRET              = 产品 API 签名密钥（必填，Worker 校验 JWT 用）
+# 说明：先 wrangler deploy（应用 wrangler.toml 的 KV/D1 绑定），
+#       再执行 D1 迁移（新增表结构），最后注入机密变量。
 # ============================================================
 name: deploy-skill-center-worker
 
@@ -33,11 +34,17 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Deploy Worker (wrangler deploy, KV 绑定来自 wrangler.toml)
+      - name: Deploy Worker (wrangler deploy, KV/D1 绑定来自 wrangler.toml)
         run: npx -y wrangler@4 deploy
+
+      - name: Apply D1 migrations (product API 表结构)
+        run: npx -y wrangler@4 d1 migrations apply skill-center-db --remote
 
       - name: Inject secret APP_ID
         run: echo "${{ secrets.APP_ID }}" | npx -y wrangler@4 secret put APP_ID --name skill-center-api
 
       - name: Inject secret APP_SECRET
         run: echo "${{ secrets.APP_SECRET }}" | npx -y wrangler@4 secret put APP_SECRET --name skill-center-api
+
+      - name: Inject secret JWT_SECRET
+        run: echo "${{ secrets.JWT_SECRET }}" | npx -y wrangler@4 secret put JWT_SECRET --name skill-center-api
