@@ -497,6 +497,33 @@ def d1_skill_map():
     rows = d1_query("SELECT id,name,cn,cat,tags,biz,status,hot,source,reg,desc FROM skills")
     return {r["name"]: r for r in rows}
 
+def auto_cn(name, desc):
+    """补录时生成中文名（产品质量门，绝不允许推荐无中文名的技能）：
+    1) 人工映射表 CN_MAP（最可靠，优先）
+    2) 自动翻译 desc（best-effort，GitHub Actions 海外环境可用 Google 翻译）
+    3) 拿不到 → 返回 None，由调用方跳过该技能进推荐
+    """
+    if name in CN_MAP:
+        return CN_MAP[name]
+    if os.environ.get("DISABLE_TRANSLATE") == "1":
+        return None
+    try:
+        from deep_translator import GoogleTranslator
+        src = (desc or name or "")[:160].strip()
+        if not src:
+            return None
+        t = GoogleTranslator(source="en", target="zh-CN").translate(src)
+        if not t:
+            return None
+        t = t.strip().rstrip("。．.!！?？,，;；:： ")
+        if len(t) > 14:
+            t = t[:14].rstrip("，。！？、；： ")
+        if t and not t.isascii():
+            return t
+    except Exception:
+        pass
+    return None
+
 def d1_feedback_scores():
     """从 user_skill_states 聚合反馈分（D1 无独立 feedback 表）：
     感兴趣(待安装)×3 + 好用×2 − 没用×2 − 不感兴趣×3，按技能名聚合"""
@@ -735,7 +762,7 @@ def write_d1(date_str, dry):
         need.append(it)
     if dry:
         for it in need:
-            m[it["name"]] = {"id": -1, "dry": True}
+            m[it["name"]] = {"id": -1, "dry": True, "cn": auto_cn(it["name"], it.get("desc") or "")}
         print(f"[write_d1][dry] 将补录台账 {len(need)} 条：{[n['name'] for n in need]}"
               + (f"；拦截 {len(blocked)} 条：{blocked}" if blocked else ""))
     else:
@@ -749,15 +776,17 @@ def write_d1(date_str, dry):
                 cat, biz, tag = "内容创作", "[\"内容创作\"]", "[\"写作润色\"]"
             elif any(k in low for k in ["video", "anim", "visual"]):
                 cat, biz, tag = "视频制作", "[\"口播视频\"]", "[\"视频生成\"]"
+            cn2 = auto_cn(name, desc) or name
             res = d1_query(
                 "INSERT INTO skills(name,cn,cat,tags,biz,status,backup,hot,source,reg,score,desc,note,created_at) "
                 "VALUES(?,?,?,?,?,'未安装','未备份',?,?,NULL,NULL,?,?,datetime('now','localtime'))",
-                [name, CN_MAP.get(name) or it.get("cn") or name, cat, tag, biz, it.get("hot") or 0,
+                [name, cn2, cat, tag, biz, it.get("hot") or 0,
                  it.get("source") or "", desc[:500],
-                 f"{datetime.now().strftime('%Y-%m-%d')} recommend.py 自动补录"], is_write=True)
+                 f"{datetime.now().strftime('%Y-%m-%d')} recommend.py 自动补录"
+                 + ("；中文名待人工补" if cn2 == name else "")], is_write=True)
             # INSERT 响应不带 last_row_id，回查一次拿真实 id（8 条以内，开销可忽略）
             got = d1_query("SELECT id FROM skills WHERE name=?", [name])
-            m[name] = {"id": got[0]["id"] if got else -1}
+            m[name] = {"id": got[0]["id"] if got else -1, "cn": cn2}
         if need:
             print(f"[write_d1] 台账补录 {len(need)} 条")
         if blocked:
@@ -769,6 +798,12 @@ def write_d1(date_str, dry):
         if not row:
             print(f"[write_d1] 跳过 {it['name']}：台账无记录且补录失败"); continue
         sid = row.get("id") or row.get("skill_id")
+        # 产品质量门：无真实中文名（cn 为空或等于英文名）的技能不进推荐，
+        # 用户永远看不到英文名标题；此类技能留在台账待人工补 CN_MAP 后自然可推
+        cn_v = str(row.get("cn") or "")
+        if not cn_v or cn_v == it["name"]:
+            print(f"[write_d1] 质量门拦截 {it['name']}：无中文名，不写入推荐（待补 CN_MAP/人工命名）")
+            continue
         if dry:
             recs.append({"name": it["name"], "type": "为你推荐" if it["tier"] == "for_you" else "全网热门", "skill_id": sid})
             continue

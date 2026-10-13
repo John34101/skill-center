@@ -22,6 +22,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: 安装依赖（含自动翻译库，补录时生成中文名）
+        run: pip install deep-translator
+
       - name: 运行每日双档推荐（fetch → select → 写 D1）
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
