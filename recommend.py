@@ -399,6 +399,79 @@ D1_DB_ID = "3ecbcacc-8f1b-48ff-b870-c87613f5b307"
 CF_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 CF_ACCOUNT = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "")
 
+# 常见技能的通用中文名（fetch 候选无 cn 字段，补录时用映射表补中文名，
+# 保证首页卡片显示中文、一眼看出用途；查不到时兜底用 name 本身）
+CN_MAP = {
+    "superpowers": "超级技能合集", "VoiceStudio": "语音工坊", "gods-eye-view": "上帝视角",
+    "airllm": "AirLLM 大模型推理", "artcraft": "ArtCraft 艺术创作", "xtool": "Xtool 跨平台开发",
+    "claude-seo": "Claude SEO 优化", "GPT-Image2-Skill": "GPT 图像生成",
+    "obsidian-second-brain": "Obsidian 第二大脑", "claude-code": "Claude Code 编程助手",
+    "answer-me-with-html": "HTML 互动答题", "claude-obsidian": "Obsidian 笔记管家",
+    "claude-ads": "Claude 广告投放", "godogen": "Godot 游戏开发", "pinme": "一键部署前端",
+    "one-skill-to-rule-them-all": "全能技能养成器", "life-decision-guide": "高性价比人生指南",
+    "manimate": "图解动画生成", "manim-video": "数学动画视频", "archify": "架构流程图",
+    "baoyu-comic": "知识科普漫画", "distilly": "人物画像提炼", "faceless-explainer": "无人出镜解说视频",
+    "brainstorming": "创意头脑风暴", "grill-me": "方案压力测试", "grill-with-docs": "带文档方案评审",
+    "stop-slop": "去AI味润色", "humanizer-zh": "中文去模板化", "visual-explainer": "可视化讲解",
+    "typesafe-ai": "TypeSafe AI 开发", "hermes-learns-manim": "Manim 数学动画",
+    "hyperframes": "超帧视频框架", "hyperframes-core": "超帧合成引擎", "hyperframes-cli": "超帧命令行",
+    "openmaic": "OpenMAIC 助手", "getnote": "得到笔记", "last30days": "近30天口碑调研",
+    "writing-beats": "写作节拍", "writing-shape": "写作结构", "deeptutor-cli": "DeepTutor 教练",
+    "book-to-skill": "书转技能", "adult-vocational-certificate": "职业证书备考",
+    "content-strategy": "内容策略规划", "agent-reach": "全网调研", "find-skills": "技能发现",
+    "media-use": "媒体创作系统", "remotion-best-practices": "Remotion 视频实践",
+    "seedance-2-0-prompting-skills": "Seedance 提示词", "reverse-engineer-anything": "逆向工程",
+    "security-audit": "安全审计", "self-improving-agent": "自我进化代理", "teach": "技能教学",
+    "webapp-testing": "网页应用测试", "ponytail": "最小改动开发", "rea-changelog-update": "发布日志更新",
+    "rea-tool-design": "REA 工具设计", "setup-matt-pocock-skills": "技能环境配置",
+    "skill-creator": "技能创作", "skill-creator-for-work": "工作技能创作", "ljg-map": "知识观概念图",
+    "mid-autumn-chat-letter": "中秋小笺", "seedream-50": "Seedream 图像生成",
+    "seedance-25": "Seedance 视频生成", "seed-audio": "音频生成", "html": "网页设计",
+    "sheet": "表格处理", "ppt": "幻灯片", "word": "文档写作", "lark-doc": "飞书文档",
+    "lark-base": "多维表格", "lark-calendar": "飞书日历", "lark-im": "飞书消息",
+    "lark-meeting": "飞书会议", "lark-mail": "飞书邮箱", "lark-task": "飞书任务",
+    "lark-drive": "云盘文件", "lark-wiki": "知识库", "lark-contact": "通讯录",
+    "lark-approval": "审批流程", "lark-project": "项目管理", "lark-attendance": "考勤打卡",
+    "lark-okr": "OKR 管理", "lark-whiteboard": "画板", "lark-markdown": "Markdown 文件",
+    "lark-openapi-explorer": "开放接口探索", "doubao-identity": "豆包产品咨询",
+    "doubao-pdf": "PDF 处理", "doubao-visualization": "可视化", "doubao-creative-design": "创意设计",
+    "doubao-creative-video": "创意视频", "doubao-creative-drama": "短剧创作",
+    "doubao-newmedia-writing": "新媒体写作", "doubao-marketing-plan": "营销策划",
+    "doubao-ecommerce-proposal": "电商活动策划", "doubao-contract-reviewer": "合同审查",
+    "doubao-contract-drafting": "合同起草", "doubao-contract-amendment": "补充协议",
+    "doubao-dpa-drafter": "数据处理协议", "doubao-compliance-assessment-public": "合规评估",
+    "doubao-personal-info-audit": "个保审计", "doubao-medical-report": "医学报告解读",
+    "doubao-answer-with-medical-evidence": "循证医学咨询", "doubao-clinical-decision-support": "临床决策支持",
+    "doubao-medical-literature-search": "医学文献检索", "doubao-medical-literature-interpretation": "医学文献解读",
+    "doubao-medical-literature-translation": "医学文献翻译", "doubao-medical-literature-monitoring": "医学进展跟踪",
+    "doubao-academic-researcher": "学术文献调研", "doubao-academic-polish": "论文写作润色",
+    "doubao-academic-evaluator": "学术评审", "doubao-paper-close-reading": "论文精读",
+    "doubao-research-proposal": "研究计划书", "doubao-patent-drafting": "专利申请撰写",
+    "doubao-reference-audit": "参考文献审查", "doubao-journal-format": "论文格式排版",
+    "doubao-questionnaire-designer": "问卷设计", "doubao-public-company-analysis": "上市公司分析",
+    "doubao-earnings-analysis": "财报归因分析", "doubao-announcement-analysis": "公告解读",
+    "doubao-daily-stock": "个股日报", "doubao-stock-screening": "选股筛选",
+    "multi-stock-comparison": "多股比较", "doubao-finance-model-builder": "财务建模",
+    "doubao-market-hotspot": "市场热点分析", "doubao-industry-analysis": "行业研究",
+    "doubao-private-company": "一级市场评估", "doubao-wealth-planning": "财富规划",
+    "doubao-data-analysis": "数据分析", "doubao-sentiment-tracker": "舆情监控",
+    "doubao-video-extract": "视频提取", "doubao-product-manager": "产品经理",
+    "doubao-product-analysis": "产品分析", "doubao-product-selection": "选品分析",
+    "doubao-product-content": "商品内容", "doubao-listing-localization": "Listing 本地化",
+    "doubao-cross-border-growth-content": "跨境增长内容", "doubao-ecommerce-compliance-tax-logistics": "跨境合规税务物流",
+    "doubao-customer-service": "客服方案", "doubao-multiplatform-rewrite": "多平台改写",
+    "doubao-headlines-calendar": "标题日历", "doubao-ultimate-guide": "攻略创作",
+    "doubao-novel-writing": "网文创作", "doubao-book-writer": "长文档写作",
+    "doubao-game-designer": "游戏设计", "doubao-human-signal": "去AI味", "doubao-pc-optimizer": "电脑优化",
+    "doubao-marketing-material-review": "营销素材审核", "doubao-oceanengine-adops-agent": "巨量引擎盯盘",
+    "doubao-record": "录音", "doubao-cron-scheduler": "定时任务", "doubao-app-builder": "网页应用构建",
+    "browser-task": "浏览器自动化", "byted-mediakit-video": "视频处理", "byted-mediakit-audio": "音频处理",
+    "byted-mediakit-image": "图片处理", "byted-mediakit-editing": "音视频剪辑",
+    "byted-mediakit-shared": "MediaKit 媒体工具", "artifact-preview": "产物预览", "verifier-hub": "产物校验",
+    "frontend-design": "前端设计", "diagram-design": "图示设计", "vercel-react-best-practices": "Vercel React 实践",
+    "i-have-adhd": "ADHD 友好开发", "hermes-learns-manim": "Hermes Manim 教学",
+}
+
 def d1_query(sql, params=None, is_write=False):
     """Cloudflare D1 HTTP API。写操作直接执行；读操作走 /raw 返回 results。"""
     if not CF_TOKEN or not CF_ACCOUNT:
@@ -679,7 +752,7 @@ def write_d1(date_str, dry):
             res = d1_query(
                 "INSERT INTO skills(name,cn,cat,tags,biz,status,backup,hot,source,reg,score,desc,note,created_at) "
                 "VALUES(?,?,?,?,?,'未安装','未备份',?,?,NULL,NULL,?,?,datetime('now','localtime'))",
-                [name, it.get("cn") or "", cat, tag, biz, it.get("hot") or 0,
+                [name, CN_MAP.get(name) or it.get("cn") or name, cat, tag, biz, it.get("hot") or 0,
                  it.get("source") or "", desc[:500],
                  f"{datetime.now().strftime('%Y-%m-%d')} recommend.py 自动补录"], is_write=True)
             # INSERT 响应不带 last_row_id，回查一次拿真实 id（8 条以内，开销可忽略）
