@@ -211,8 +211,8 @@ async function handleApi(req, env, url) {
     return json({
       ok: true,
       batch: latest.b,
-      personal: rows.results.filter(r => r.type === "为你推荐"),
-      hot: rows.results.filter(r => r.type === "全网热门")
+      personal: rows.results.filter(r => r.type === "为你推荐").slice(0, 5),
+      hot: rows.results.filter(r => r.type === "全网热门").slice(0, 5)
     });
   }
 
