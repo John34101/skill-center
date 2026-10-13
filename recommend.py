@@ -268,9 +268,10 @@ def recent_cases(days=7):
     return cases
 
 def fb_score(name, fb):
-    """反馈分 = 感兴趣×3 + 有用×2 − 没用×2 − 不感兴趣×3（A1 口径）"""
+    """反馈分 = 感兴趣×1.5 + 有用×2 − 没用×2 − 不感兴趣×3
+    （感兴趣降权：测试/随手点击占比高，不应压过业务画像分）"""
     d = fb.get(name, {})
-    return d.get("感兴趣", 0)*3 + d.get("有用", 0)*2 - d.get("没用", 0)*2 - d.get("不感兴趣", 0)*3
+    return d.get("感兴趣", 0)*1.5 + d.get("有用", 0)*2 - d.get("没用", 0)*2 - d.get("不感兴趣", 0)*3
 
 def score(item, profile):
     text = f"{item.get('name','')} {item.get('cn','')} {item.get('desc','')}".lower()
@@ -343,9 +344,9 @@ def select(date_str, use_d1=False):
             cands.append(lc); seen.add(lc["name"].lower())
     profile = load_profile()
     if use_d1:
-        fb, inst, recent, cases = d1_feedback_scores(), d1_installed_set(), d1_recent_recs(days=14), d1_recent_cases(days=7)
+        fb, inst, recent, cases = d1_feedback_scores(), d1_installed_set(), d1_recent_recs(days=7), d1_recent_cases(days=7)
     else:
-        fb, inst, recent, cases = feedback_scores(), installed_set(), recent_recs(days=14), recent_cases(days=7)
+        fb, inst, recent, cases = feedback_scores(), installed_set(), recent_recs(days=7), recent_cases(days=7)
     excluded = inst | {n for n, d in fb.items() if d.get("不感兴趣", 0) > 0} | recent
     def final_score(c):
         return score(c, profile) + fb_score(c["name"], fb)
@@ -353,6 +354,10 @@ def select(date_str, use_d1=False):
     for_you = []
     for c in scored:
         if c["name"] in excluded:
+            continue
+        # 画像门槛：业务画像和反馈分双零的技能不进"为你推荐"（宁缺毋滥，
+        # 避免低相关技能靠排序随机混入；不足 5 个就少推）
+        if score(c, profile) <= 0 and fb_score(c["name"], fb) <= 0:
             continue
         if len(for_you) >= 5:
             break
