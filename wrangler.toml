@@ -12,3 +12,9 @@ compatibility_date = "2024-11-01"
 [[kv_namespaces]]
 binding = "AUTH"
 id = "e76954886c564d819bc3f556eb4b32f1"
+
+# D1 数据库（产品主库）
+[[d1_databases]]
+binding = "skill_center_db"
+database_name = "skill-center-db"
+database_id = "3ecbcacc-8f1b-48ff-b870-c87613f5b307"
