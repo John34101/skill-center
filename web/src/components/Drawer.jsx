@@ -13,9 +13,10 @@ export default function Drawer({ skillId, onClose, onChange }) {
   }, [skillId])
 
   useEffect(() => {
+    if (!skillId) return
     document.body.classList.add('drawer-lock')
     return () => document.body.classList.remove('drawer-lock')
-  }, [])
+  }, [skillId])
 
   if (!skillId) return null
   const s = data && data.skill
