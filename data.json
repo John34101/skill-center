@@ -4250,8 +4250,8 @@
   "xiaozhi-teach-math-error-analyzer": "感兴趣",
   "coteach": "不感兴趣",
   "hyperframes": "感兴趣",
-  "khazix-skills": "感兴趣",
-  "edulab": "感兴趣",
+  "khazix-skills": "不感兴趣",
+  "edulab": "不感兴趣",
   "video-shotcraft": "感兴趣",
   "rea": "感兴趣"
  },
@@ -5057,5 +5057,5 @@
    "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-13 16:49"
+ "updated": "2026-10-13 17:05"
 }
