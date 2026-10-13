@@ -32,7 +32,16 @@ function Shell() {
   }, [route, isAdmin])
 
   // 会话恢复完成前先占位，避免刷新时闪登录页/误判未登录
-  if (!ready) return <div className="boot">正在恢复会话…</div>
+  if (!ready) return (
+    <div className="boot">
+      <div className="boot-in">
+        <div className="boot-mark"><i /></div>
+        <div className="boot-name">Skill 中心</div>
+        <div className="boot-spin" />
+        <div className="boot-tip">正在恢复会话…</div>
+      </div>
+    </div>
+  )
 
   // 登录/注册页
   if (route === '/login') return <Login />
