@@ -18,6 +18,7 @@ async function req(method, path, body) {
   }
   let d = {}
   try { d = await r.json() } catch (e) { d = { ok: false, error: '服务响应异常(' + r.status + ')' } }
+  d.status = r.status
   return d
 }
 

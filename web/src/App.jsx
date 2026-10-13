@@ -20,7 +20,7 @@ function useHashRoute() {
 }
 
 function Shell() {
-  const { user, logout } = useAuth()
+  const { user, ready, logout } = useAuth()
   const route = useHashRoute()
   const isAdmin = user && user.role === 'admin'
   const [stats, setStats] = useState(null)
@@ -30,6 +30,9 @@ function Shell() {
       api.adminStats().then(d => { if (d.ok) setStats(d.stats) })
     }
   }, [route, isAdmin])
+
+  // 会话恢复完成前先占位，避免刷新时闪登录页/误判未登录
+  if (!ready) return <div className="boot">正在恢复会话…</div>
 
   // 登录/注册页
   if (route === '/login') return <Login />

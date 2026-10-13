@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
       if (!localStorage.getItem('sc_token')) { setReady(true); return }
       const d = await api.me()
       if (d.ok && d.user) setUser(d.user)
-      else clearToken()
+      else if (d.status === 401) clearToken() // 仅 token 明确失效才清除，网络波动保留待下次恢复
       setReady(true)
     })()
   }, [])

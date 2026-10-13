@@ -165,6 +165,7 @@ body.drawer-lock { overflow: hidden }
 .drawer-acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; border-top: 1px solid var(--line); padding-top: 14px }
 
 /* ===== 登录/注册 ===== */
+.boot { min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--ink-2); font-size: 14px }
 .auth-wrap { min-height: 100vh; display: grid; place-items: center; background: var(--bg); padding: 24px }
 .auth-card { width: 380px; max-width: 94vw; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 30px 30px 26px; box-shadow: 0 10px 40px rgba(27,30,35,.06) }
 .auth-card h1 { font-size: 18px; margin: 0 0 4px; font-weight: 600 }
