@@ -1730,8 +1730,8 @@
    "tags": [
     "自动化"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": 73994,
    "source": "未取得可靠安装源（来源为 GitHub Trending 列表页占位链接，非真实安装入口）",
    "reg": "",
@@ -1741,7 +1741,7 @@
    "last": null,
    "score": null,
    "desc": "一个「拆黑盒」的逆向分析工具，能从软件运行行为一路分析到二进制底层；教学用不上，属技术兴趣项。",
-   "note": "来源待核：来源为 GitHub Trending 列表页占位链接，非真实安装入口。2026-10-12 清理标记"
+   "note": "2026-10-13 通过网页指令安装（morluto/rea）"
   },
   {
    "name": "claude-skills",
@@ -2263,8 +2263,8 @@
    "tags": [
     "视频生成"
    ],
-   "status": "未安装",
-   "backup": "未备份",
+   "status": "已安装",
+   "backup": "已备份",
    "hot": 10792,
    "source": "https://github.com/Vincentwei1021/video-shotcraft",
    "reg": "Vincentwei1021/video-shotcraft",
@@ -2275,7 +2275,7 @@
    "last": null,
    "score": null,
    "desc": "Remotion 电影感产品视频 skill：152 张镜头配方卡 + 209 动效预览 + 成品模板",
-   "note": "2026-10-13 每日推荐新增（全网热门）"
+   "note": "2026-10-13 通过网页指令安装"
   }
  ],
  "recs": [
@@ -4251,7 +4251,9 @@
   "coteach": "不感兴趣",
   "hyperframes": "感兴趣",
   "khazix-skills": "感兴趣",
-  "edulab": "感兴趣"
+  "edulab": "感兴趣",
+  "video-shotcraft": "感兴趣",
+  "rea": "感兴趣"
  },
  "handbook": {
   "manimate": {
@@ -5055,5 +5057,5 @@
    "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-13 09:12"
+ "updated": "2026-10-13 16:49"
 }
