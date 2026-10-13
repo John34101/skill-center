@@ -111,8 +111,8 @@ export default function Drawer({ skillId, onClose, onChange }) {
                   </>
                 ) : (
                   <>
-                    <button className="btn primary" disabled={busy.like || (st && st.status === '待安装')} onClick={() => act('like')}>感兴趣</button>
-                    <button className="btn ghost" disabled={busy.dislike || (st && st.status === '不感兴趣')} onClick={() => act('dislike')}>不感兴趣</button>
+                    <button className="btn primary" disabled={busy.like} onClick={() => act('like')}>感兴趣</button>
+                    <button className="btn ghost" disabled={busy.dislike} onClick={() => act('dislike')}>不感兴趣</button>
                     <button className="btn sub" disabled={busy.inst} onClick={() => act('inst')}>安装</button>
                   </>
                 )}

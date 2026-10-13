@@ -5,7 +5,6 @@ import Drawer, { stChip } from '../components/Drawer.jsx'
 function FeedCard({ r, onOpen, onChange }) {
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState('')
-  const locked = r.my_status === '待安装' || r.my_status === '不感兴趣'
   const isInstalled = r.my_status === '已安装'
 
   const act = async (fn, actName) => {
@@ -41,8 +40,8 @@ function FeedCard({ r, onOpen, onChange }) {
           </>
         ) : (
           <>
-            <button className={'btn ' + (r.my_status === '待安装' ? 'locked' : 'primary')} disabled={busy || locked} onClick={() => act('like', '感兴趣')}>感兴趣</button>
-            <button className={'btn ' + (r.my_status === '不感兴趣' ? 'locked' : 'ghost')} disabled={busy || locked} onClick={() => act('dislike', '不感兴趣')}>不感兴趣</button>
+            <button className={'btn ' + (r.my_status === '待安装' ? 'locked' : 'primary')} disabled={busy} onClick={() => act('like', '感兴趣')}>感兴趣</button>
+            <button className={'btn ' + (r.my_status === '不感兴趣' ? 'locked' : 'ghost')} disabled={busy} onClick={() => act('dislike', '不感兴趣')}>不感兴趣</button>
           </>
         )}
       </div>

@@ -65,7 +65,7 @@ button { font-family: inherit }
 .btn.danger:hover { background: var(--red-soft) }
 .btn:disabled { opacity: .7; cursor: not-allowed }
 .btn.pending { opacity: .6 }
-.btn.locked { background: var(--blue-soft); color: var(--blue); border-color: #C8D6F2; cursor: default }
+.btn.locked { background: var(--blue-soft); color: var(--blue); border-color: #C8D6F2; cursor: pointer }
 
 .chip { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 500; padding: 2px 9px; border-radius: 999px; border: 1px solid; white-space: nowrap }
 .chip.inst { color: var(--green); background: var(--green-soft); border-color: #BFE0CB }
