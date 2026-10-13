@@ -239,17 +239,20 @@ async function handleApi(req, env, url) {
     if (!skill) return json({ ok: false, error: "技能不存在" }, 404);
     const t = nowText();
     let upd = "";
-    if (act === "感兴趣") upd = "status='待安装',rating=NULL";
-    else if (act === "不感兴趣") upd = "status='不感兴趣',rating=NULL";
+    // 首次插入即写入目标状态（ON CONFLICT 只在已存在记录时触发；
+    // VALUES 若写死 '未安装'，新用户第一次点击会落成未安装、需点两次才生效）
+    let insertStatus = "未安装";
+    if (act === "感兴趣") { upd = "status='待安装',rating=NULL"; insertStatus = "待安装"; }
+    else if (act === "不感兴趣") { upd = "status='不感兴趣',rating=NULL"; insertStatus = "不感兴趣"; }
     else if (act === "有用") upd = "rating='好用'";
     else if (act === "没用") upd = "rating='没用'";
     else if (act === "一般") upd = "rating='一般'";
     else upd = "note=note";
     await db.prepare(
       `INSERT INTO user_skill_states(user_id,skill_id,status,rating,note,updated_at)
-       VALUES(?,?,'未安装',NULL,'',?)
+       VALUES(?,?,?,NULL,'',?)
        ON CONFLICT(user_id,skill_id) DO UPDATE SET ${upd}, updated_at=excluded.updated_at`
-    ).bind(u.id, sid, t).run();
+    ).bind(u.id, sid, insertStatus, t).run();
     return json({ ok: true, updated_at: t });
   }
 
@@ -364,7 +367,7 @@ async function handleApi(req, env, url) {
 /* ---------- KV 限流 ---------- */
 async function rateLimit(env, ip, isWrite) {
   try {
-    const limit = isWrite ? 10 : 60; // 写口 10/min，读口 60/min
+    const limit = isWrite ? 30 : 120; // 写口 30/min，读口 120/min（几十人规模防滥用且不误伤正常点击）
     const bucket = Math.floor(Date.now() / 60000);
     const key = "rl:" + (ip || "unknown") + ":" + bucket;
     const cur = parseInt((await env.AUTH.get(key)) || "0", 10);

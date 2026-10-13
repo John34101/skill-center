@@ -11,10 +11,10 @@ function FeedCard({ r, onOpen, onChange }) {
   const act = async (fn, actName) => {
     if (busy) return
     setBusy(true); setMsg('')
+    onChange && onChange(r, actName) // 乐观更新：点击立即改标签，不等接口
     const d = await api.feedback(r.skill_id, actName)
     setBusy(false)
-    if (!d.ok) { setMsg(d.error || '失败'); return }
-    onChange && onChange()
+    if (!d.ok) { setMsg(d.error || '失败'); onChange && onChange(r, '__reload'); return }
   }
 
   return (
@@ -62,6 +62,19 @@ export default function Home() {
   }
   useEffect(() => { load() }, [])
 
+  // 点击反馈后的乐观更新：立即把卡片标签改为目标状态，
+  // 失败或无参数（抽屉内操作）时以重拉兜底
+  const onFeedback = (r, actName) => {
+    if (!r || !actName || actName === '__reload') { load(); return }
+    const st = actName === '感兴趣' ? '待安装' : actName === '不感兴趣' ? '不感兴趣' : null
+    if (!st) { load(); return }
+    setData(d => d && ({
+      ...d,
+      personal: d.personal.map(x => x.id === r.id ? { ...x, my_status: st } : x),
+      hot: d.hot.map(x => x.id === r.id ? { ...x, my_status: st } : x),
+    }))
+  }
+
   const sec = (title, sub, items) => (
     <div className="section">
       <div className="sec-head">
@@ -72,7 +85,7 @@ export default function Home() {
         <div className="empty">暂无推荐</div>
       ) : (
         <div className="feed-grid">
-          {items.map(r => <FeedCard key={r.id} r={r} onOpen={setOpenId} onChange={load} />)}
+          {items.map(r => <FeedCard key={r.id} r={r} onOpen={setOpenId} onChange={onFeedback} />)}
         </div>
       )}
     </div>
@@ -88,7 +101,7 @@ export default function Home() {
           {sec('全网热门', 'GitHub 与中文社区最热 · 不设相关筛选', data.hot || [])}
         </>
       )}
-      <Drawer skillId={openId} onClose={() => setOpenId(null)} onChange={load} />
+      <Drawer skillId={openId} onClose={() => setOpenId(null)} onChange={onFeedback} />
     </div>
   )
 }
