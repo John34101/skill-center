@@ -17,3 +17,6 @@ verify-shot.png
 
 # wrangler 本地缓存
 .wrangler/
+
+# React SPA 构建产物
+web/dist/
