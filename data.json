@@ -2084,6 +2084,198 @@
    "score": null,
    "desc": "16个搜索引擎集成（7中文+9全球），支持高级操作符、时间过滤、站内搜索",
    "note": "2026-10-12 每日推荐新增（全网热门）"
+  },
+  {
+   "name": "math-modeling-skill",
+   "cn": "数学建模全流程",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解",
+    "代码开发"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 1851,
+   "source": "https://github.com/XiaoMaColtAI/math-modeling-skill",
+   "reg": "XiaoMaColtAI/math-modeling-skill",
+   "biz": [
+    "教学备课",
+    "题目解析"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "数学建模竞赛三阶段工作流：建模分析→Python/MATLAB编程→DOCX论文生成，内置优化/预测/评价/图论/机器学习算法库",
+   "note": "2026-10-13 每日推荐新增（为你推荐）"
+  },
+  {
+   "name": "agent-homework-companion",
+   "cn": "作业陪伴辅导",
+   "cat": "家长沟通",
+   "tags": [
+    "答疑代写"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://lobehub.com/skills/zhongweiv-hermes-edu-skills-agent-homework-companion",
+   "reg": "",
+   "biz": [
+    "家长答疑"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "课后作业陪伴：生成作业路线图与分时段计划，卡住时给分层提示（不直接给答案），完成附自检清单",
+   "note": "2026-10-13 每日推荐新增（为你推荐）"
+  },
+  {
+   "name": "douyin-script",
+   "cn": "抖音脚本助手",
+   "cat": "内容创作",
+   "tags": [
+    "写作润色"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://skilery.com/skills/douyin-script",
+   "reg": "",
+   "biz": [
+    "口播视频",
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "抖音短视频脚本创作，支持口播/带货/剧情/分镜/Vlog 五类，前3秒钩子优先",
+   "note": "2026-10-13 每日推荐新增（为你推荐）"
+  },
+  {
+   "name": "math-skill",
+   "cn": "数学构造验证",
+   "cat": "教学与教研",
+   "tags": [
+    "教学讲解",
+    "代码开发"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 529,
+   "source": "https://www.npmjs.com/package/math-skill",
+   "reg": "the-thinker0/math-skill",
+   "biz": [
+    "教学备课",
+    "题目解析"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "把研究/学习目标变成数学构造与验证（SymPy 认知栈）：符号计算、方程求解、单位换算、数学讲解",
+   "note": "2026-10-13 每日推荐新增（为你推荐）"
+  },
+  {
+   "name": "vscript-generator",
+   "cn": "视频脚本生成",
+   "cat": "内容创作",
+   "tags": [
+    "写作润色",
+    "视频生成"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://skillhub.cloud.tencent.com/skills/vscript-generator",
+   "reg": "",
+   "biz": [
+    "口播视频",
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "从热点提取到完整脚本包（文案+分镜+视觉+配音+字幕指令），输出可直接驱动视频生成的结构化脚本",
+   "note": "2026-10-13 每日推荐新增（为你推荐）"
+  },
+  {
+   "name": "e2e",
+   "cn": "Agent 驱动测试框架",
+   "cat": "AI开发",
+   "tags": [
+    "代码开发",
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 8292,
+   "source": "https://github.com/tester-army/e2e",
+   "reg": "tester-army/e2e",
+   "biz": [
+    "效率管理"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "自然语言描述目标、Agent 驱动应用到达的端到端测试框架，录制回放零模型调用",
+   "note": "2026-10-13 每日推荐新增（全网热门）"
+  },
+  {
+   "name": "OpenMontage",
+   "cn": "AI 视频生产系统",
+   "cat": "视频制作",
+   "tags": [
+    "视频生成",
+    "自动化"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 67136,
+   "source": "https://github.com/calesthio/OpenMontage",
+   "reg": "calesthio/OpenMontage",
+   "biz": [
+    "口播视频",
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "世界首个开源 agentic 视频生产系统：12 条流水线 500+ 技能，一句话变成可发布成片",
+   "note": "2026-10-13 每日推荐新增（全网热门）"
+  },
+  {
+   "name": "skilld",
+   "cn": "Skill 发现安装器",
+   "cat": "效率工具",
+   "tags": [
+    "自动化",
+    "调研检索"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": null,
+   "source": "https://skilld.dev/skills/trending",
+   "reg": "",
+   "biz": [
+    "效率管理"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "skill 分发与管理平台（trending 榜首），npx skilld install skilld --global 一键安装",
+   "note": "2026-10-13 每日推荐新增（全网热门）"
+  },
+  {
+   "name": "video-shotcraft",
+   "cn": "电影感产品视频",
+   "cat": "视频制作",
+   "tags": [
+    "视频生成"
+   ],
+   "status": "未安装",
+   "backup": "未备份",
+   "hot": 10792,
+   "source": "https://github.com/Vincentwei1021/video-shotcraft",
+   "reg": "Vincentwei1021/video-shotcraft",
+   "biz": [
+    "口播视频",
+    "内容创作"
+   ],
+   "last": null,
+   "score": null,
+   "desc": "Remotion 电影感产品视频 skill：152 张镜头配方卡 + 209 动效预览 + 成品模板",
+   "note": "2026-10-13 每日推荐新增（全网热门）"
   }
  ],
  "recs": [
@@ -3175,6 +3367,116 @@
    "hot": "ClawHub 162.3K 下载（#10）",
    "why": "调研教学资料/最新skill时一次搜16个引擎，信息更全",
    "type": "trending"
+  },
+  {
+   "batch": "2026-10-13 推荐",
+   "date": "2026-10-13",
+   "skill": "math-modeling-skill",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "1,851★",
+   "why": "带学生冲数学建模竞赛（国赛/美赛）可整链路复用：拆题→建模→写码→出论文一气呵成，直接搬进辅导课。",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-13 推荐",
+   "date": "2026-10-13",
+   "skill": "agent-homework-companion",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "LobeHub 收录（hermes-edu-skills 系列）",
+   "why": "代家长回复/辅导作业时套用它的分层提示话术，孩子卡题时不直接给答案、引导下一步，家长体验更好。",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-13 推荐",
+   "date": "2026-10-13",
+   "skill": "douyin-script",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "Skillery 官方精选",
+   "why": "做初中数学口播短视频时用它批量产出口播稿，前3秒钩子模板直接复用，比手写快数倍。",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-13 推荐",
+   "date": "2026-10-13",
+   "skill": "math-skill",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "529★",
+   "why": "出题后先自己用符号计算跑一遍，验证答案和步骤无误再发家长群，避免发错题翻车。",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-13 推荐",
+   "date": "2026-10-13",
+   "skill": "vscript-generator",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "腾讯 SkillHub 收录",
+   "why": "口播视频工业化：一条热点→文案+分镜+字幕+配音脚本包，直接喂给视频生成工具。",
+   "type": "for_you"
+  },
+  {
+   "batch": "2026-10-13 推荐",
+   "date": "2026-10-13",
+   "skill": "e2e",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "8,292★（10/9 快照，日增 1400+）",
+   "why": "给网页/小程序项目做自动化验收，自然语言写测试目标不用写选择器，脚本不怕页面改版。",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-13 推荐",
+   "date": "2026-10-13",
+   "skill": "OpenMontage",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "67,136★",
+   "why": "把一句话主题变成可发布成片（12条流水线），适合批量生产数学讲解/口播视频。",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-13 推荐",
+   "date": "2026-10-13",
+   "skill": "skilld",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "skilld.dev Trending #1",
+   "why": "给 Agent 装个技能搜索引擎，以后找新 skill 效率翻倍，装它本身就是提效。",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-13 推荐",
+   "date": "2026-10-13",
+   "skill": "video-shotcraft",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "10,792★",
+   "why": "课程/产品宣传视频走电影感 Remotion 模板，视觉质感远超默认 AI 视频，正好符合你对质感的挑剔。",
+   "type": "trending"
+  },
+  {
+   "batch": "2026-10-13 推荐",
+   "date": "2026-10-13",
+   "skill": "rea",
+   "inst": "待定",
+   "tried": "未试用",
+   "effect": "未试用",
+   "hot": "115,000+★（10/12，6天涨10万）",
+   "why": "全网顶流（GitHub Trending #1）：逆向分析黑盒应用/接口，技术兴趣向、教学用不上，可先看热度不急着装。",
+   "type": "trending"
   }
  ],
  "cases": [
@@ -3911,7 +4213,16 @@
   "github": "未评价",
   "ontology": "未评价",
   "proactive-agent": "未评价",
-  "multi-search-engine": "未评价"
+  "multi-search-engine": "未评价",
+  "math-modeling-skill": "未评价",
+  "agent-homework-companion": "未评价",
+  "douyin-script": "未评价",
+  "math-skill": "未评价",
+  "vscript-generator": "未评价",
+  "e2e": "未评价",
+  "OpenMontage": "未评价",
+  "skilld": "未评价",
+  "video-shotcraft": "未评价"
  },
  "interest": {
   "mattpocock-skills": "感兴趣",
@@ -3939,7 +4250,8 @@
   "xiaozhi-teach-math-error-analyzer": "感兴趣",
   "coteach": "不感兴趣",
   "hyperframes": "感兴趣",
-  "khazix-skills": "感兴趣"
+  "khazix-skills": "感兴趣",
+  "edulab": "感兴趣"
  },
  "handbook": {
   "manimate": {
@@ -4743,5 +5055,5 @@
    "date": "2026-10-08"
   }
  ],
- "updated": "2026-10-12 16:19"
+ "updated": "2026-10-13 09:12"
 }
