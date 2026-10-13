@@ -1,16 +1,11 @@
 /* ============================================================
  * Skill 管理中心 · 产品化 API Worker (P0)
- * 版本 v3.0.0（2026-10-13 产品化）
+ * 版本 v3.1.0（2026-10-13 M4：移除旧版兼容端点 + KV 限流）
  * 路径: /api/*  产品 API（D1 + JWT 账号体系）
- *       /feedback /action /auth /callback  旧版兼容（飞书 Base 代理，前端切换后移除）
- * 环境变量：JWT_SECRET（必填）、APP_ID、APP_SECRET（旧版兼容用）
- * 绑定：skill_center_db（D1 主库）、AUTH（KV，旧版兼容存飞书 token）
+ * 环境变量：JWT_SECRET（必填）
+ * 绑定：skill_center_db（D1 主库）、AUTH（KV，限流计数）
  * ============================================================ */
 
-const BASE_TOKEN = "VRA1bfbiaaiUjRsK0ekcwAdsnHd";        // 多维表格「Skill 技能管理台」（旧版兼容用）
-const FB_TABLE   = "tblLQqY1V17uA6Ql";                   // 技能反馈表
-const ACT_TABLE  = "tbl0IMDNcHit5Q65";                   // 安装指令表
-const FEISHU     = "https://open.feishu.cn/open-apis";
 const FB_TYPES   = ["有用", "没用", "请求试用", "评分", "吐槽", "感兴趣", "不感兴趣"];
 const ACTS       = ["安装", "卸载", "恢复"];
 
@@ -366,83 +361,19 @@ async function handleApi(req, env, url) {
   return json({ ok: false, error: "未知端点: " + path }, 404);
 }
 
-/* ============================================================
- * 旧版兼容（飞书 Base 代理，前端切换后移除）
- * ============================================================ */
-async function getToken(env, kv) {
-  const raw = await kv.get("auth");
-  if (!raw) return null;
-  const auth = JSON.parse(raw);
-  if (Date.now() < auth.expire) return auth.ut;
-  const r = await fetch(`${FEISHU}/authen/v2/oauth/token`, {
-    method: "POST", headers: { "Content-Type": "application/json; charset=utf-8" },
-    body: JSON.stringify({ grant_type: "refresh_token", client_id: env.APP_ID, client_secret: env.APP_SECRET, refresh_token: auth.urt })
-  });
-  const d = await r.json();
-  if (d.code !== 0) return null;
-  const na = { ut: d.access_token, urt: d.refresh_token, expire: Date.now() + d.expires_in * 1000, rexpire: Date.now() + d.refresh_token_expires_in * 1000 };
-  await kv.put("auth", JSON.stringify(na));
-  return na.ut;
-}
-async function addRecord(env, kv, tableId, fields) {
-  const token = await getToken(env, kv);
-  if (!token) return { needAuth: true };
-  const r = await fetch(`${FEISHU}/bitable/v1/apps/${BASE_TOKEN}/tables/${tableId}/records`, {
-    method: "POST", headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
-    body: JSON.stringify({ fields })
-  });
-  const d = await r.json();
-  if (d.code !== 0) throw new Error("写入失败: " + (d.msg || d.code));
-  return { record_id: d.data.record.record_id };
-}
-async function findPendingAction(env, kv, skill, act) {
-  const token = await getToken(env, kv);
-  if (!token) return { needAuth: true };
-  const r = await fetch(`${FEISHU}/bitable/v1/apps/${BASE_TOKEN}/tables/${ACT_TABLE}/records/search`, {
-    method: "POST", headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
-    body: JSON.stringify({ filter: { conjunction: "and", conditions: [
-      { field_name: "技能名称", operator: "is", value: [skill] },
-      { field_name: "动作", operator: "is", value: [act] },
-      { field_name: "状态", operator: "isEmpty" }
-    ]}, page_size: 20 })
-  });
-  const d = await r.json();
-  if (d.code !== 0) throw new Error("查询失败: " + (d.msg || d.code));
-  const items = (d.data && d.data.items) || [];
-  return items.length ? items[0].record_id : null;
-}
-async function updateRecord(env, kv, tableId, recordId, fields) {
-  const token = await getToken(env, kv);
-  if (!token) return { needAuth: true };
-  const r = await fetch(`${FEISHU}/bitable/v1/apps/${BASE_TOKEN}/tables/${tableId}/records/${recordId}`, {
-    method: "PUT", headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
-    body: JSON.stringify({ fields })
-  });
-  const d = await r.json();
-  if (d.code !== 0) throw new Error("更新失败: " + (d.msg || d.code));
-  return { record_id: d.data.record.record_id };
-}
-async function oauthStart(req, env) {
-  const u = new URL(req.url);
-  const redirectUri = u.origin + "/callback";
-  const scope = encodeURIComponent("bitable:app offline_access");
-  const url = `https://accounts.feishu.cn/open-apis/authen/v1/authorize?client_id=${env.APP_ID}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}&state=skillcenter`;
-  return Response.redirect(url, 302);
-}
-async function oauthCallback(req, env, kv) {
-  const u = new URL(req.url);
-  const code = u.searchParams.get("code");
-  if (!code) return new Response("授权失败：缺少 code", { status: 400 });
-  const redirectUri = u.origin + "/callback";
-  const r = await fetch(`${FEISHU}/authen/v2/oauth/token`, {
-    method: "POST", headers: { "Content-Type": "application/json; charset=utf-8" },
-    body: JSON.stringify({ grant_type: "authorization_code", client_id: env.APP_ID, client_secret: env.APP_SECRET, code, redirect_uri: redirectUri })
-  });
-  const d = await r.json();
-  if (d.code !== 0) return new Response("授权失败：" + (d.error_description || d.error || d.code), { status: 400 });
-  const auth = { ut: d.access_token, urt: d.refresh_token, expire: Date.now() + d.expires_in * 1000, rexpire: Date.now() + d.refresh_token_expires_in * 1000 };
-  await kv.put("auth", JSON.stringify(auth));
-  return Response.redirect("https://s0zel9adg2.doubaoapps.com/app/app_17f88vb743c", 302);
+/* ---------- KV 限流 ---------- */
+async function rateLimit(env, ip, isWrite) {
+  try {
+    const limit = isWrite ? 10 : 60; // 写口 10/min，读口 60/min
+    const bucket = Math.floor(Date.now() / 60000);
+    const key = "rl:" + (ip || "unknown") + ":" + bucket;
+    const cur = parseInt((await env.AUTH.get(key)) || "0", 10);
+    if (cur >= limit) return false;
+    await env.AUTH.put(key, String(cur + 1), { expirationTtl: 120 });
+    return true;
+  } catch (e) {
+    return true; // 限流存储异常时不阻塞业务
+  }
 }
 
 /* ============================================================
@@ -461,6 +392,11 @@ export default {
     const url = new URL(req.url);
 
     if (url.pathname.startsWith("/api")) {
+      const isWrite = req.method === "POST" || req.method === "PUT";
+      const ip = req.headers.get("CF-Connecting-IP") || "unknown";
+      if (!(await rateLimit(env, ip, isWrite))) {
+        return cors(json({ ok: false, error: "请求过于频繁，请稍后再试" }, 429));
+      }
       try {
         return cors(await handleApi(req, env, url));
       } catch (e) {
@@ -468,38 +404,6 @@ export default {
       }
     }
 
-    /* 旧版兼容 */
-    const kv = env.AUTH;
-    if (!kv) return cors(json({ ok: false, error: "未绑定 KV 命名空间（变量名 AUTH）" }, 500));
-    if (url.pathname.endsWith("/auth")) return oauthStart(req, env);
-    if (url.pathname.endsWith("/callback")) return oauthCallback(req, env, kv);
-    if (req.method !== "POST") return cors(json({ ok: false, error: "仅支持 POST" }, 405));
-    try {
-      const body = await req.json();
-      const skill = String(body.skill || "").trim();
-      const act = String(body.act || "").trim();
-      if (!skill) return cors(json({ ok: false, error: "技能名称为空" }, 400));
-      let res;
-      if (url.pathname.endsWith("/feedback")) {
-        if (!FB_TYPES.includes(act)) return cors(json({ ok: false, error: "反馈类型不合法: " + act }, 400));
-        res = await addRecord(env, kv, FB_TABLE, { "技能名称": skill, "反馈类型": act });
-      } else if (url.pathname.endsWith("/action")) {
-        if (!ACTS.includes(act)) return cors(json({ ok: false, error: "动作不合法: " + act }, 400));
-        const t = nowText();
-        const existing = await findPendingAction(env, kv, skill, act);
-        if (existing) {
-          res = await updateRecord(env, kv, ACT_TABLE, existing, { "提交时间": t });
-          res.reused = true;
-        } else {
-          res = await addRecord(env, kv, ACT_TABLE, { "技能名称": skill, "动作": act, "提交时间": t });
-        }
-      } else {
-        return cors(json({ ok: false, error: "未知端点" }, 404));
-      }
-      if (res.needAuth) return cors(json({ ok: false, needAuth: true, error: "需要授权" }, 401));
-      return cors(json({ ok: true, record_id: res.record_id }));
-    } catch (e) {
-      return cors(json({ ok: false, error: String(e.message || e) }, 500));
-    }
+    return cors(json({ ok: false, error: "未知端点" }, 404));
   }
 };

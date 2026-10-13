@@ -4,11 +4,13 @@
 用法：
   python3 recommend.py fetch    --date 2026-10-07            # 抓取候选 → /tmp/rec_candidates.json
   python3 recommend.py select   --date 2026-10-07 --dry-run  # 规则打分 → /tmp/rec_plan.json（为你推荐5+全网热门5）
-  python3 recommend.py write    --date 2026-10-07 --dry-run  # 写 Base：台账补录+推荐记录+link+回读
-  python3 recommend.py publish  --date 2026-10-07 --dry-run  # 导出6表 → sync → 发布 → 轮询 → 验证
-  python3 recommend.py all      --date 2026-10-07 --dry-run  # fetch→select→write→publish 一条链
+  python3 recommend.py write    --date 2026-10-07 --dry-run  # 写 Base：台账补录+推荐记录+link+回读（本机/旧流程）
+  python3 recommend.py publish  --date 2026-10-07 --dry-run  # 导出6表 → sync → 发布 → 轮询 → 验证（旧 doubaoapps 流程）
+  python3 recommend.py all      --date 2026-10-07 --dry-run  # fetch→select→write→publish 一条链（Base 版）
+  python3 recommend.py all-d1   --date 2026-10-07 --dry-run  # fetch→select→write_d1（产品版：直接写 D1，Actions 用）
 
-依赖：python3 标准库 + lark-cli（write/publish 需要，且已 OAuth 授权）；GitHub Trending 匿名可抓。
+依赖：python3 标准库；write/publish 需要 lark-cli（本机 OAuth）；all-d1 需要环境变量
+  CLOUDFLARE_API_TOKEN、CLOUDFLARE_ACCOUNT_ID（GitHub Actions secrets 注入）。
 注意：--dry-run 时不写库、不发布，只打印计划。热度数据全部来自真实抓取，禁止编造。
 """
 import json, os, re, subprocess, sys, time, urllib.parse, urllib.request
@@ -328,19 +330,22 @@ def ledger_candidates():
         print(f"[select] 台账候选拉取失败（跳过兜底）：{e}")
     return out
 
-def select(date_str):
+def select(date_str, use_d1=False):
     cands = json.load(open("/tmp/rec_candidates.json", encoding="utf-8"))
     # 合并兜底候选（台账未安装技能），按 name 去重，不覆盖已有的 trending/classic
-    ledger_cands = ledger_candidates()
+    if use_d1:
+        ledger_cands = d1_ledger_candidates()
+    else:
+        ledger_cands = ledger_candidates()
     seen = {c["name"].lower() for c in cands}
     for lc in ledger_cands:
         if lc["name"].lower() not in seen:
             cands.append(lc); seen.add(lc["name"].lower())
     profile = load_profile()
-    fb = feedback_scores()
-    inst = installed_set()
-    recent = recent_recs(days=14)          # P1：最近 14 天已推，抑制重复（已修复关联链接解析）
-    cases = recent_cases(days=7)           # P4：最近 7 天案例，个性化推荐语
+    if use_d1:
+        fb, inst, recent, cases = d1_feedback_scores(), d1_installed_set(), d1_recent_recs(days=14), d1_recent_cases(days=7)
+    else:
+        fb, inst, recent, cases = feedback_scores(), installed_set(), recent_recs(days=14), recent_cases(days=7)
     excluded = inst | {n for n, d in fb.items() if d.get("不感兴趣", 0) > 0} | recent
     def final_score(c):
         return score(c, profile) + fb_score(c["name"], fb)
@@ -388,6 +393,121 @@ LARK_CLI = os.environ.get("LARK_CLI", "lark-cli")
 
 def run_cli(args):
     return subprocess.run([LARK_CLI] + args, capture_output=True, text=True)
+
+# ---------- D1 直写（产品版，M4 迁移目标） ----------
+D1_DB_ID = "3ecbcacc-8f1b-48ff-b870-c87613f5b307"
+CF_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
+CF_ACCOUNT = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "")
+
+def d1_query(sql, params=None, is_write=False):
+    """Cloudflare D1 HTTP API。写操作直接执行；读操作走 /raw 返回 results。"""
+    if not CF_TOKEN or not CF_ACCOUNT:
+        raise RuntimeError("缺少 CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID 环境变量")
+    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT}/d1/database/{D1_DB_ID}/query"
+    body = json.dumps({"sql": sql, "params": params or []}).encode("utf-8")
+    req = urllib.request.Request(url, data=body, headers={
+        "Authorization": "Bearer " + CF_TOKEN,
+        "Content-Type": "application/json",
+        "User-Agent": "skill-center-recommend",
+    })
+    with urllib.request.urlopen(req, timeout=30) as r:
+        d = json.loads(r.read().decode("utf-8", errors="ignore"))
+    if not d.get("success"):
+        raise RuntimeError("D1 错误: " + json.dumps(d.get("errors", [])[:2], ensure_ascii=False))
+    res = d["result"][0]
+    if res.get("success") is False:
+        raise RuntimeError("D1 查询失败: " + json.dumps(res.get("errors", [])[:2], ensure_ascii=False))
+    return res.get("results", [])
+
+def d1_skill_map():
+    """skills 表 name -> 行"""
+    rows = d1_query("SELECT id,name,cn,cat,tags,biz,status,hot,source,reg,desc FROM skills")
+    return {r["name"]: r for r in rows}
+
+def d1_feedback_scores():
+    """从 user_skill_states 聚合反馈分（D1 无独立 feedback 表）：
+    感兴趣(待安装)×3 + 好用×2 − 没用×2 − 不感兴趣×3，按技能名聚合"""
+    fb = {}
+    try:
+        rows = d1_query(
+            "SELECT s.name AS name, ss.status AS status, ss.rating AS rating "
+            "FROM user_skill_states ss JOIN skills s ON s.id=ss.skill_id")
+        for r in rows:
+            nm = r.get("name")
+            if not nm:
+                continue
+            st, rt = r.get("status"), r.get("rating")
+            d = fb.setdefault(nm, {})
+            if st == "待安装":
+                d["感兴趣"] = d.get("感兴趣", 0) + 1
+            elif st == "不感兴趣":
+                d["不感兴趣"] = d.get("不感兴趣", 0) + 1
+            if rt == "好用":
+                d["有用"] = d.get("有用", 0) + 1
+            elif rt == "没用":
+                d["没用"] = d.get("没用", 0) + 1
+    except Exception as e:
+        print(f"[select] D1 反馈聚合失败（按无反馈处理）：{e}")
+    return fb
+
+def d1_installed_set():
+    """台账全站默认态已安装的技能名集合"""
+    s = set()
+    try:
+        rows = d1_query("SELECT name,status FROM skills")
+        for r in rows:
+            if r.get("status") == "已安装":
+                s.add(r["name"])
+    except Exception as e:
+        print(f"[select] D1 台账读取失败（按无已装处理）：{e}")
+    return s
+
+def d1_recent_recs(days=14):
+    """最近 N 天已推荐的技能名集合（重复抑制）"""
+    recent = set()
+    try:
+        rows = d1_query(
+            "SELECT s.name AS name FROM recs r JOIN skills s ON s.id=r.skill_id "
+            "WHERE r.date >= date('now', ?)", [f"-{days} days"])
+        for r in rows:
+            if r.get("name"):
+                recent.add(r["name"])
+    except Exception as e:
+        print(f"[select] D1 推荐记录读取失败（重复抑制跳过）：{e}")
+    return recent
+
+def d1_recent_cases(days=7):
+    """最近 N 天案例：skill -> 案例名列表（个性化推荐语）"""
+    cases = {}
+    try:
+        rows = d1_query(
+            "SELECT s.name AS name, c.name AS case_name FROM cases c JOIN skills s ON s.id=c.skill_id "
+            "WHERE c.date >= date('now', ?)", [f"-{days} days"])
+        for r in rows:
+            if r.get("name") and r.get("case_name"):
+                cases.setdefault(r["name"], []).append(r["case_name"])
+    except Exception as e:
+        print(f"[select] D1 案例读取失败（个性化推荐语跳过）：{e}")
+    return cases
+
+def d1_ledger_candidates():
+    """兜底候选源：D1 台账『未安装』技能"""
+    out = []
+    try:
+        rows = d1_query("SELECT name,cn,cat,tags,biz,status,hot,source,reg,desc FROM skills WHERE status != '已安装'")
+        for r in rows:
+            hot = r.get("hot")
+            try:
+                hot = int(str(hot).replace(",", ""))
+            except Exception:
+                hot = 0
+            out.append({"name": r["name"], "cn": r.get("cn") or "", "repo": r["name"],
+                        "desc": r.get("desc") or "",
+                        "hot": hot,
+                        "source": r.get("source") or "", "src": "ledger"})
+    except Exception as e:
+        print(f"[select] D1 台账候选拉取失败（跳过兜底）：{e}")
+    return out
 
 # ---------- 来源合规校验（防历史债再犯） ----------
 # 白名单 = 技能真实托管/分发的安装源。盘点类文章站（csdn/openagentskill/felloai/top-agent-skills
@@ -526,6 +646,76 @@ def write(date_str, dry):
     except Exception:
         print("[write] 回读失败，请人工核对")
 
+def write_d1(date_str, dry):
+    """产品版写入：直接写 D1（skills 补录 + recs 推荐记录），幂等，不依赖飞书 Base。"""
+    plan = json.load(open("/tmp/rec_plan.json", encoding="utf-8"))
+    items = plan["for_you"] + plan["trending"]
+    m = d1_skill_map()
+    need, blocked = [], []
+    for it in items:
+        if it["name"] in m:
+            continue
+        if not source_ok(it.get("source") or ""):
+            blocked.append(it["name"])
+            print(f"[write_d1] 拦截补录 {it['name']}：来源不合规（非安装源白名单/空来源）→ {str(it.get('source'))[:60]}")
+            continue
+        need.append(it)
+    if dry:
+        for it in need:
+            m[it["name"]] = {"id": -1, "dry": True}
+        print(f"[write_d1][dry] 将补录台账 {len(need)} 条：{[n['name'] for n in need]}"
+              + (f"；拦截 {len(blocked)} 条：{blocked}" if blocked else ""))
+    else:
+        for it in need:
+            name, desc = it["name"], (it.get("desc") or "")
+            cat, biz, tag = "效率工具", "[\"内容创作\"]", "[\"自动化\"]"
+            low = (name + desc).lower()
+            if any(k in low for k in ["math", "edu", "tutor", "teach"]):
+                cat, biz, tag = "教学与教研", "[\"教学备课\"]", "[\"教学讲解\"]"
+            elif any(k in low for k in ["writ", "polish", "human"]):
+                cat, biz, tag = "内容创作", "[\"内容创作\"]", "[\"写作润色\"]"
+            elif any(k in low for k in ["video", "anim", "visual"]):
+                cat, biz, tag = "视频制作", "[\"口播视频\"]", "[\"视频生成\"]"
+            res = d1_query(
+                "INSERT INTO skills(name,cn,cat,tags,biz,status,backup,hot,source,reg,score,desc,note,created_at) "
+                "VALUES(?,?,?,?,?,'未安装','未备份',?,?,NULL,NULL,?,?,datetime('now','localtime'))",
+                [name, it.get("cn") or "", cat, tag, biz, it.get("hot") or 0,
+                 it.get("source") or "", desc[:500],
+                 f"{datetime.now().strftime('%Y-%m-%d')} recommend.py 自动补录"], is_write=True)
+            # INSERT 响应不带 last_row_id，回查一次拿真实 id（8 条以内，开销可忽略）
+            got = d1_query("SELECT id FROM skills WHERE name=?", [name])
+            m[name] = {"id": got[0]["id"] if got else -1}
+        if need:
+            print(f"[write_d1] 台账补录 {len(need)} 条")
+        if blocked:
+            print(f"[write_d1] 拦截 {len(blocked)} 条：{blocked}")
+    # 写推荐记录（幂等：同 batch+type+skill_id 不重复）
+    recs = []
+    for it in items:
+        row = m.get(it["name"])
+        if not row:
+            print(f"[write_d1] 跳过 {it['name']}：台账无记录且补录失败"); continue
+        sid = row.get("id") or row.get("skill_id")
+        if dry:
+            recs.append({"name": it["name"], "type": "为你推荐" if it["tier"] == "for_you" else "全网热门", "skill_id": sid})
+            continue
+        dup = d1_query("SELECT COUNT(*) AS n FROM recs WHERE batch=? AND type=? AND skill_id=?",
+                       [f"{date_str} 推荐", "为你推荐" if it["tier"] == "for_you" else "全网热门", sid])
+        if dup and dup[0].get("n"):
+            print(f"[write_d1] 跳过已存在：{it['name']}（{date_str} 已推）"); continue
+        d1_query(
+            "INSERT INTO recs(batch,date,type,skill_id,hot,source,why,created_at) "
+            "VALUES(?,?,?,?,?,?,?,datetime('now','localtime'))",
+            [f"{date_str} 推荐", date_str, "为你推荐" if it["tier"] == "for_you" else "全网热门",
+             sid, str(it.get("hot") or ""), it.get("source") or "", (it.get("why") or "")[:200]],
+            is_write=True)
+        recs.append({"name": it["name"], "skill_id": sid})
+    if dry:
+        print(f"[write_d1][dry] 将写推荐记录 {len(recs)} 条（批次 {date_str} 推荐）")
+        return
+    n = d1_query("SELECT COUNT(*) AS n FROM recs WHERE batch=?", [f"{date_str} 推荐"])
+    print(f"[write_d1] 回读：批次 {date_str} 共 {n[0]['n'] if n else 0} 条推荐记录（本次写 {len(recs)}）")
+
 # ---------------- publish ----------------
 def export_tables():
     tables = {"ledger_raw": TBL_LEDGER, "recs_raw": TBL_RECS, "cases_raw": TBL_CASES,
@@ -575,14 +765,16 @@ def main():
     for i, a in enumerate(args):
         if a == "--date" and i + 1 < len(args):
             date_str = args[i + 1]
-    if cmd in ("fetch", "all"):
+    if cmd in ("fetch", "all", "all-d1"):
         fetch()
-    if cmd in ("select", "all"):
-        select(date_str)
+    if cmd in ("select", "all", "all-d1"):
+        select(date_str, use_d1=(cmd == "all-d1"))
     if cmd in ("write", "all"):
         write(date_str, dry)
     if cmd in ("publish", "all"):
         publish(dry)
+    if cmd in ("write_d1", "all-d1"):
+        write_d1(date_str, dry)
     print(f"[done] recommend.py {cmd} date={date_str} dry={dry}")
 
 if __name__ == "__main__":
