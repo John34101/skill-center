@@ -497,32 +497,43 @@ def d1_skill_map():
     rows = d1_query("SELECT id,name,cn,cat,tags,biz,status,hot,source,reg,desc FROM skills")
     return {r["name"]: r for r in rows}
 
-def auto_cn(name, desc):
-    """补录时生成中文名（产品质量门，绝不允许推荐无中文名的技能）：
-    1) 人工映射表 CN_MAP（最可靠，优先）
-    2) 自动翻译 desc（best-effort，GitHub Actions 海外环境可用 Google 翻译）
-    3) 拿不到 → 返回 None，由调用方跳过该技能进推荐
-    """
-    if name in CN_MAP:
-        return CN_MAP[name]
-    if os.environ.get("DISABLE_TRANSLATE") == "1":
+def _mymemory(text):
+    """免费翻译（MyMemory API，无需 key，每日 5000 字符额度；每天 10 条推荐足够）。
+    失败或翻译无中文字符时返回 None。"""
+    if not text or not text.strip():
         return None
+    url = "https://api.mymemory.translated.net/get?" + urllib.parse.urlencode(
+        {"q": text[:450], "langpair": "en|zh-CN"})
     try:
-        from deep_translator import GoogleTranslator
-        src = (desc or name or "")[:160].strip()
-        if not src:
-            return None
-        t = GoogleTranslator(source="en", target="zh-CN").translate(src)
-        if not t:
-            return None
-        t = t.strip().rstrip("。．.!！?？,，;；:： ")
-        if len(t) > 14:
-            t = t[:14].rstrip("，。！？、；： ")
+        d = json.load(urllib.request.urlopen(url, timeout=15))
+        t = (d.get("responseData") or {}).get("translatedText") or ""
+        t = t.strip()
         if t and not t.isascii():
             return t
     except Exception:
         pass
     return None
+
+def auto_cn(name, desc):
+    """补录时生成中文名（产品质量门，绝不允许推荐无中文名的技能）：
+    1) 人工映射表 CN_MAP（最可靠，优先）
+    2) 翻译英文名（连字符转空格，命中率高）
+    3) 翻译 desc 前 160 字兜底
+    4) 都拿不到可靠中文 → 返回 None，调用方跳过该技能进推荐（宁缺毋滥）
+    """
+    if name in CN_MAP:
+        return CN_MAP[name]
+    if os.environ.get("DISABLE_TRANSLATE") == "1":
+        return None
+    t = _mymemory(name.replace("-", " ").replace("_", " "))
+    if not t:
+        t = _mymemory((desc or "")[:160])
+    if not t:
+        return None
+    t = t.rstrip("。．.!！?？,，;；:： ")
+    if len(t) > 18:
+        t = t[:18].rstrip("，。！？、；： ")
+    return t or None
 
 def d1_feedback_scores():
     """从 user_skill_states 聚合反馈分（D1 无独立 feedback 表）：
