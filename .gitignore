@@ -14,3 +14,6 @@ node_modules/
 # 发布验证截图产物不入库
 verify-shot.png
 .dev.vars
+
+# wrangler 本地缓存
+.wrangler/
