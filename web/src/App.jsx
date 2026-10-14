@@ -54,8 +54,8 @@ function Shell() {
   const isPlanDetail = route.startsWith('/plans/')
   const planId = isPlanDetail ? route.slice('/plans/'.length) : null
 
+  // 导航：学习计划首页为默认落地页，不再放导航；仅管理员保留管理入口
   const nav = [
-    { to: '/', label: '学习计划' },
     ...(isAdmin ? [{ to: '/admin', label: '管理' }] : []),
   ]
 
