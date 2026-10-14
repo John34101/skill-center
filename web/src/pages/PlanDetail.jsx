@@ -18,7 +18,7 @@ function loadChecks(planId) {
 }
 
 function levelOf(avg) {
-  if (avg < 2) return { t: '新手起步', c: '#E0623C', d: '别急着学技术，先把看片量堆上去（阶段一投入加倍）' }
+  if (avg < 2) return { t: '新手起步', c: '#E0623C', d: '别急着学技巧，先把输入量堆上去（阶段一投入加倍）' }
   if (avg < 3.5) return { t: '入门阶段', c: '#7C5CF0', d: '按计划双线推进，把 1 分的薄弱项标记出来多分配 20% 精力' }
   return { t: '成熟水平', c: '#2F9E5B', d: '可以直接加速：提前推进或增加难度，重点冲刺风格形成期' }
 }
