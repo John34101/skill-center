@@ -8,6 +8,7 @@ import Cases from './pages/Cases.jsx'
 import Admin from './pages/Admin.jsx'
 import Plans from './pages/Plans.jsx'
 import PlanDetail from './pages/PlanDetail.jsx'
+import Writing from './pages/Writing.jsx'
 import { api } from './api'
 
 // 极简 hash 路由
@@ -64,6 +65,7 @@ function Shell() {
   else if (route === '/market') page = <Market />
   else if (route === '/plans') page = <Plans />
   else if (isPlanDetail) page = <PlanDetail id={planId} key={planId} />
+  else if (route === '/writing') page = <Writing />
   else if (route === '/cases') page = <Cases />
   else if (route === '/admin') page = <Admin stats={stats} />
 
