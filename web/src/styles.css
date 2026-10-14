@@ -312,3 +312,30 @@ body.drawer-lock { overflow: hidden }
 .pd-bt b { font-size: 13px; display: block; margin-bottom: 4px }
 .pd-bt-sym { font-size: 12px; color: var(--ink-2); margin-bottom: 6px }
 .pd-bt-fix { font-size: 12.5px; line-height: 1.55 }
+
+/* ===== 学习中心首页 ===== */
+.sec-sub { font-size: 12px; color: var(--ink-2) }
+.hc-hero { background: linear-gradient(135deg, #1B2A5B 0%, #2B59C3 62%, #3B7CF5 100%); border-radius: 16px; padding: 30px 32px; color: #fff; position: relative; overflow: hidden }
+.hc-hero::after { content: ''; position: absolute; right: -60px; top: -60px; width: 260px; height: 260px; border-radius: 999px; background: rgba(255,255,255,.06) }
+.hc-hero-tag { display: inline-block; font-size: 11.5px; letter-spacing: .08em; background: rgba(255,255,255,.14); padding: 3px 10px; border-radius: 999px; margin-bottom: 12px }
+.hc-hero-tt { font-size: 26px; font-weight: 700; margin: 0 0 8px; letter-spacing: -.02em }
+.hc-hero-desc { font-size: 13.5px; color: rgba(255,255,255,.82); max-width: 640px; margin: 0 0 18px; line-height: 1.6 }
+.hc-stats { display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 1 }
+.hc-stat { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); border-radius: 10px; padding: 10px 18px; text-align: center; backdrop-filter: blur(2px) }
+.hc-stat b { display: block; font-size: 19px; font-weight: 700 }
+.hc-stat span { display: block; font-size: 11px; color: rgba(255,255,255,.78); margin-top: 2px }
+
+.hc-more { display: flex; gap: 12px; align-items: center; border: 1.5px dashed var(--line-2); border-radius: 14px; padding: 16px 18px; margin-top: 14px; color: var(--ink-2) }
+.hc-more-ic { width: 34px; height: 34px; border-radius: 999px; background: var(--blue-soft); color: var(--blue); display: grid; place-items: center; font-size: 18px; font-weight: 600; flex: none }
+.hc-more b { font-size: 13.5px; color: var(--ink) }
+.hc-more p { margin: 2px 0 0; font-size: 12.5px; line-height: 1.5 }
+
+/* ===== 计划资源入口 ===== */
+.pd-res { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin-bottom: 14px }
+.pd-res-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px }
+.pd-res-card { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; color: inherit; transition: border-color .15s, box-shadow .15s }
+.pd-res-card:hover { border-color: var(--blue); box-shadow: 0 3px 12px rgba(43,89,195,.08); text-decoration: none }
+.pd-res-ic { width: 34px; height: 34px; border-radius: 9px; background: var(--blue-soft); color: var(--blue); display: grid; place-items: center; font-size: 15px; flex: none }
+.pd-res-card b { display: block; font-size: 13.5px; color: var(--ink) }
+.pd-res-card span { font-size: 11.5px; color: var(--ink-2); line-height: 1.4 }
+.pd-res-card em { margin-left: auto; font-style: normal; font-size: 11.5px; color: var(--blue); flex: none }

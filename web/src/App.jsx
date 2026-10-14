@@ -55,15 +55,15 @@ function Shell() {
   const planId = isPlanDetail ? route.slice('/plans/'.length) : null
 
   const nav = [
-    { to: '/', label: '今日推荐' },
-    { to: '/market', label: '工具箱' },
-    { to: '/plans', label: '学习计划' },
+    { to: '/', label: '学习计划' },
+    { to: '/market', label: '技能库' },
     { to: '/cases', label: '用法案例' },
     ...(isAdmin ? [{ to: '/admin', label: '管理' }] : []),
   ]
 
-  let page = <Home />
-  if (route === '/market') page = <Market />
+  let page = <Plans />
+  if (route === '/today') page = <Home />
+  else if (route === '/market') page = <Market />
   else if (route === '/plans') page = <Plans />
   else if (isPlanDetail) page = <PlanDetail id={planId} key={planId} />
   else if (route === '/cases') page = <Cases />
@@ -83,7 +83,9 @@ function Shell() {
         <span className="topbar-sub">专属版</span>
         <nav className="nav">
           {nav.map(n => (
-            <a key={n.to} href={'#' + n.to} className={route === n.to ? 'on' : ''}>{n.label}</a>
+            <a key={n.to} href={'#' + n.to} className={
+              (route === n.to) ||
+              (n.to === '/' && (route === '/plans' || isPlanDetail)) ? 'on' : ''}>{n.label}</a>
           ))}
         </nav>
         <span className="spacer" />

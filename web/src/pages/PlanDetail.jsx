@@ -91,6 +91,25 @@ export default function PlanDetail({ id }) {
         </div>
       </div>
 
+      {/* ===== 计划资源入口（技能库等配套功能区） ===== */}
+      {plan.resources && plan.resources.length > 0 && (
+        <div className="pd-res">
+          <div className="pd-sec-head"><b>配套资源</b><span>学这个计划要用到的工具区</span></div>
+          <div className="pd-res-grid">
+            {plan.resources.map((r, i) => (
+              <a key={i} className="pd-res-card" href={'#' + r.to}>
+                <span className="pd-res-ic">{r.icon}</span>
+                <div>
+                  <b>{r.label}</b>
+                  <span>{r.sub}</span>
+                </div>
+                <em>进入 →</em>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ===== 阶段 Tab ===== */}
       <div className="pd-tabs">
         {plan.phases.map(p => (
