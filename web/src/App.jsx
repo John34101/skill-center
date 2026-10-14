@@ -6,6 +6,8 @@ import Home from './pages/Home.jsx'
 import Market from './pages/Market.jsx'
 import Cases from './pages/Cases.jsx'
 import Admin from './pages/Admin.jsx'
+import Plans from './pages/Plans.jsx'
+import PlanDetail from './pages/PlanDetail.jsx'
 import { api } from './api'
 
 // 极简 hash 路由
@@ -36,7 +38,7 @@ function Shell() {
     <div className="boot">
       <div className="boot-in">
         <div className="boot-mark"><i /></div>
-        <div className="boot-name">Skill 中心</div>
+        <div className="boot-name">学习中心</div>
         <div className="boot-spin" />
         <div className="boot-tip">正在恢复会话…</div>
       </div>
@@ -48,15 +50,22 @@ function Shell() {
   if (route === '/register') return <Register />
   if (!user) return <Login />
 
+  // 路由匹配（支持 /plans/:id 子路径）
+  const isPlanDetail = route.startsWith('/plans/')
+  const planId = isPlanDetail ? route.slice('/plans/'.length) : null
+
   const nav = [
     { to: '/', label: '今日推荐' },
     { to: '/market', label: '工具箱' },
+    { to: '/plans', label: '学习计划' },
     { to: '/cases', label: '用法案例' },
     ...(isAdmin ? [{ to: '/admin', label: '管理' }] : []),
   ]
 
   let page = <Home />
   if (route === '/market') page = <Market />
+  else if (route === '/plans') page = <Plans />
+  else if (isPlanDetail) page = <PlanDetail id={planId} key={planId} />
   else if (route === '/cases') page = <Cases />
   else if (route === '/admin') page = <Admin stats={stats} />
 
@@ -69,9 +78,9 @@ function Shell() {
       <div className="topbar">
         <div className="topbar-brand" onClick={() => { window.location.hash = '#/' }}>
           <span className="brand-mark"><i /></span>
-          <b>Skill 中心</b>
+          <b>学习中心</b>
         </div>
-        <span className="topbar-sub">产品版</span>
+        <span className="topbar-sub">专属版</span>
         <nav className="nav">
           {nav.map(n => (
             <a key={n.to} href={'#' + n.to} className={route === n.to ? 'on' : ''}>{n.label}</a>

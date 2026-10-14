@@ -213,3 +213,102 @@ body.drawer-lock { overflow: hidden }
   .tool-tags { display: none }
   .nav a { padding: 6px 9px; font-size: 13px }
 }
+
+/* ===== 学习计划：列表 ===== */
+.plan-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px }
+.plan-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: block; color: inherit; transition: border-color .15s, box-shadow .15s }
+.plan-card:hover { border-color: var(--blue); box-shadow: 0 4px 18px rgba(43,89,195,.08); text-decoration: none }
+.plan-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px }
+.plan-tag { font-size: 11px; font-weight: 600; color: var(--blue); background: var(--blue-soft); padding: 2px 9px; border-radius: 999px }
+.plan-pct { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--ink) }
+.plan-title { font-size: 17px; font-weight: 600; margin-bottom: 6px }
+.plan-desc { font-size: 12.5px; color: var(--ink-2); margin-bottom: 12px; line-height: 1.5 }
+.plan-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px }
+.plan-sum { font-size: 11.5px; color: var(--ink-2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; background: var(--bg) }
+.plan-sum b { color: var(--ink); margin-right: 4px }
+.plan-bar { height: 6px; border-radius: 999px; background: var(--bg); overflow: hidden; margin-bottom: 10px }
+.plan-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--blue), #6C8FF0); transition: width .3s }
+.plan-bar.big { height: 8px }
+.plan-foot { font-size: 12px; color: var(--blue); font-weight: 500 }
+
+/* ===== 学习计划：详情 ===== */
+.pd-head { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-bottom: 14px }
+.pd-title-row { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap }
+.pd-tag { display: inline-block; font-size: 11px; font-weight: 600; color: var(--blue); background: var(--blue-soft); padding: 2px 9px; border-radius: 999px; margin-bottom: 8px }
+.pd-title { font-size: 21px; font-weight: 700; margin: 0 0 6px; letter-spacing: -.01em }
+.pd-desc { font-size: 13px; color: var(--ink-2); max-width: 560px }
+.pd-ov { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start }
+.pd-ov-cell { border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; background: var(--bg); text-align: center }
+.pd-ov-cell span { display: block; font-size: 11px; color: var(--ink-2); margin-bottom: 2px }
+.pd-ov-cell b { font-size: 13.5px; font-weight: 600 }
+.pd-progress { margin-top: 14px }
+.pd-progress-top { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--ink-2); margin-bottom: 6px }
+.pd-progress-top b { color: var(--ink) }
+.plan-bar.big i { background: linear-gradient(90deg, var(--blue), var(--green)) }
+
+.pd-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px }
+.pd-tab { border: 1px solid var(--line-2); background: var(--surface); border-radius: 10px; padding: 9px 14px; cursor: pointer; text-align: left }
+.pd-tab b { display: block; font-size: 13.5px; font-weight: 600 }
+.pd-tab span { display: block; font-size: 11px; color: var(--ink-2); margin-top: 1px }
+.pd-tab.on { background: #F8FAFF }
+
+.pd-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin-bottom: 14px }
+.pd-sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px }
+.pd-sec-head b { font-size: 14.5px }
+.pd-sec-head > span { font-size: 11.5px; color: var(--ink-2) }
+.pd-goal { font-size: 15px; font-weight: 600; margin: 4px 0 6px }
+.pd-note { font-size: 12.5px; color: var(--ink-2); background: var(--bg); border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; border-left: 3px solid var(--amber) }
+.pd-sec-tt { font-size: 12px; font-weight: 600; color: var(--ink-2); margin: 12px 0 6px; text-transform: none }
+.pd-list { margin: 0; padding-left: 20px; font-size: 13px; color: var(--ink); line-height: 1.7 }
+.pd-list li { margin-bottom: 2px }
+.pd-list.check { list-style: none; padding-left: 0 }
+.pd-list.check li { color: var(--ink-2) }
+
+/* 时间线 */
+.pd-timeline { display: flex; gap: 6px; overflow-x: auto; padding: 6px 2px 12px; scroll-snap-type: x proximity }
+.tl-w { flex: none; width: 92px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: 8px 6px; cursor: pointer; text-align: center; scroll-snap-align: start; position: relative }
+.tl-w:hover { border-color: var(--blue) }
+.tl-w.on { box-shadow: 0 2px 10px rgba(43,89,195,.12) }
+.tl-w.full { background: #F6FAF7 }
+.tl-dot { display: block; width: 8px; height: 8px; border-radius: 999px; background: var(--line-2); margin: 0 auto 4px }
+.tl-w.full .tl-dot { background: var(--green) }
+.tl-num { display: block; font-family: var(--mono); font-size: 13px; font-weight: 600 }
+.tl-ph { display: block; font-size: 10.5px; color: var(--ink-2); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+
+.pd-week { border-top: 1px dashed var(--line); padding-top: 14px; margin-top: 4px }
+.pd-week-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; flex-wrap: wrap; gap: 6px }
+.pd-week-head b { font-size: 15px }
+.pd-week-theme { margin-left: 8px; font-size: 13px; font-weight: 600 }
+.pd-week-st { font-family: var(--mono); font-size: 12px; color: var(--ink-2) }
+.pd-week-st.done { color: var(--green); font-weight: 600 }
+.pd-tasks { list-style: none; margin: 0; padding: 0 }
+.pd-tasks li { display: flex; gap: 10px; align-items: flex-start; padding: 7px 8px; border-radius: 8px; cursor: pointer; font-size: 13px; line-height: 1.55 }
+.pd-tasks li:hover { background: var(--bg) }
+.pd-tasks li.done { color: var(--ink-2); text-decoration: line-through }
+.pd-check { width: 18px; height: 18px; border: 1.5px solid var(--line-2); border-radius: 5px; flex: none; display: grid; place-items: center; font-size: 11px; color: #fff; margin-top: 1px; transition: all .15s }
+.pd-check.on { background: var(--green); border-color: var(--green) }
+
+/* 起点自检 */
+.pd-self-avg { font-weight: 600; font-size: 12.5px }
+.pd-group { margin-bottom: 10px }
+.pd-group-tt { font-size: 12px; font-weight: 600; color: var(--ink-2); margin: 12px 0 6px }
+.pd-slider-row { display: flex; gap: 14px; align-items: center; padding: 7px 0; border-top: 1px solid var(--line); flex-wrap: wrap }
+.pd-slider-info { flex: 1; min-width: 200px }
+.pd-slider-info b { font-size: 13.5px; display: block }
+.pd-slider-desc { font-size: 11.5px; color: var(--ink-2); display: block; margin-top: 2px }
+.pd-slider { display: flex; align-items: center; gap: 8px; flex: none }
+.pd-slider input[type=range] { width: 150px; accent-color: var(--blue) }
+.pd-slider-val { font-family: var(--mono); font-size: 13px; font-weight: 600; width: 22px; text-align: center }
+.pd-self-lv { margin-top: 12px; font-size: 12.5px; border-radius: 8px; padding: 9px 12px; font-weight: 500 }
+
+/* 调整指南 */
+.pd-guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px }
+.pd-guide { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--bg) }
+.pd-guide b { font-size: 13px; display: block; margin-bottom: 6px }
+.pd-guide ul { margin: 0; padding-left: 18px; font-size: 12.5px; color: var(--ink-2); line-height: 1.65 }
+.pd-guide-act { margin-top: 8px; font-size: 12px; border: 1px dashed; border-radius: 8px; padding: 7px 10px; line-height: 1.5 }
+.pd-bt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px }
+.pd-bt { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--bg) }
+.pd-bt b { font-size: 13px; display: block; margin-bottom: 4px }
+.pd-bt-sym { font-size: 12px; color: var(--ink-2); margin-bottom: 6px }
+.pd-bt-fix { font-size: 12.5px; line-height: 1.55 }
