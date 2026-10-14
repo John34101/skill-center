@@ -182,6 +182,40 @@ export default function PlanDetail({ id }) {
               )
             })}
           </ul>
+
+          {/* ===== 本周行动手册 ===== */}
+          {sel.how && sel.how.length > 0 && (
+            <div className="pd-wk-manual">
+              <div className="pd-sec-tt">本周怎么做</div>
+              <ol className="pd-how">
+                {sel.how.map((h, i) => <li key={i}>{h}</li>)}
+              </ol>
+            </div>
+          )}
+          {sel.tools && sel.tools.length > 0 && (
+            <div className="pd-wk-manual">
+              <div className="pd-sec-tt">用到的工具</div>
+              <div className="pd-tools">
+                {sel.tools.map((t, i) => <span key={i} className="pd-tool">{t}</span>)}
+              </div>
+            </div>
+          )}
+          {sel.source && sel.source.length > 0 && (
+            <div className="pd-wk-manual">
+              <div className="pd-sec-tt">去哪找素材</div>
+              <ul className="pd-src">
+                {sel.source.map((s, i) => <li key={i}>{s}</li>)}
+              </ul>
+            </div>
+          )}
+          {sel.check && sel.check.length > 0 && (
+            <div className="pd-wk-manual">
+              <div className="pd-sec-tt">本周完成标准</div>
+              <ul className="pd-list check">
+                {sel.check.map((c, i) => <li key={i}>☐ {c}</li>)}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
