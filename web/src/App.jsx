@@ -56,8 +56,6 @@ function Shell() {
 
   const nav = [
     { to: '/', label: '学习计划' },
-    { to: '/market', label: '技能库' },
-    { to: '/cases', label: '用法案例' },
     ...(isAdmin ? [{ to: '/admin', label: '管理' }] : []),
   ]
 

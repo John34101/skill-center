@@ -186,7 +186,7 @@ export const plans = [
     ],
     resources: [
       { to: '/today', label: '今日推荐', sub: '每天为你和全网热门的技能推荐', icon: '★' },
-      { to: '/market', label: '技能市场', sub: '浏览全部技能、安装与管理工具箱', icon: '▦' },
+      { to: '/market', label: '技能库', sub: '浏览全部技能、安装与管理工具箱', icon: '▦' },
       { to: '/cases', label: '用法案例', sub: '看别人怎么用，跟着案例上手', icon: '✎' },
     ],
     phases: [
