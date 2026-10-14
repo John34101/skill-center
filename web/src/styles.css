@@ -382,3 +382,10 @@ body.drawer-lock { overflow: hidden }
 .wk-link b { font-size: 13.5px; color: var(--ink); display: block }
 .wk-link span { font-size: 12px; color: var(--ink-2); display: block; margin-top: 2px; line-height: 1.5 }
 .wk-link em { font-style: normal; font-size: 12px; color: var(--blue); margin-left: auto; flex: none }
+
+/* ===== 返回栏 ===== */
+.backbar { display: flex; align-items: center; gap: 12px; margin-bottom: 14px }
+.backbar-btn { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px; padding: 7px 15px; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color .15s, color .15s, box-shadow .15s }
+.backbar-btn:hover { border-color: var(--blue); color: var(--blue); box-shadow: 0 2px 8px rgba(43,89,195,.08) }
+.backbar-arrow { font-size: 14px; line-height: 1 }
+.backbar-hint { font-size: 12px; color: var(--ink-2) }

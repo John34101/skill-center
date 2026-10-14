@@ -9,13 +9,18 @@ import Admin from './pages/Admin.jsx'
 import Plans from './pages/Plans.jsx'
 import PlanDetail from './pages/PlanDetail.jsx'
 import Writing from './pages/Writing.jsx'
+import BackBar, { pushNav } from './components/BackBar.jsx'
 import { api } from './api'
 
 // 极简 hash 路由
 function useHashRoute() {
   const [hash, setHash] = useState(window.location.hash || '#/')
   useEffect(() => {
-    const fn = () => setHash(window.location.hash || '#/')
+    const fn = () => {
+      const h = window.location.hash || '#/'
+      setHash(h)
+      pushNav(h)
+    }
     window.addEventListener('hashchange', fn)
     return () => window.removeEventListener('hashchange', fn)
   }, [])
@@ -101,7 +106,10 @@ function Shell() {
         <span className="spacer" />
         <span className="seg"><span className="lbl">版本</span><b>v0.3</b></span>
       </div>
-      <div className="main">{page}</div>
+      <div className="main">
+        {route !== '/' && route !== '/plans' && <BackBar />}
+        {page}
+      </div>
     </div>
   )
 }
