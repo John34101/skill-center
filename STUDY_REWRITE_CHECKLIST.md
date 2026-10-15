@@ -1,6 +1,6 @@
 # 书房重写清单（Phase 1–3）· 晨间验收
 
-PR：合并后会填入完整链接（见文末或 GitHub）。
+PR：https://github.com/John34101/skill-center/pull/2
 
 ## 做了什么
 
@@ -51,3 +51,6 @@ cd web && npm install && npm run build && npm run preview
 ## 建议 commit / PR 标题
 
 `feat(书房): 用户隔离 + 纸感 UI + Reader 拆分 + Markdown 下载`
+
+---
+PR 链接：https://github.com/John34101/skill-center/pull/2
