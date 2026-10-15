@@ -31,9 +31,9 @@ export default function Reader({ id }) {
     })
   }, [id])
 
-  // 渲染 EPUB
+  // 渲染 EPUB（依赖 loading：book 就绪时区域尚未挂载，需等 loading=false 后再初始化）
   useEffect(() => {
-    if (!book || !book.file_path || !areaRef.current) return
+    if (!book || !book.file_path || !areaRef.current || loading) return
     let url = book.file_path
     if (!/^https?:\/\//.test(url)) url = window.location.origin + (url.startsWith('/') ? '' : '/') + url
     let cancelled = false
@@ -59,7 +59,7 @@ export default function Reader({ id }) {
       if (!cancelled) setErr('EPUB 解析失败：' + e.message)
     }
     return () => { cancelled = true; try { renditionRef.current && renditionRef.current.destroy() } catch (e) {} }
-  }, [book && book.id, book && book.file_path])
+  }, [book && book.id, book && book.file_path, loading])
 
   const saveHighlight = () => {
     if (!noteBox || !noteBox.quote.trim()) return
