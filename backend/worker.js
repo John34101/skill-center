@@ -16,7 +16,7 @@ function json(res, status) {
 function cors(res) {
   const h = new Headers(res.headers);
   h.set("Access-Control-Allow-Origin", "*");
-  h.set("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
+  h.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   h.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
   h.set("Vary", "Origin");
   return new Response(res.body, { status: res.status, headers: h });
@@ -525,7 +525,7 @@ export default {
     if (req.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Max-Age": "86400"
       }});

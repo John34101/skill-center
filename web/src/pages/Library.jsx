@@ -3,6 +3,7 @@ import { api } from '../api'
 
 const CATS = ['全部', '课程', '书籍', 'PDF', 'EPUB']
 const STATUS = { '未读': 'w', '在读': 'r', '读完': 'd', '搁置': 'p' }
+const SAMPLE_COURSE = '/courses/sample-efficient-learning/meta.json'
 
 export default function Library() {
   const [books, setBooks] = useState([])
@@ -21,6 +22,18 @@ export default function Library() {
     })
   }
   useEffect(load, [])
+
+  const onCategoryChange = (category) => {
+    const next = { ...form, category }
+    // 切到课程且路径为空时，填入示例路径提示
+    if (category === '课程' && !form.file_path.trim()) {
+      next.file_path = SAMPLE_COURSE
+      if (!next.title.trim()) next.title = '如何高效学习'
+      if (!next.author.trim()) next.author = '示例讲师'
+      if (!next.source.trim()) next.source = '得到（示例）'
+    }
+    setForm(next)
+  }
 
   const add = () => {
     if (!form.title.trim()) return alert('请输入书名')
@@ -43,6 +56,9 @@ export default function Library() {
   const inRead = books.filter(b => b.status === '在读').length
   const done = books.filter(b => b.status === '读完').length
   const hlTotal = books.reduce((s, b) => s + (b.hl_count || 0), 0)
+  const pathHint = form.category === '课程'
+    ? '课程路径：/courses/<课程id>/meta.json（示例已预填）'
+    : '文件路径（如 /books/xxx.epub 或 https://…）'
 
   return (
     <div className="library">
@@ -59,16 +75,23 @@ export default function Library() {
           <div className="grid2">
             <input placeholder="书名 *" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
             <input placeholder="作者" value={form.author} onChange={e => setForm({ ...form, author: e.target.value })} />
-            <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })}>
+            <select value={form.category} onChange={e => onCategoryChange(e.target.value)}>
               {CATS.slice(1).map(c => <option key={c} value={c}>{c}</option>)}
             </select>
             <select value={form.status} onChange={e => setForm({ ...form, status: e.target.value })}>
               {Object.keys(STATUS).map(s => <option key={s} value={s}>{s}</option>)}
             </select>
-            <input placeholder="文件路径（如 /books/xxx.epub 或 https://…）" value={form.file_path} onChange={e => setForm({ ...form, file_path: e.target.value })} />
+            <input placeholder={pathHint} value={form.file_path} onChange={e => setForm({ ...form, file_path: e.target.value })} />
             <input placeholder="来源（如 得到 / 微信读书 / 自购）" value={form.source} onChange={e => setForm({ ...form, source: e.target.value })} />
           </div>
           <input placeholder="备注" value={form.note} onChange={e => setForm({ ...form, note: e.target.value })} />
+          {form.category === '课程' && (
+            <p className="muted small lib-hint">
+              课程文字稿：把内容放到 <code>web/public/courses/&lt;id&gt;/</code>，文件路径填
+              <code> /courses/&lt;id&gt;/meta.json</code>。内置示例：
+              <code> {SAMPLE_COURSE}</code>
+            </p>
+          )}
           <div className="row-right"><button className="btn primary" onClick={add}>保存</button></div>
         </div>
       )}
