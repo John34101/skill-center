@@ -1,0 +1,19 @@
+{
+  "id": "sample-efficient-learning",
+  "title": "如何高效学习",
+  "author": "示例讲师",
+  "source": "得到（示例文字稿）",
+  "tags": ["学习方法"],
+  "chapters": [
+    {
+      "id": "01-intro",
+      "title": "导论：为什么要学学习方法",
+      "file": "chapters/01-导论.md"
+    },
+    {
+      "id": "02-focus",
+      "title": "第一章：专注力的真相",
+      "file": "chapters/02-专注力.md"
+    }
+  ]
+}
