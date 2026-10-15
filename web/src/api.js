@@ -1,4 +1,4 @@
-// Skill Center API client (v0.4 书房版)
+// 我的书房 API client
 const BASE = 'https://api.ilovelearning.top'
 
 let token = localStorage.getItem('sc_token') || ''
@@ -37,7 +37,6 @@ export const api = {
   pending: () => req('GET', '/api/command/pending'),
   adminStats: () => req('GET', '/api/admin/stats'),
 
-  // 我的书房：书籍 + 划线
   books: () => req('GET', '/api/books'),
   addBook: (b) => req('POST', '/api/books', b),
   updateBook: (id, patch) => req('PUT', '/api/books/' + id, patch),
@@ -49,7 +48,16 @@ export const api = {
   deleteHighlight: (id) => req('DELETE', '/api/highlights/' + id),
 }
 
+/** 统一划线 tag：API 已返回数组；兼容旧字符串 */
 export function parseTags(s) {
+  if (Array.isArray(s)) return s
   try { const a = JSON.parse(s || '[]'); return Array.isArray(a) ? a : [] } catch (e) { return [] }
+}
+export function normalizeHighlight(h) {
+  if (!h) return h
+  return { ...h, tag: parseTags(h.tag) }
+}
+export function normalizeHighlights(list) {
+  return (list || []).map(normalizeHighlight)
 }
 export function fmtDate(s) { return String(s || '').slice(0, 10) }

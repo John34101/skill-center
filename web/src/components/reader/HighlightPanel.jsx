@@ -1,0 +1,104 @@
+import React from 'react'
+import { fmtDate } from '../../api'
+import { HL_TAGS, chapterIdFromLoc } from '../../lib/highlights'
+
+export default function HighlightPanel({
+  highlights,
+  courseMeta,
+  onSaveNote,
+  onDelete,
+}) {
+  const chapterTitle = (cid) => {
+    if (!cid || !courseMeta) return null
+    const ch = (courseMeta.chapters || []).find(c => c.id === cid)
+    return ch ? ch.title : cid
+  }
+
+  return (
+    <aside className="reader-side">
+      <div className="side-head">
+        <b>我的划线</b>
+        <span className="muted">{highlights.length} 条</span>
+      </div>
+      {highlights.length === 0 ? (
+        <p className="muted small pad">选中正文中的文字，即可记下划线与想法。</p>
+      ) : (
+        <div className="hl-list">
+          {highlights.map(hl => {
+            const cid = chapterIdFromLoc(hl.loc)
+            const ctitle = chapterTitle(cid)
+            return (
+              <div key={hl.id} className="hl card">
+                {ctitle && <p className="hl-ch muted small">{ctitle}</p>}
+                <p className="hl-quote">“{hl.quote}”</p>
+                <textarea
+                  className="hl-note" rows={2}
+                  placeholder="写点想法…"
+                  value={hl.note || ''}
+                  onChange={e => onSaveNote({ ...hl, note: e.target.value })}
+                />
+                <div className="hl-meta">
+                  {HL_TAGS.map(t => (
+                    <button
+                      key={t}
+                      type="button"
+                      className={'chip sm' + ((hl.tag || []).includes(t) ? ' on' : '')}
+                      onClick={() => {
+                        const cur = hl.tag || []
+                        const tag = cur.includes(t) ? cur.filter(x => x !== t) : [...cur, t]
+                        onSaveNote({ ...hl, tag })
+                      }}
+                    >{t}</button>
+                  ))}
+                  <span className="spacer" />
+                  <span className="muted small">{fmtDate(hl.created_at)}</span>
+                  <button type="button" className="btn sm danger" onClick={() => onDelete(hl)}>删</button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </aside>
+  )
+}
+
+export function NoteDialog({ noteBox, setNoteBox, saving, onSave }) {
+  if (!noteBox) return null
+  return (
+    <div className="mask" onClick={() => setNoteBox(null)}>
+      <div className="note-dialog card" onClick={e => e.stopPropagation()}>
+        <h3>记下这段</h3>
+        <p className="hl-quote">“{noteBox.quote}”</p>
+        <textarea
+          autoFocus rows={3}
+          placeholder="你的想法、疑问或要输出的点…"
+          value={noteBox.text}
+          onChange={e => setNoteBox({ ...noteBox, text: e.target.value })}
+        />
+        <div className="hl-meta">
+          {HL_TAGS.map(t => (
+            <button
+              key={t}
+              type="button"
+              className={'chip sm' + ((noteBox.tag || []).includes(t) ? ' on' : '')}
+              onClick={() => {
+                const cur = noteBox.tag || []
+                setNoteBox({
+                  ...noteBox,
+                  tag: cur.includes(t) ? cur.filter(x => x !== t) : [...cur, t],
+                })
+              }}
+            >{t}</button>
+          ))}
+        </div>
+        <div className="row-right">
+          <button type="button" className="btn ghost" onClick={() => setNoteBox(null)}>取消</button>
+          <button type="button" className="btn primary" disabled={saving} onClick={onSave}>
+            {saving ? '保存中…' : '保存划线'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}

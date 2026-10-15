@@ -18,10 +18,13 @@ export default function Login() {
   }
 
   return (
-    <div className="auth-wrap">
-      <form className="auth-card" onSubmit={submit}>
-        <h1>Skill 中心</h1>
-        <div className="sub">登录后使用今日推荐与工具箱</div>
+    <div className="auth-wrap paper-auth">
+      <form className="auth-card paper-card" onSubmit={submit}>
+        <div className="auth-brand">
+          <span className="brand-mark lg"><i /></span>
+          <h1>我的书房</h1>
+        </div>
+        <p className="sub">登录后继续阅读、划线，并把笔记带走。</p>
         {err && <div className="auth-err">{err}</div>}
         <div className="field">
           <label>邮箱</label>
@@ -31,7 +34,7 @@ export default function Login() {
           <label>密码</label>
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" required />
         </div>
-        <button className="btn primary" style={{ width: '100%', marginTop: 6 }} disabled={busy}>{busy ? '登录中…' : '登录'}</button>
+        <button type="submit" className="btn primary block" disabled={busy}>{busy ? '登录中…' : '进入书房'}</button>
         <div className="auth-foot">还没有账号？<a href="#/register">使用邀请码注册</a></div>
       </form>
     </div>
