@@ -33,7 +33,7 @@ def token_acc():
     return token, acc
 
 
-def cf_api(url: str, method: str = "GET", data: bytes | None = None) -> dict:
+def cf_api(url: str, method: str = "GET", data: bytes | None = None, soft: bool = False) -> dict:
     token, _ = token_acc()
     req = urllib.request.Request(url, data=data, method=method, headers={
         "Authorization": f"Bearer {token}",
@@ -44,6 +44,9 @@ def cf_api(url: str, method: str = "GET", data: bytes | None = None) -> dict:
             return json.loads(r.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")[:2000]
+        if soft:
+            print(f"[discover] soft-fail HTTP {e.code} {url}: {body[:400]}")
+            return {"success": False, "errors": [{"message": body}], "result": None}
         die(f"CF API HTTP {e.code} {url}: {body}")
 
 
@@ -54,53 +57,36 @@ def cf_account(path: str) -> dict:
 
 def discover() -> None:
     print("[discover] === Cloudflare account probe ===")
-    # token verify
-    v = cf_api("https://api.cloudflare.com/client/v4/user/tokens/verify")
-    print("[discover] token verify:", json.dumps(v.get("result"), ensure_ascii=False)[:500])
+    _, acc = token_acc()
+    print(f"[discover] account_id={acc} zone_id={ZONE_ID}")
 
     pages = cf_account("/pages/projects").get("result") or []
     print(f"[discover] Pages projects: {len(pages)}")
     for p in pages:
         print("  pages:", p.get("name"), "domains=", p.get("domains"), "subdomain=", p.get("subdomain"))
 
-    # Workers scripts (first page)
-    try:
-        w = cf_account("/workers/scripts")
-        scripts = w.get("result") or []
-        print(f"[discover] Workers scripts: {len(scripts)}")
-        for s in scripts[:30]:
+    w = cf_api(f"https://api.cloudflare.com/client/v4/accounts/{acc}/workers/scripts", soft=True)
+    scripts = w.get("result") or []
+    print(f"[discover] Workers scripts: {len(scripts) if isinstance(scripts, list) else scripts}")
+    if isinstance(scripts, list):
+        for s in scripts[:40]:
             print("  worker:", s.get("id") or s.get("name") or s)
-    except SystemExit as e:
-        print("[discover] workers/scripts failed (see above)")
 
-    # Workers domains / routes for zone
-    try:
-        routes = cf_api(f"https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/workers/routes")
-        print("[discover] zone worker routes:", json.dumps(routes.get("result"), ensure_ascii=False)[:1500])
-    except SystemExit:
-        print("[discover] zone worker routes: failed")
+    routes = cf_api(f"https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/workers/routes", soft=True)
+    print("[discover] zone worker routes:", json.dumps(routes.get("result"), ensure_ascii=False)[:2000])
 
-    try:
-        dns = cf_api(f"https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/dns_records?per_page=100")
-        recs = dns.get("result") or []
-        print(f"[discover] DNS records: {len(recs)}")
+    dns = cf_api(f"https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/dns_records?per_page=100", soft=True)
+    recs = dns.get("result") or []
+    print(f"[discover] DNS records: {len(recs) if isinstance(recs, list) else recs}")
+    if isinstance(recs, list):
         for r in recs:
             print(f"  DNS {r.get('type')} {r.get('name')} -> {r.get('content')} proxied={r.get('proxied')}")
-    except SystemExit:
-        print("[discover] DNS list failed")
 
-    try:
-        custom = cf_account("/workers/domains")
-        print("[discover] workers domains:", json.dumps(custom.get("result"), ensure_ascii=False)[:1500])
-    except SystemExit:
-        print("[discover] workers/domains failed")
+    custom = cf_api(f"https://api.cloudflare.com/client/v4/accounts/{acc}/workers/domains", soft=True)
+    print("[discover] workers domains:", json.dumps(custom.get("result"), ensure_ascii=False)[:2000])
 
-    # R2 buckets
-    try:
-        r2 = cf_account("/r2/buckets")
-        print("[discover] R2 buckets:", json.dumps(r2.get("result"), ensure_ascii=False)[:1000])
-    except SystemExit:
-        print("[discover] R2 list failed")
+    r2 = cf_api(f"https://api.cloudflare.com/client/v4/accounts/{acc}/r2/buckets", soft=True)
+    print("[discover] R2 buckets:", json.dumps(r2.get("result"), ensure_ascii=False)[:1500])
 
 
 def resolve_project() -> str:
