@@ -1,6 +1,6 @@
 /* ============================================================
  * Skill 管理中心 · 产品化 API Worker (P0)
- * 版本 v3.1.0（2026-10-13 M4：移除旧版兼容端点 + KV 限流）
+ * 版本 v3.2.0（2026-10-16 书房：books/highlights 按 user_id 隔离 + tag 规范化）
  * 路径: /api/*  产品 API（D1 + JWT 账号体系）
  * 环境变量：JWT_SECRET（必填）
  * 绑定：skill_center_db（D1 主库）、AUTH（KV，限流计数）
@@ -106,6 +106,23 @@ async function requireAuth(req, env) {
     .bind(payload.uid).first();
   if (!row) return null;
   return row;
+}
+
+
+/* ---------- 书房：标签规范化 + 所有权 ---------- */
+function parseTagField(tag) {
+  if (Array.isArray(tag)) return tag;
+  try {
+    const a = JSON.parse(tag || "[]");
+    return Array.isArray(a) ? a : [];
+  } catch (e) { return []; }
+}
+function mapHighlight(h) {
+  if (!h) return h;
+  return { ...h, tag: parseTagField(h.tag) };
+}
+async function ownBook(db, bookId, userId) {
+  return db.prepare("SELECT * FROM books WHERE id=? AND user_id=?").bind(bookId, userId).first();
 }
 
 /* ============================================================
@@ -362,7 +379,7 @@ async function handleApi(req, env, url) {
   }
 
   /* ============================================================
-   * 我的书房（书籍 + 划线）API
+   * 我的书房（书籍 + 划线）API — 全部按 user_id 隔离
    * ============================================================ */
 
   /* ---- GET /books 书架列表 ---- */
@@ -370,9 +387,9 @@ async function handleApi(req, env, url) {
     const u = await requireAuth(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const rows = await db.prepare(
-      `SELECT b.*, (SELECT COUNT(*) FROM highlights h WHERE h.book_id=b.id) AS hl_count
-       FROM books b ORDER BY b.id DESC`
-    ).all();
+      `SELECT b.*, (SELECT COUNT(*) FROM highlights h WHERE h.book_id=b.id AND h.user_id=b.user_id) AS hl_count
+       FROM books b WHERE b.user_id=? ORDER BY b.id DESC`
+    ).bind(u.id).all();
     return json({ ok: true, books: rows.results });
   }
 
@@ -384,7 +401,7 @@ async function handleApi(req, env, url) {
     const title = String(b.title || "").trim();
     if (!title) return json({ ok: false, error: "书名不能为空" }, 400);
     const r = await db.prepare(
-      "INSERT INTO books(title,author,category,source,status,file_path,note) VALUES(?,?,?,?,?,?,?) RETURNING id"
+      "INSERT INTO books(title,author,category,source,status,file_path,note,user_id) VALUES(?,?,?,?,?,?,?,?) RETURNING id"
     ).bind(
       title,
       String(b.author || "").trim(),
@@ -392,17 +409,20 @@ async function handleApi(req, env, url) {
       String(b.source || "").trim(),
       String(b.status || "未读").trim(),
       String(b.file_path || "").trim(),
-      String(b.note || "").trim()
+      String(b.note || "").trim(),
+      u.id
     ).first();
     return json({ ok: true, id: r.id });
   }
 
-  /* ---- PUT /books/:id 更新书籍（状态/进度/备注） ---- */
+  /* ---- PUT /books/:id 更新书籍 ---- */
   const mBookPut = path.match(/^\/books\/(\d+)$/);
   if (mBookPut && method === "PUT") {
     const u = await requireAuth(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const id = Number(mBookPut[1]);
+    const owned = await ownBook(db, id, u.id);
+    if (!owned) return json({ ok: false, error: "书籍不存在" }, 404);
     const b = await req.json();
     const sets = ["updated_at=datetime('now','localtime')"];
     const args = [];
@@ -412,8 +432,8 @@ async function handleApi(req, env, url) {
     if (b.status !== undefined) { sets.push("status=?"); args.push(String(b.status).trim()); }
     if (b.file_path !== undefined) { sets.push("file_path=?"); args.push(String(b.file_path).trim()); }
     if (b.note !== undefined) { sets.push("note=?"); args.push(String(b.note).trim()); }
-    args.push(id);
-    await db.prepare(`UPDATE books SET ${sets.join(",")} WHERE id=?`).bind(...args).run();
+    args.push(id, u.id);
+    await db.prepare(`UPDATE books SET ${sets.join(",")} WHERE id=? AND user_id=?`).bind(...args).run();
     return json({ ok: true });
   }
 
@@ -423,32 +443,38 @@ async function handleApi(req, env, url) {
     const u = await requireAuth(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const id = Number(mBookDel[1]);
-    await db.prepare("DELETE FROM highlights WHERE book_id=?").bind(id).run();
-    await db.prepare("DELETE FROM books WHERE id=?").bind(id).run();
+    const owned = await ownBook(db, id, u.id);
+    if (!owned) return json({ ok: false, error: "书籍不存在" }, 404);
+    await db.prepare("DELETE FROM highlights WHERE book_id=? AND user_id=?").bind(id, u.id).run();
+    await db.prepare("DELETE FROM books WHERE id=? AND user_id=?").bind(id, u.id).run();
     return json({ ok: true });
   }
 
-  /* ---- GET /books/:id/highlights 某书的划线 ---- */
+  /* ---- GET /books/:id/highlights ---- */
   const mHlList = path.match(/^\/books\/(\d+)\/highlights$/);
   if (mHlList && method === "GET") {
     const u = await requireAuth(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const bookId = Number(mHlList[1]);
+    const owned = await ownBook(db, bookId, u.id);
+    if (!owned) return json({ ok: false, error: "书籍不存在" }, 404);
     const rows = await db.prepare(
-      "SELECT * FROM highlights WHERE book_id=? ORDER BY id DESC"
-    ).bind(bookId).all();
-    return json({ ok: true, highlights: rows.results });
+      "SELECT * FROM highlights WHERE book_id=? AND user_id=? ORDER BY id DESC"
+    ).bind(bookId, u.id).all();
+    return json({ ok: true, highlights: (rows.results || []).map(mapHighlight) });
   }
 
-  /* ---- GET /highlights 全部划线（按书聚合） ---- */
+  /* ---- GET /highlights 全部划线 ---- */
   if (path === "/highlights" && method === "GET") {
     const u = await requireAuth(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const rows = await db.prepare(
       `SELECT h.*, b.title AS book_title FROM highlights h
-       JOIN books b ON b.id=h.book_id ORDER BY h.id DESC LIMIT 500`
-    ).all();
-    return json({ ok: true, highlights: rows.results });
+       JOIN books b ON b.id=h.book_id
+       WHERE h.user_id=? AND b.user_id=?
+       ORDER BY h.id DESC LIMIT 500`
+    ).bind(u.id, u.id).all();
+    return json({ ok: true, highlights: (rows.results || []).map(mapHighlight) });
   }
 
   /* ---- POST /highlights 新增划线 ---- */
@@ -459,33 +485,37 @@ async function handleApi(req, env, url) {
     const bookId = Number(b.book_id || 0);
     const quote = String(b.quote || "").trim();
     if (!bookId || !quote) return json({ ok: false, error: "book_id 与划线内容不能为空" }, 400);
-    const book = await db.prepare("SELECT id FROM books WHERE id=?").bind(bookId).first();
+    const book = await ownBook(db, bookId, u.id);
     if (!book) return json({ ok: false, error: "书籍不存在" }, 404);
+    const tags = parseTagField(b.tag);
     const r = await db.prepare(
-      "INSERT INTO highlights(book_id,quote,note,loc,tag) VALUES(?,?,?,?,?) RETURNING id"
+      "INSERT INTO highlights(book_id,quote,note,loc,tag,user_id) VALUES(?,?,?,?,?,?) RETURNING id"
     ).bind(
       bookId, quote,
       String(b.note || "").trim(),
       String(b.loc || "").trim(),
-      JSON.stringify(b.tag || [])
+      JSON.stringify(tags),
+      u.id
     ).first();
     return json({ ok: true, id: r.id });
   }
 
-  /* ---- PUT /highlights/:id 更新划线（补笔记/标签） ---- */
+  /* ---- PUT /highlights/:id ---- */
   const mHlPut = path.match(/^\/highlights\/(\d+)$/);
   if (mHlPut && method === "PUT") {
     const u = await requireAuth(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const id = Number(mHlPut[1]);
+    const existing = await db.prepare("SELECT id FROM highlights WHERE id=? AND user_id=?").bind(id, u.id).first();
+    if (!existing) return json({ ok: false, error: "划线不存在" }, 404);
     const b = await req.json();
     const sets = ["updated_at=datetime('now','localtime')"];
     const args = [];
     if (b.note !== undefined) { sets.push("note=?"); args.push(String(b.note).trim()); }
     if (b.loc !== undefined) { sets.push("loc=?"); args.push(String(b.loc).trim()); }
-    if (b.tag !== undefined) { sets.push("tag=?"); args.push(JSON.stringify(b.tag)); }
-    args.push(id);
-    await db.prepare(`UPDATE highlights SET ${sets.join(",")} WHERE id=?`).bind(...args).run();
+    if (b.tag !== undefined) { sets.push("tag=?"); args.push(JSON.stringify(parseTagField(b.tag))); }
+    args.push(id, u.id);
+    await db.prepare(`UPDATE highlights SET ${sets.join(",")} WHERE id=? AND user_id=?`).bind(...args).run();
     return json({ ok: true });
   }
 
@@ -495,7 +525,8 @@ async function handleApi(req, env, url) {
     const u = await requireAuth(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const id = Number(mHlDel[1]);
-    await db.prepare("DELETE FROM highlights WHERE id=?").bind(id).run();
+    const r = await db.prepare("DELETE FROM highlights WHERE id=? AND user_id=?").bind(id, u.id).run();
+    if (!r.meta || r.meta.changes === 0) return json({ ok: false, error: "划线不存在" }, 404);
     return json({ ok: true });
   }
 
@@ -533,7 +564,7 @@ export default {
     const url = new URL(req.url);
 
     if (url.pathname.startsWith("/api")) {
-      const isWrite = req.method === "POST" || req.method === "PUT";
+      const isWrite = req.method === "POST" || req.method === "PUT" || req.method === "DELETE";
       const ip = req.headers.get("CF-Connecting-IP") || "unknown";
       if (!(await rateLimit(env, ip, isWrite))) {
         return cors(json({ ok: false, error: "请求过于频繁，请稍后再试" }, 429));

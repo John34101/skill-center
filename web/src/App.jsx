@@ -14,7 +14,6 @@ import Reader from './pages/Reader.jsx'
 import BackBar, { pushNav } from './components/BackBar.jsx'
 import { api } from './api'
 
-// 极简 hash 路由
 function useHashRoute() {
   const [hash, setHash] = useState(window.location.hash || '#/')
   useEffect(() => {
@@ -41,24 +40,23 @@ function Shell() {
     }
   }, [route, isAdmin])
 
-  // 会话恢复完成前先占位，避免刷新时闪登录页/误判未登录
-  if (!ready) return (
-    <div className="boot">
-      <div className="boot-in">
-        <div className="boot-mark"><i /></div>
-        <div className="boot-name">我的书房</div>
-        <div className="boot-spin" />
-        <div className="boot-tip">正在恢复会话…</div>
+  if (!ready) {
+    return (
+      <div className="boot">
+        <div className="boot-in">
+          <div className="boot-mark"><i /></div>
+          <div className="boot-name">我的书房</div>
+          <div className="boot-spin" />
+          <div className="boot-tip">正在打开书架…</div>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 
-  // 登录/注册页
   if (route === '/login') return <Login />
   if (route === '/register') return <Register />
   if (!user) return <Login />
 
-  // 路由匹配
   const isReader = route.startsWith('/reader/')
   const readerId = isReader ? route.slice('/reader/'.length) : null
   const isPlanDetail = route.startsWith('/plans/')
@@ -66,29 +64,16 @@ function Shell() {
   const isLegacy = route.startsWith('/legacy')
   const legacyPath = route.replace(/^\/legacy/, '') || '/plans'
 
-  // 阅读器：独立沉浸布局
   if (isReader) return <Reader id={readerId} key={readerId} />
 
-  // 导航：主页是「我的书房」，旧学习中心收进不显眼归档入口
-  const nav = [
-    ...(isAdmin ? [{ to: '/admin', label: '管理' }] : []),
-  ]
-
-  // 路由 → 页面（默认「我的书房」为首页）
   let page
-  if (route === '/') {
+  if (route === '/' || route === '/library') {
     page = <Library />
-  } else if (route === '/today') page = <Home />
-  else if (route === '/market') page = <Market />
-  else if (route === '/plans') page = <Plans />
-  else if (isPlanDetail) page = <PlanDetail id={planId} key={planId} />
-  else if (route === '/writing') page = <Writing />
-  else if (route === '/cases') page = <Cases />
-  else if (route === '/admin') page = <Admin stats={stats} />
-  // 归档入口映射：/legacy/xxx → 旧路由 xxx
-  else if (isLegacy) {
+  } else if (route === '/admin' && isAdmin) {
+    page = <Admin stats={stats} />
+  } else if (isLegacy) {
     const p = legacyPath
-    if (p === '/plans') page = <LegacyLanding />
+    if (p === '/plans' || p === '' || p === '/') page = <LegacyLanding />
     else if (p === '/today') page = <Home />
     else if (p === '/market') page = <Market />
     else if (p.startsWith('/plans/')) page = <PlanDetail id={p.slice('/plans/'.length)} key={p} />
@@ -96,69 +81,63 @@ function Shell() {
     else if (p === '/cases') page = <Cases />
     else if (p === '/admin') page = <Admin stats={stats} />
     else page = <LegacyLanding />
+  } else if (route === '/today' || route === '/market' || route === '/plans' || route === '/writing' || route === '/cases') {
+    // 旧直达路由：导入归档壳
+    window.location.hash = '#/legacy' + route
+    page = <LegacyLanding />
   } else {
     page = <Library />
   }
 
-  const isArchiveView = route === '/' || isLegacy || route === '/plans' || isPlanDetail
   return (
-    <div>
-      <div className="topbar">
+    <div className="app-shell">
+      <header className="topbar paper-top">
         <div className="topbar-brand" onClick={() => { window.location.hash = '#/' }}>
           <span className="brand-mark"><i /></span>
           <b>我的书房</b>
         </div>
-        <span className="topbar-sub">个人学习</span>
-        <nav className="nav">
-          {nav.map(n => (
-            <a key={n.to} href={'#' + n.to} className={
-              (route === n.to) ||
-              (n.to === '/' && (route === '/plans' || isPlanDetail)) ? 'on' : ''}>{n.label}</a>
-          ))}
-        </nav>
+        <span className="topbar-sub">个人阅读 · 划线沉淀</span>
         <span className="spacer" />
         <div className="topbar-user">
-          <a className="arch-link" href="#/legacy" title="旧版学习中心（归档）">学习中心</a>
+          {isAdmin && <a className="arch-link" href="#/admin">管理</a>}
+          <a className="arch-link quiet" href="#/legacy" title="旧版 Skill 学习中心">学习中心</a>
           <span className="uname">{user.nickname || user.email}</span>
-          {isAdmin && <span className="urole">管理员</span>}
-          <button className="btn sub" onClick={logout}>退出</button>
+          <button type="button" className="btn sub" onClick={logout}>退出</button>
         </div>
-      </div>
-      <div className="rack">
-        <span className="seg"><span className="lbl">账号</span><b>{user.email}</b></span>
-        <span className="seg"><span className="lbl">API</span><b className="mono">api.ilovelearning.top</b></span>
-        <span className="spacer" />
-        <span className="seg"><span className="lbl">版本</span><b>v0.4</b></span>
-      </div>
-      <div className="main">
-        {route !== '/' && <BackBar />}
+      </header>
+      <main className="main paper-main">
+        {route !== '/' && route !== '/library' && <BackBar />}
         {page}
-      </div>
+      </main>
     </div>
   )
 }
 
-// 归档入口：旧版学习中心（三个学习计划 + 技能管理）统一收在这里
 function LegacyLanding() {
   return (
-    <div className="legacy card">
-      <h2>学习中心（旧版 · 已归档）</h2>
-      <p className="muted">以下为早期功能，已归档保留，可按需继续使用。</p>
+    <div className="legacy card paper-card">
+      <h2>学习中心（旧版归档）</h2>
+      <p className="muted">以下为早期 Skill 管理功能，已归档保留。主产品请使用「我的书房」。</p>
       <div className="legacy-grid">
         <a className="legacy-item" href="#/legacy/plans">
-          <b>学习计划</b><span>PPT 视觉提升 · AI Skill 使用 · 写作系统</span>
+          <b>学习计划</b><span>PPT · AI Skill · 写作</span>
         </a>
         <a className="legacy-item" href="#/legacy/market">
-          <b>技能市场</b><span>浏览与安装 AI Agent Skill</span>
+          <b>技能市场</b><span>浏览与安装 Agent Skill</span>
         </a>
         <a className="legacy-item" href="#/legacy/cases">
-          <b>用法案例</b><span>各 Skill 的实际产物案例</span>
+          <b>用法案例</b><span>各 Skill 的实际产物</span>
         </a>
         <a className="legacy-item" href="#/legacy/writing">
           <b>写作系统</b><span>写作台账与素材</span>
         </a>
+        <a className="legacy-item" href="#/legacy/today">
+          <b>今日推荐</b><span>每日双档 Skill 推荐</span>
+        </a>
       </div>
-      <p className="muted small">主页面「我的书房」已上线：书籍/课程自托管 + 划线笔记。旧入口会长期保留，不着急迁移。</p>
+      <p className="muted small" style={{ marginTop: 16 }}>
+        <a href="#/">← 回到我的书房</a>
+      </p>
     </div>
   )
 }
