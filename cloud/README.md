@@ -70,3 +70,20 @@
 ## 回退
 
 本机桌面自动化保持不动，随时可切回；两套并发有 14 天去重兜底（见 AGENTS.md §8.6），但仍建议只保留一套调度。
+
+## 前端部署（ilovelearning.top）
+
+前端不是 Cloudflare Pages，而是 Worker **`skill-center-web`**（assets）绑定：
+- `ilovelearning.top`
+- `www.ilovelearning.top`
+
+一键部署（需 `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID`）：
+
+```bash
+cd web && npm ci && npm run build
+npx wrangler@4 deploy   # 读 web/wrangler.toml
+# 或：python3 cloud/deploy_web.py
+# 或：提交 cloud/DEPLOY_WEB_NOW 后手动跑 Actions「daily-skill-recommend-fetch」
+```
+
+API 仍是 `skill-center-api` → `api.ilovelearning.top`（`.github/workflows/deploy-worker.yml`）。

@@ -1,0 +1,8 @@
+# Frontend Worker (static assets) — hosts ilovelearning.top / www
+# Custom domains already bound in Cloudflare: ilovelearning.top, www.ilovelearning.top
+name = "skill-center-web"
+compatibility_date = "2024-11-01"
+
+[assets]
+directory = "./dist"
+not_found_handling = "single-page-application"
