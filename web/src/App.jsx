@@ -74,20 +74,30 @@ function Shell() {
     ...(isAdmin ? [{ to: '/admin', label: '管理' }] : []),
   ]
 
+  // 路由 → 页面（默认「我的书房」为首页）
+  let page
+  if (route === '/') {
+    page = <Library />
+  } else if (route === '/today') page = <Home />
+  else if (route === '/market') page = <Market />
+  else if (route === '/plans') page = <Plans />
+  else if (isPlanDetail) page = <PlanDetail id={planId} key={planId} />
+  else if (route === '/writing') page = <Writing />
+  else if (route === '/cases') page = <Cases />
+  else if (route === '/admin') page = <Admin stats={stats} />
   // 归档入口映射：/legacy/xxx → 旧路由 xxx
-  if (isLegacy && legacyPath !== '/plans') {
+  else if (isLegacy) {
     const p = legacyPath
-    let legacyPage = <LegacyLanding />
-    if (p === '/today') legacyPage = <Home />
-    else if (p === '/market') legacyPage = <Market />
-    else if (p === '/plans') legacyPage = <Plans />
-    else if (p.startsWith('/plans/')) legacyPage = <PlanDetail id={p.slice('/plans/'.length)} key={p} />
-    else if (p === '/writing') legacyPage = <Writing />
-    else if (p === '/cases') legacyPage = <Cases />
-    else if (p === '/admin') legacyPage = <Admin stats={stats} />
-    page = legacyPage
-  } else if (isLegacy) {
-    page = <LegacyLanding />
+    if (p === '/plans') page = <LegacyLanding />
+    else if (p === '/today') page = <Home />
+    else if (p === '/market') page = <Market />
+    else if (p.startsWith('/plans/')) page = <PlanDetail id={p.slice('/plans/'.length)} key={p} />
+    else if (p === '/writing') page = <Writing />
+    else if (p === '/cases') page = <Cases />
+    else if (p === '/admin') page = <Admin stats={stats} />
+    else page = <LegacyLanding />
+  } else {
+    page = <Library />
   }
 
   const isArchiveView = route === '/' || isLegacy || route === '/plans' || isPlanDetail
