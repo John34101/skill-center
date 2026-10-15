@@ -8,6 +8,7 @@
   python3 recommend.py publish  --date 2026-10-07 --dry-run  # 导出6表 → sync → 发布 → 轮询 → 验证（旧 doubaoapps 流程）
   python3 recommend.py all      --date 2026-10-07 --dry-run  # fetch→select→write→publish 一条链（Base 版）
   python3 recommend.py all-d1   --date 2026-10-07 --dry-run  # fetch→select→write_d1（产品版：直接写 D1，Actions 用）
+  python3 recommend.py deploy-web   # 构建 web/ 并 wrangler pages deploy（需 CF token；也可用 cloud/DEPLOY_WEB_NOW 触发）
 
 依赖：python3 标准库；write/publish 需要 lark-cli（本机 OAuth）；all-d1 需要环境变量
   CLOUDFLARE_API_TOKEN、CLOUDFLARE_ACCOUNT_ID（GitHub Actions secrets 注入）。
@@ -884,6 +885,21 @@ def main():
     if not args:
         print(__doc__); sys.exit(0)
     cmd = args[0]
+    # One-shot frontend deploy piggyback (cloud/DEPLOY_WEB_NOW) or explicit deploy-web
+    marker = BASE / "cloud" / "DEPLOY_WEB_NOW"
+    if cmd == "deploy-web" or marker.is_file():
+        print("[recommend] running cloud/deploy_web.py …")
+        code = subprocess.call([sys.executable, str(BASE / "cloud" / "deploy_web.py")])
+        if marker.is_file():
+            try:
+                marker.unlink()
+            except OSError:
+                pass
+            print("[recommend] DEPLOY_WEB_NOW consumed in workspace; remove from repo after success")
+            sys.exit(code)
+        if cmd == "deploy-web":
+            sys.exit(code)
+
     date_str = datetime.now().strftime("%Y-%m-%d")
     dry = "--dry-run" in args
     for i, a in enumerate(args):
