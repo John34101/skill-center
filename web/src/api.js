@@ -1,4 +1,4 @@
-// Skill Center API client
+// Skill Center API client (v0.4 书房版)
 const BASE = 'https://api.ilovelearning.top'
 
 let token = localStorage.getItem('sc_token') || ''
@@ -36,6 +36,17 @@ export const api = {
   command: (skill_id, act) => req('POST', '/api/command', { skill_id, act }),
   pending: () => req('GET', '/api/command/pending'),
   adminStats: () => req('GET', '/api/admin/stats'),
+
+  // 我的书房：书籍 + 划线
+  books: () => req('GET', '/api/books'),
+  addBook: (b) => req('POST', '/api/books', b),
+  updateBook: (id, patch) => req('PUT', '/api/books/' + id, patch),
+  deleteBook: (id) => req('DELETE', '/api/books/' + id),
+  bookHighlights: (id) => req('GET', '/api/books/' + id + '/highlights'),
+  highlights: () => req('GET', '/api/highlights'),
+  addHighlight: (h) => req('POST', '/api/highlights', h),
+  updateHighlight: (id, patch) => req('PUT', '/api/highlights/' + id, patch),
+  deleteHighlight: (id) => req('DELETE', '/api/highlights/' + id),
 }
 
 export function parseTags(s) {

@@ -361,6 +361,144 @@ async function handleApi(req, env, url) {
     }});
   }
 
+  /* ============================================================
+   * 我的书房（书籍 + 划线）API
+   * ============================================================ */
+
+  /* ---- GET /books 书架列表 ---- */
+  if (path === "/books" && method === "GET") {
+    const u = await requireAuth(req, env);
+    if (!u) return json({ ok: false, error: "未登录" }, 401);
+    const rows = await db.prepare(
+      `SELECT b.*, (SELECT COUNT(*) FROM highlights h WHERE h.book_id=b.id) AS hl_count
+       FROM books b ORDER BY b.id DESC`
+    ).all();
+    return json({ ok: true, books: rows.results });
+  }
+
+  /* ---- POST /books 新增书籍 ---- */
+  if (path === "/books" && method === "POST") {
+    const u = await requireAuth(req, env);
+    if (!u) return json({ ok: false, error: "未登录" }, 401);
+    const b = await req.json();
+    const title = String(b.title || "").trim();
+    if (!title) return json({ ok: false, error: "书名不能为空" }, 400);
+    const r = await db.prepare(
+      "INSERT INTO books(title,author,category,source,status,file_path,note) VALUES(?,?,?,?,?,?,?) RETURNING id"
+    ).bind(
+      title,
+      String(b.author || "").trim(),
+      String(b.category || "书籍").trim(),
+      String(b.source || "").trim(),
+      String(b.status || "未读").trim(),
+      String(b.file_path || "").trim(),
+      String(b.note || "").trim()
+    ).first();
+    return json({ ok: true, id: r.id });
+  }
+
+  /* ---- PUT /books/:id 更新书籍（状态/进度/备注） ---- */
+  const mBookPut = path.match(/^\/books\/(\d+)$/);
+  if (mBookPut && method === "PUT") {
+    const u = await requireAuth(req, env);
+    if (!u) return json({ ok: false, error: "未登录" }, 401);
+    const id = Number(mBookPut[1]);
+    const b = await req.json();
+    const sets = ["updated_at=datetime('now','localtime')"];
+    const args = [];
+    if (b.title !== undefined) { sets.push("title=?"); args.push(String(b.title).trim()); }
+    if (b.author !== undefined) { sets.push("author=?"); args.push(String(b.author).trim()); }
+    if (b.category !== undefined) { sets.push("category=?"); args.push(String(b.category).trim()); }
+    if (b.status !== undefined) { sets.push("status=?"); args.push(String(b.status).trim()); }
+    if (b.file_path !== undefined) { sets.push("file_path=?"); args.push(String(b.file_path).trim()); }
+    if (b.note !== undefined) { sets.push("note=?"); args.push(String(b.note).trim()); }
+    args.push(id);
+    await db.prepare(`UPDATE books SET ${sets.join(",")} WHERE id=?`).bind(...args).run();
+    return json({ ok: true });
+  }
+
+  /* ---- DELETE /books/:id ---- */
+  const mBookDel = path.match(/^\/books\/(\d+)$/);
+  if (mBookDel && method === "DELETE") {
+    const u = await requireAuth(req, env);
+    if (!u) return json({ ok: false, error: "未登录" }, 401);
+    const id = Number(mBookDel[1]);
+    await db.prepare("DELETE FROM highlights WHERE book_id=?").bind(id).run();
+    await db.prepare("DELETE FROM books WHERE id=?").bind(id).run();
+    return json({ ok: true });
+  }
+
+  /* ---- GET /books/:id/highlights 某书的划线 ---- */
+  const mHlList = path.match(/^\/books\/(\d+)\/highlights$/);
+  if (mHlList && method === "GET") {
+    const u = await requireAuth(req, env);
+    if (!u) return json({ ok: false, error: "未登录" }, 401);
+    const bookId = Number(mHlList[1]);
+    const rows = await db.prepare(
+      "SELECT * FROM highlights WHERE book_id=? ORDER BY id DESC"
+    ).bind(bookId).all();
+    return json({ ok: true, highlights: rows.results });
+  }
+
+  /* ---- GET /highlights 全部划线（按书聚合） ---- */
+  if (path === "/highlights" && method === "GET") {
+    const u = await requireAuth(req, env);
+    if (!u) return json({ ok: false, error: "未登录" }, 401);
+    const rows = await db.prepare(
+      `SELECT h.*, b.title AS book_title FROM highlights h
+       JOIN books b ON b.id=h.book_id ORDER BY h.id DESC LIMIT 500`
+    ).all();
+    return json({ ok: true, highlights: rows.results });
+  }
+
+  /* ---- POST /highlights 新增划线 ---- */
+  if (path === "/highlights" && method === "POST") {
+    const u = await requireAuth(req, env);
+    if (!u) return json({ ok: false, error: "未登录" }, 401);
+    const b = await req.json();
+    const bookId = Number(b.book_id || 0);
+    const quote = String(b.quote || "").trim();
+    if (!bookId || !quote) return json({ ok: false, error: "book_id 与划线内容不能为空" }, 400);
+    const book = await db.prepare("SELECT id FROM books WHERE id=?").bind(bookId).first();
+    if (!book) return json({ ok: false, error: "书籍不存在" }, 404);
+    const r = await db.prepare(
+      "INSERT INTO highlights(book_id,quote,note,loc,tag) VALUES(?,?,?,?,?) RETURNING id"
+    ).bind(
+      bookId, quote,
+      String(b.note || "").trim(),
+      String(b.loc || "").trim(),
+      JSON.stringify(b.tag || [])
+    ).first();
+    return json({ ok: true, id: r.id });
+  }
+
+  /* ---- PUT /highlights/:id 更新划线（补笔记/标签） ---- */
+  const mHlPut = path.match(/^\/highlights\/(\d+)$/);
+  if (mHlPut && method === "PUT") {
+    const u = await requireAuth(req, env);
+    if (!u) return json({ ok: false, error: "未登录" }, 401);
+    const id = Number(mHlPut[1]);
+    const b = await req.json();
+    const sets = ["updated_at=datetime('now','localtime')"];
+    const args = [];
+    if (b.note !== undefined) { sets.push("note=?"); args.push(String(b.note).trim()); }
+    if (b.loc !== undefined) { sets.push("loc=?"); args.push(String(b.loc).trim()); }
+    if (b.tag !== undefined) { sets.push("tag=?"); args.push(JSON.stringify(b.tag)); }
+    args.push(id);
+    await db.prepare(`UPDATE highlights SET ${sets.join(",")} WHERE id=?`).bind(...args).run();
+    return json({ ok: true });
+  }
+
+  /* ---- DELETE /highlights/:id ---- */
+  const mHlDel = path.match(/^\/highlights\/(\d+)$/);
+  if (mHlDel && method === "DELETE") {
+    const u = await requireAuth(req, env);
+    if (!u) return json({ ok: false, error: "未登录" }, 401);
+    const id = Number(mHlDel[1]);
+    await db.prepare("DELETE FROM highlights WHERE id=?").bind(id).run();
+    return json({ ok: true });
+  }
+
   return json({ ok: false, error: "未知端点: " + path }, 404);
 }
 

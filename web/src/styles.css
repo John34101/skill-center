@@ -389,3 +389,80 @@ body.drawer-lock { overflow: hidden }
 .backbar-btn:hover { border-color: var(--blue); color: var(--blue); box-shadow: 0 2px 8px rgba(43,89,195,.08) }
 .backbar-arrow { font-size: 14px; line-height: 1 }
 .backbar-hint { font-size: 12px; color: var(--ink-2) }
+
+/* ===== 我的书房 ===== */
+.library { display: flex; flex-direction: column; gap: 16px }
+.lib-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap }
+.lib-head h2 { margin: 0; font-size: 22px; letter-spacing: -.01em }
+.muted { color: var(--ink-2); font-size: 13px }
+.small { font-size: 12px }
+.pad { padding: 14px 0 }
+.lib-add { padding: 16px; display: flex; flex-direction: column; gap: 10px }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+.lib-add input, .lib-add select, textarea { width: 100%; border: 1px solid var(--line-2); border-radius: 8px; padding: 8px 10px; font-size: 13.5px; font-family: inherit; background: #fff; color: var(--ink) }
+.lib-add input:focus, .lib-add select:focus, textarea:focus { outline: 2px solid var(--blue); outline-offset: -1px; border-color: var(--blue) }
+.row-right { display: flex; justify-content: flex-end; gap: 8px; align-items: center }
+.lib-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px }
+.stat b { font-size: 24px; font-weight: 700 }
+.stat span { font-size: 12px; color: var(--ink-2) }
+.lib-cats { display: flex; gap: 8px; flex-wrap: wrap }
+.chip.on { background: var(--blue); color: #fff; border-color: var(--blue) }
+.chip { cursor: pointer; user-select: none }
+.lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px }
+.book { display: flex; gap: 14px; padding: 16px; overflow: hidden }
+.book-cover { flex: none; width: 52px; height: 68px; border-radius: 6px; background: linear-gradient(150deg, var(--blue-soft), #D9E4F8); color: var(--blue); display: grid; place-items: center; font-size: 11px; font-weight: 700; letter-spacing: .02em }
+.book.done .book-cover { background: var(--green-soft); color: var(--green) }
+.book-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px }
+.book-body h3 { margin: 0; font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.book-note { margin: 0; font-size: 12.5px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.book-meta { display: flex; align-items: center; gap: 8px; margin-top: 2px }
+.st { font-size: 11px; font-weight: 600; padding: 1px 8px; border-radius: 999px }
+.st-w { color: var(--ink-2); background: #EEF0F3 }
+.st-r { color: var(--blue); background: var(--blue-soft) }
+.st-d { color: var(--green); background: var(--green-soft) }
+.st-p { color: #9A6B12; background: var(--amber-soft) }
+.hl-n { font-size: 11.5px; color: var(--amber); font-weight: 600 }
+.book-ops { flex: none; display: flex; flex-direction: column; gap: 8px; justify-content: flex-start; align-items: flex-end }
+.btn.sm { font-size: 12px; padding: 3px 9px; min-height: 24px; border-radius: 6px; border-color: var(--line-2); color: var(--ink) }
+.btn.sm.on { background: var(--blue-soft); color: var(--blue); border-color: #C8D6F2 }
+.btn.sm.danger { color: var(--red); border-color: #EBC4BC }
+.empty { text-align: center; padding: 48px 16px; border: 1.5px dashed var(--line-2); border-radius: 14px; color: var(--ink-2) }
+.err { color: var(--red); font-size: 13.5px }
+
+/* ===== 阅读器 ===== */
+.reader { display: flex; flex-direction: column; height: calc(100vh - 90px); min-height: 520px; gap: 10px }
+.reader-top { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; flex-wrap: wrap }
+.reader-title { font-size: 15px; font-weight: 600 }
+.reader-main { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr); gap: 12px; flex: 1; min-height: 0 }
+.reader-area { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; min-height: 480px }
+.reader-side { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; overflow-y: auto; min-height: 480px }
+.side-head { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px }
+.side-head b { font-size: 14px }
+.hl-list { display: flex; flex-direction: column; gap: 10px }
+.hl { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px }
+.hl-quote { margin: 0; font-size: 13px; color: var(--ink); border-left: 3px solid var(--amber); padding-left: 10px; line-height: 1.6 }
+.hl-note { width: 100%; border: 1px solid var(--line-2); border-radius: 8px; padding: 7px 9px; font-size: 12.5px; font-family: inherit; resize: vertical; background: #fff; color: var(--ink) }
+.hl-meta { display: flex; align-items: center; gap: 5px; flex-wrap: wrap }
+.mask { position: fixed; inset: 0; background: rgba(15, 18, 22, .5); display: grid; place-items: center; z-index: 200; padding: 16px }
+.note-dialog { width: min(520px, 100%); padding: 18px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 12px 40px rgba(0,0,0,.22) }
+.note-dialog h3 { margin: 0; font-size: 16px }
+.note-dialog textarea { width: 100%; border: 1px solid var(--line-2); border-radius: 8px; padding: 9px 11px; font-size: 13.5px; font-family: inherit; resize: vertical }
+
+/* ===== 归档入口 ===== */
+.arch-link { font-size: 12px; color: var(--ink-2); padding: 3px 9px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); opacity: .75 }
+.arch-link:hover { opacity: 1; color: var(--blue); border-color: var(--blue) }
+.legacy { max-width: 900px; margin: 0 auto; padding: 22px }
+.legacy h2 { margin: 0 0 6px; font-size: 18px }
+.legacy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin: 18px 0 }
+.legacy-item { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); transition: border-color .15s, background .15s }
+.legacy-item:hover { border-color: var(--blue); background: var(--blue-soft) }
+.legacy-item b { font-size: 14px; color: var(--ink) }
+.legacy-item span { font-size: 12px; color: var(--ink-2) }
+
+@media (max-width: 900px) {
+  .reader-main { grid-template-columns: 1fr; }
+  .reader-side { min-height: 260px; max-height: 320px }
+  .grid2 { grid-template-columns: 1fr }
+  .lib-stats { grid-template-columns: repeat(2, 1fr) }
+}
