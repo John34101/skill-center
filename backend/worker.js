@@ -1,6 +1,6 @@
 /* ============================================================
  * Skill 管理中心 · 产品化 API Worker (P0)
- * 版本 v3.2.0（2026-10-16 书房：books/highlights 按 user_id 隔离 + tag 规范化）
+ * 版本 v3.2.1（2026-10-16 读路径加速：GET 跳过 KV 限流；读口 JWT uid 快鉴权）
  * 路径: /api/*  产品 API（D1 + JWT 账号体系）
  * 环境变量：JWT_SECRET（必填）
  * 绑定：skill_center_db（D1 主库）、AUTH（KV，限流计数）
@@ -96,6 +96,7 @@ async function verifyPwd(password, stored) {
 }
 
 /* ---------- 鉴权 ---------- */
+/** 写口 / 需完整用户资料：验 JWT + D1 查用户 */
 async function requireAuth(req, env) {
   const ah = req.headers.get("Authorization") || "";
   const token = ah.startsWith("Bearer ") ? ah.slice(7) : null;
@@ -106,6 +107,15 @@ async function requireAuth(req, env) {
     .bind(payload.uid).first();
   if (!row) return null;
   return row;
+}
+/** 读口快鉴权：只验 JWT，信任 payload.uid（写口仍走 requireAuth） */
+async function authFast(req, env) {
+  const ah = req.headers.get("Authorization") || "";
+  const token = ah.startsWith("Bearer ") ? ah.slice(7) : null;
+  if (!token) return null;
+  const payload = await verifyToken(token, env.JWT_SECRET);
+  if (!payload || !payload.uid) return null;
+  return { id: payload.uid, role: payload.role || "user" };
 }
 
 
@@ -187,7 +197,7 @@ async function handleApi(req, env, url) {
 
   /* ---- GET /skills ---- */
   if (path === "/skills" && method === "GET") {
-    const u = await requireAuth(req, env);
+    const u = await authFast(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const rows = await db.prepare(
       `SELECT s.id,s.name,s.cn,s.cat,s.tags,s.biz,s.hot,s.source,s.reg,s.score,s.desc,s.note,
@@ -201,7 +211,7 @@ async function handleApi(req, env, url) {
   /* ---- GET /skills/:id ---- */
   const mSkill = path.match(/^\/skills\/(\d+)$/);
   if (mSkill && method === "GET") {
-    const u = await requireAuth(req, env);
+    const u = await authFast(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const sid = Number(mSkill[1]);
     const skill = await db.prepare("SELECT * FROM skills WHERE id=?").bind(sid).first();
@@ -215,7 +225,7 @@ async function handleApi(req, env, url) {
 
   /* ---- GET /recs/today ---- */
   if (path === "/recs/today" && method === "GET") {
-    const u = await requireAuth(req, env);
+    const u = await authFast(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const latest = await db.prepare("SELECT MAX(batch) AS b FROM recs").first();
     const rows = await db.prepare(
@@ -235,7 +245,7 @@ async function handleApi(req, env, url) {
 
   /* ---- GET /cases ---- */
   if (path === "/cases" && method === "GET") {
-    const u = await requireAuth(req, env);
+    const u = await authFast(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const rows = await db.prepare(
       `SELECT c.*, s.name AS skill_name, s.cn AS skill_cn
@@ -384,7 +394,7 @@ async function handleApi(req, env, url) {
 
   /* ---- GET /books 书架列表 ---- */
   if (path === "/books" && method === "GET") {
-    const u = await requireAuth(req, env);
+    const u = await authFast(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const rows = await db.prepare(
       `SELECT b.*, (SELECT COUNT(*) FROM highlights h WHERE h.book_id=b.id AND h.user_id=b.user_id) AS hl_count
@@ -453,7 +463,7 @@ async function handleApi(req, env, url) {
   /* ---- GET /books/:id/highlights ---- */
   const mHlList = path.match(/^\/books\/(\d+)\/highlights$/);
   if (mHlList && method === "GET") {
-    const u = await requireAuth(req, env);
+    const u = await authFast(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const bookId = Number(mHlList[1]);
     const owned = await ownBook(db, bookId, u.id);
@@ -466,7 +476,7 @@ async function handleApi(req, env, url) {
 
   /* ---- GET /highlights 全部划线 ---- */
   if (path === "/highlights" && method === "GET") {
-    const u = await requireAuth(req, env);
+    const u = await authFast(req, env);
     if (!u) return json({ ok: false, error: "未登录" }, 401);
     const rows = await db.prepare(
       `SELECT h.*, b.title AS book_title FROM highlights h
@@ -536,7 +546,7 @@ async function handleApi(req, env, url) {
 /* ---------- KV 限流 ---------- */
 async function rateLimit(env, ip, isWrite) {
   try {
-    const limit = isWrite ? 30 : 120; // 写口 30/min，读口 120/min（几十人规模防滥用且不误伤正常点击）
+    const limit = 30; // 仅写口调用：30/min
     const bucket = Math.floor(Date.now() / 60000);
     const key = "rl:" + (ip || "unknown") + ":" + bucket;
     const cur = parseInt((await env.AUTH.get(key)) || "0", 10);
@@ -565,9 +575,12 @@ export default {
 
     if (url.pathname.startsWith("/api")) {
       const isWrite = req.method === "POST" || req.method === "PUT" || req.method === "DELETE";
-      const ip = req.headers.get("CF-Connecting-IP") || "unknown";
-      if (!(await rateLimit(env, ip, isWrite))) {
-        return cors(json({ ok: false, error: "请求过于频繁，请稍后再试" }, 429));
+      // 读口跳过 KV 限流（少一次往返）；写口仍限流
+      if (isWrite) {
+        const ip = req.headers.get("CF-Connecting-IP") || "unknown";
+        if (!(await rateLimit(env, ip, true))) {
+          return cors(json({ ok: false, error: "请求过于频繁，请稍后再试" }, 429));
+        }
       }
       try {
         return cors(await handleApi(req, env, url));
