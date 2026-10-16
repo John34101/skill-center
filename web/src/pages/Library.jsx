@@ -1,31 +1,62 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from '../api'
 
 const CATS = ['全部', '课程', '书籍', 'PDF', 'EPUB']
 const STATUS = { '未读': 'w', '在读': 'r', '读完': 'd', '搁置': 'p' }
 const SAMPLE_COURSE = '/courses/sample-efficient-learning/meta.json'
+const emptyForm = () => ({
+  title: '', author: '', category: '书籍', source: '', status: '未读', file_path: '', note: '',
+})
 
 export default function Library() {
   const [books, setBooks] = useState([])
   const [cat, setCat] = useState('全部')
   const [q, setQ] = useState('')
   const [statusFilter, setStatusFilter] = useState('全部')
-  const [loading, setLoading] = useState(true)
+  const [initialLoading, setInitialLoading] = useState(true)
   const [err, setErr] = useState('')
   const [showAdd, setShowAdd] = useState(false)
-  const [form, setForm] = useState({
-    title: '', author: '', category: '书籍', source: '', status: '未读', file_path: '', note: '',
-  })
+  const [form, setForm] = useState(emptyForm)
+  const [adding, setAdding] = useState(false)
+  const [busyIds, setBusyIds] = useState(() => new Set()) // deleting / status updating
+  const [toast, setToast] = useState('')
+  const toastTimer = useRef(null)
+  const booksRef = useRef(books)
+  booksRef.current = books
 
-  const load = () => {
-    setLoading(true)
+  const flash = useCallback((msg) => {
+    setToast(msg)
+    if (toastTimer.current) clearTimeout(toastTimer.current)
+    toastTimer.current = setTimeout(() => setToast(''), 2800)
+  }, [])
+
+  const markBusy = (id, on) => {
+    setBusyIds(prev => {
+      const next = new Set(prev)
+      if (on) next.add(id)
+      else next.delete(id)
+      return next
+    })
+  }
+
+  /** 静默刷新：不清空列表、不闪空白 */
+  const softReload = useCallback(() => {
+    return api.books().then(d => {
+      if (d.ok) setBooks(d.books || [])
+      else setErr(d.error || '加载失败')
+      return d
+    })
+  }, [])
+
+  useEffect(() => {
+    setInitialLoading(true)
     api.books().then(d => {
-      setLoading(false)
+      setInitialLoading(false)
       if (d.ok) setBooks(d.books || [])
       else setErr(d.error || '加载失败')
     })
-  }
-  useEffect(load, [])
+    return () => { if (toastTimer.current) clearTimeout(toastTimer.current) }
+  }, [])
 
   const onCategoryChange = (category) => {
     const next = { ...form, category }
@@ -38,24 +69,91 @@ export default function Library() {
     setForm(next)
   }
 
-  const add = () => {
-    if (!form.title.trim()) return alert('请输入书名或课程名')
-    api.addBook(form).then(d => {
-      if (d.ok) {
-        setShowAdd(false)
-        setForm({ title: '', author: '', category: '书籍', source: '', status: '未读', file_path: '', note: '' })
-        load()
-      } else alert(d.error || '添加失败')
-    })
+  const add = async () => {
+    if (!form.title.trim()) return flash('请输入书名或课程名')
+    if (adding) return
+    setAdding(true)
+    setErr('')
+    const payload = { ...form, title: form.title.trim() }
+    const tempId = 'tmp-' + Date.now()
+    const optimistic = {
+      ...payload,
+      id: tempId,
+      hl_count: 0,
+      _pending: true,
+    }
+    setBooks(prev => [optimistic, ...prev])
+    setShowAdd(false)
+    setForm(emptyForm())
+
+    try {
+      const d = await api.addBook(payload)
+      if (!d.ok) {
+        setBooks(prev => prev.filter(b => b.id !== tempId))
+        setShowAdd(true)
+        setForm(payload)
+        flash(d.error || '添加失败，已恢复表单')
+        return
+      }
+      // 用真实 id 替换临时卡，避免整表闪烁
+      setBooks(prev => prev.map(b =>
+        b.id === tempId
+          ? { ...optimistic, id: d.id, _pending: false }
+          : b
+      ))
+      flash('已放入书架')
+      softReload() // 后台对齐服务端字段
+    } catch (e) {
+      setBooks(prev => prev.filter(b => b.id !== tempId))
+      setShowAdd(true)
+      setForm(payload)
+      flash('网络异常，添加未成功')
+    } finally {
+      setAdding(false)
+    }
   }
 
-  const setStatus = (b, status) => {
-    api.updateBook(b.id, { status }).then(d => { if (d.ok) load() })
+  const setStatus = async (b, status) => {
+    if (String(b.id).startsWith('tmp-') || busyIds.has(b.id)) return
+    if (b.status === status) return
+    const prevStatus = b.status
+    setBooks(list => list.map(x => x.id === b.id ? { ...x, status } : x))
+    markBusy(b.id, true)
+    try {
+      const d = await api.updateBook(b.id, { status })
+      if (!d.ok) {
+        setBooks(list => list.map(x => x.id === b.id ? { ...x, status: prevStatus } : x))
+        flash(d.error || '状态更新失败')
+      }
+    } catch (e) {
+      setBooks(list => list.map(x => x.id === b.id ? { ...x, status: prevStatus } : x))
+      flash('网络异常，状态未保存')
+    } finally {
+      markBusy(b.id, false)
+    }
   }
 
-  const del = (b) => {
+  const del = async (b) => {
+    if (String(b.id).startsWith('tmp-') || busyIds.has(b.id)) return
     if (!confirm('删除《' + b.title + '》及其全部划线？')) return
-    api.deleteBook(b.id).then(d => { if (d.ok) load() })
+    const snapshot = booksRef.current
+    markBusy(b.id, true)
+    // 先从列表拿掉，卡片淡出感用 pending 类在删除前一瞬间也可；直接移除更干脆
+    setBooks(list => list.filter(x => x.id !== b.id))
+    try {
+      const d = await api.deleteBook(b.id)
+      if (!d.ok) {
+        setBooks(snapshot)
+        flash(d.error || '删除失败，已恢复')
+      } else {
+        flash('已从书架移除')
+      }
+    } catch (e) {
+      setBooks(snapshot)
+      flash('网络异常，删除未成功')
+    } finally {
+      markBusy(b.id, false)
+    }
   }
 
   const list = useMemo(() => {
@@ -77,12 +175,19 @@ export default function Library() {
 
   return (
     <div className="library">
+      {toast && <div className="lib-toast" role="status">{toast}</div>}
+
       <div className="lib-hero">
         <div>
           <h1 className="lib-title">书架</h1>
           <p className="muted lib-lead">课程文字稿与电子书 · 划线沉淀，导出到 Obsidian / 飞书</p>
         </div>
-        <button type="button" className="btn primary" onClick={() => setShowAdd(!showAdd)}>
+        <button
+          type="button"
+          className="btn primary"
+          disabled={adding}
+          onClick={() => setShowAdd(!showAdd)}
+        >
           {showAdd ? '收起' : '+ 放入书架'}
         </button>
       </div>
@@ -91,22 +196,43 @@ export default function Library() {
         <div className="lib-add paper-card">
           <h3 className="lib-add-tt">添加内容</h3>
           <div className="grid2">
-            <input placeholder="书名 / 课程名 *" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
-            <input placeholder="作者 / 讲师" value={form.author} onChange={e => setForm({ ...form, author: e.target.value })} />
-            <select value={form.category} onChange={e => onCategoryChange(e.target.value)}>
+            <input
+              placeholder="书名 / 课程名 *"
+              value={form.title}
+              disabled={adding}
+              onChange={e => setForm({ ...form, title: e.target.value })}
+            />
+            <input
+              placeholder="作者 / 讲师"
+              value={form.author}
+              disabled={adding}
+              onChange={e => setForm({ ...form, author: e.target.value })}
+            />
+            <select value={form.category} disabled={adding} onChange={e => onCategoryChange(e.target.value)}>
               {CATS.slice(1).map(c => <option key={c} value={c}>{c}</option>)}
             </select>
-            <select value={form.status} onChange={e => setForm({ ...form, status: e.target.value })}>
+            <select value={form.status} disabled={adding} onChange={e => setForm({ ...form, status: e.target.value })}>
               {Object.keys(STATUS).map(s => <option key={s} value={s}>{s}</option>)}
             </select>
             <input
               placeholder={form.category === '课程' ? '课程路径 /courses/<id>/meta.json' : '文件路径 /books/xxx.epub'}
               value={form.file_path}
+              disabled={adding}
               onChange={e => setForm({ ...form, file_path: e.target.value })}
             />
-            <input placeholder="来源（得到 / 微信读书 / 自购）" value={form.source} onChange={e => setForm({ ...form, source: e.target.value })} />
+            <input
+              placeholder="来源（得到 / 微信读书 / 自购）"
+              value={form.source}
+              disabled={adding}
+              onChange={e => setForm({ ...form, source: e.target.value })}
+            />
           </div>
-          <input placeholder="备注（可选）" value={form.note} onChange={e => setForm({ ...form, note: e.target.value })} />
+          <input
+            placeholder="备注（可选）"
+            value={form.note}
+            disabled={adding}
+            onChange={e => setForm({ ...form, note: e.target.value })}
+          />
           {form.category === '课程' && (
             <p className="muted small lib-hint">
               课程：把文字稿放到 <code>web/public/courses/&lt;id&gt;/</code>，路径填
@@ -115,8 +241,12 @@ export default function Library() {
             </p>
           )}
           <div className="row-right">
-            <button type="button" className="btn ghost" onClick={() => setShowAdd(false)}>取消</button>
-            <button type="button" className="btn primary" onClick={add}>保存到书架</button>
+            <button type="button" className="btn ghost" disabled={adding} onClick={() => setShowAdd(false)}>取消</button>
+            <button type="button" className="btn primary" disabled={adding} onClick={add}>
+              {adding ? (
+                <><span className="lib-spin" aria-hidden /> 放入中…</>
+              ) : '保存到书架'}
+            </button>
           </div>
         </div>
       )}
@@ -148,8 +278,18 @@ export default function Library() {
       </div>
 
       {err && <p className="err">{err}</p>}
-      {loading ? (
-        <p className="muted">整理书架…</p>
+
+      {initialLoading && books.length === 0 ? (
+        <div className="lib-skel-grid" aria-busy="true" aria-label="加载书架">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="book paper-card lib-skel">
+              <div className="lib-skel-cover" />
+              <div className="lib-skel-lines">
+                <i /><i /><i />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : list.length === 0 ? (
         <div className="empty paper-empty">
           <p className="empty-tt">{books.length === 0 ? '书架还是空的' : '没有符合条件的书'}</p>
@@ -166,33 +306,59 @@ export default function Library() {
         </div>
       ) : (
         <div className="lib-grid">
-          {list.map(b => (
-            <article key={b.id} className={'book paper-card' + (b.status === '读完' ? ' done' : '')}>
-              <div className={'book-cover cat-' + (b.category === '课程' ? 'course' : b.category === 'EPUB' ? 'epub' : b.category === 'PDF' ? 'pdf' : 'book')}>
-                {b.category === '课程' ? '课' : b.category === 'EPUB' ? 'E' : b.category === 'PDF' ? 'P' : '书'}
-              </div>
-              <div className="book-body">
-                <h3>{b.title}</h3>
-                <p className="muted">{b.author || '佚名'} · {b.category}</p>
-                <p className="book-note">{b.note || (b.source ? '来自 ' + b.source : '暂无备注')}</p>
-                <div className="book-meta">
-                  <span className={'st st-' + (STATUS[b.status] || 'w')}>{b.status}</span>
-                  {b.hl_count > 0 && <span className="hl-n">{b.hl_count} 条划线</span>}
+          {list.map(b => {
+            const pending = b._pending || busyIds.has(b.id)
+            const coverCat = b.category === '课程' ? 'course' : b.category === 'EPUB' ? 'epub' : b.category === 'PDF' ? 'pdf' : 'book'
+            return (
+              <article
+                key={b.id}
+                className={
+                  'book paper-card'
+                  + (b.status === '读完' ? ' done' : '')
+                  + (pending ? ' is-busy' : '')
+                }
+              >
+                {pending && (
+                  <div className="book-busy" aria-hidden>
+                    <span className="lib-spin" />
+                  </div>
+                )}
+                <div className={'book-cover cat-' + coverCat}>
+                  {b.category === '课程' ? '课' : b.category === 'EPUB' ? 'E' : b.category === 'PDF' ? 'P' : '书'}
                 </div>
-              </div>
-              <div className="book-ops">
-                {b.file_path
-                  ? <a className="btn sm primary" href={'#/reader/' + b.id}>阅读</a>
-                  : <button type="button" className="btn sm ghost" onClick={() => alert('请先补全文件路径')}>无文件</button>}
-                <div className="row-right wrap">
-                  {['未读', '在读', '读完'].map(s => (
-                    <button key={s} type="button" className={'btn sm' + (b.status === s ? ' on' : '')} onClick={() => setStatus(b, s)}>{s}</button>
-                  ))}
-                  <button type="button" className="btn sm danger" onClick={() => del(b)}>删</button>
+                <div className="book-body">
+                  <h3>{b.title}</h3>
+                  <p className="muted">{b.author || '佚名'} · {b.category}</p>
+                  <p className="book-note">{b.note || (b.source ? '来自 ' + b.source : '暂无备注')}</p>
+                  <div className="book-meta">
+                    <span className={'st st-' + (STATUS[b.status] || 'w')}>{b.status}</span>
+                    {b.hl_count > 0 && <span className="hl-n">{b.hl_count} 条划线</span>}
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+                <div className="book-ops">
+                  {b.file_path && !String(b.id).startsWith('tmp-')
+                    ? <a className="btn sm primary" href={'#/reader/' + b.id}>阅读</a>
+                    : <button type="button" className="btn sm ghost" disabled={pending} onClick={() => flash(String(b.id).startsWith('tmp-') ? '正在保存，请稍候' : '请先补全文件路径')}>
+                        {String(b.id).startsWith('tmp-') ? '保存中…' : '无文件'}
+                      </button>}
+                  <div className="row-right wrap">
+                    {['未读', '在读', '读完'].map(s => (
+                      <button
+                        key={s}
+                        type="button"
+                        disabled={pending}
+                        className={'btn sm' + (b.status === s ? ' on' : '')}
+                        onClick={() => setStatus(b, s)}
+                      >{s}</button>
+                    ))}
+                    <button type="button" className="btn sm danger" disabled={pending} onClick={() => del(b)}>
+                      {busyIds.has(b.id) ? '…' : '删'}
+                    </button>
+                  </div>
+                </div>
+              </article>
+            )
+          })}
         </div>
       )}
     </div>

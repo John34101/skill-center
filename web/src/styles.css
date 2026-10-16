@@ -365,3 +365,54 @@ html.read-dark body, .reader.is-dark {
 .tool-list { border: 1px solid var(--line); border-radius: 12px; background: var(--surface) }
 .tool-row { display: flex; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); align-items: center }
 .drawer, .mask-drawer { /* noop placeholders */ }
+
+/* ----- Library optimistic UX ----- */
+.lib-toast {
+  position: fixed; top: 72px; left: 50%; transform: translateX(-50%);
+  z-index: 220; background: var(--ink); color: #fffdf8;
+  padding: 10px 18px; border-radius: 999px; font-size: 13px;
+  box-shadow: 0 10px 30px rgba(44, 41, 38, .22);
+  animation: lib-toast-in .2s ease;
+}
+@keyframes lib-toast-in {
+  from { opacity: 0; transform: translate(-50%, -6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+.lib-spin {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.35); border-top-color: #fff;
+  display: inline-block; animation: spin .7s linear infinite; vertical-align: -2px;
+}
+.btn .lib-spin { margin-right: 2px }
+.book.is-busy { opacity: .72; position: relative }
+.book-busy {
+  position: absolute; inset: 0; z-index: 2;
+  display: grid; place-items: center;
+  background: rgba(255, 253, 248, .45); border-radius: inherit;
+  pointer-events: none;
+}
+.book-busy .lib-spin {
+  width: 22px; height: 22px;
+  border-color: rgba(139, 69, 19, .25); border-top-color: var(--accent);
+}
+.lib-skel-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+}
+.lib-skel { min-height: 200px; pointer-events: none }
+.lib-skel-cover {
+  height: 88px; background: linear-gradient(90deg, var(--bg-soft), var(--surface-2), var(--bg-soft));
+  background-size: 200% 100%; animation: lib-shimmer 1.2s ease infinite;
+}
+.lib-skel-lines { padding: 16px; display: flex; flex-direction: column; gap: 10px }
+.lib-skel-lines i {
+  display: block; height: 12px; border-radius: 6px;
+  background: linear-gradient(90deg, var(--bg-soft), var(--surface-2), var(--bg-soft));
+  background-size: 200% 100%; animation: lib-shimmer 1.2s ease infinite;
+}
+.lib-skel-lines i:nth-child(1) { width: 70% }
+.lib-skel-lines i:nth-child(2) { width: 45% }
+.lib-skel-lines i:nth-child(3) { width: 55% }
+@keyframes lib-shimmer {
+  0% { background-position: 100% 0 }
+  100% { background-position: -100% 0 }
+}
