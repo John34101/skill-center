@@ -9,6 +9,30 @@ import CourseReader from '../components/reader/CourseReader.jsx'
 import EpubReader from '../components/reader/EpubReader.jsx'
 import HighlightPanel, { NoteDialog } from '../components/reader/HighlightPanel.jsx'
 
+const LS_TOC = 'sc_reader_toc'
+const LS_HL = 'sc_reader_hl'
+
+function isNarrow() {
+  try {
+    return typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches
+  } catch (e) {
+    return false
+  }
+}
+
+function loadPanelOpen(key) {
+  try {
+    const v = localStorage.getItem(key)
+    if (v === null) {
+      // First visit: desktop open, phone tucked so body stays full-width
+      return !isNarrow()
+    }
+    return v !== '0'
+  } catch (e) {
+    return !isNarrow()
+  }
+}
+
 export default function Reader({ id }) {
   const { user } = useAuth()
   const userId = user?.id ?? user?.email ?? 'anon'
@@ -22,6 +46,9 @@ export default function Reader({ id }) {
   const [chapterId, setChapterId] = useState(null)
   const [darkRead, setDarkRead] = useState(() => localStorage.getItem('sc_read_dark') === '1')
   const [fontId, setFontId] = useState(() => loadFontSizeId())
+  // Panels: default open on desktop-ish; persist preference
+  const [tocOpen, setTocOpen] = useState(() => loadPanelOpen(LS_TOC))
+  const [hlOpen, setHlOpen] = useState(() => loadPanelOpen(LS_HL))
 
   const courseMode = isCourseBook(book)
 
@@ -51,6 +78,14 @@ export default function Reader({ id }) {
   useEffect(() => {
     saveFontSizeId(fontId)
   }, [fontId])
+
+  useEffect(() => {
+    try { localStorage.setItem(LS_TOC, tocOpen ? '1' : '0') } catch (e) {}
+  }, [tocOpen])
+
+  useEffect(() => {
+    try { localStorage.setItem(LS_HL, hlOpen ? '1' : '0') } catch (e) {}
+  }, [hlOpen])
 
   const cycleFont = () => {
     const i = FONT_SIZE_STEPS.findIndex(s => s.id === fontId)
@@ -124,6 +159,13 @@ export default function Reader({ id }) {
   const currentChapter = courseMeta?.chapters?.find(c => String(c.id) === String(chapterId))
   const fontLabel = (FONT_SIZE_STEPS.find(s => s.id === fontId) || FONT_SIZE_STEPS[0]).label
 
+  const mainClass = [
+    'reader-main',
+    courseMode ? 'course-mode' : '',
+    hlOpen ? '' : 'hl-collapsed',
+    courseMode && !tocOpen ? 'toc-collapsed' : '',
+  ].filter(Boolean).join(' ')
+
   return (
     <div className={'reader' + (darkRead ? ' is-dark' : '')}>
       <div className="reader-top">
@@ -136,6 +178,27 @@ export default function Reader({ id }) {
           </span>
         </div>
         <span className="spacer" />
+        {courseMode && (
+          <button
+            type="button"
+            className={'btn sm ghost' + (tocOpen ? ' on-soft' : '')}
+            onClick={() => setTocOpen(v => !v)}
+            aria-pressed={tocOpen}
+            title={tocOpen ? '收起目录' : '展开目录'}
+          >
+            {tocOpen ? '目录 · 开' : '目录 · 关'}
+          </button>
+        )}
+        <button
+          type="button"
+          className={'btn sm ghost' + (hlOpen ? ' on-soft' : '')}
+          onClick={() => setHlOpen(v => !v)}
+          aria-pressed={hlOpen}
+          title={hlOpen ? '收起划线' : '展开划线'}
+        >
+          {hlOpen ? `划线 · 开` : `划线 · 关`}
+          {!hlOpen && highlights.length ? ` (${highlights.length})` : ''}
+        </button>
         {courseMode && (
           <button type="button" className="btn sm ghost" onClick={cycleFont} title="切换正文字号">
             字号 · {fontLabel}
@@ -156,7 +219,7 @@ export default function Reader({ id }) {
       {!book.file_path ? (
         <div className="pad"><p className="err">还没有文件路径。回书房补上课程 meta.json 或 EPUB 路径即可阅读。</p></div>
       ) : (
-        <div className={'reader-main' + (courseMode ? ' course-mode' : '')}>
+        <div className={mainClass}>
           {courseMode ? (
             <CourseReader
               book={book}
@@ -167,17 +230,44 @@ export default function Reader({ id }) {
               setCourseMeta={setCourseMeta}
               userId={userId}
               fontSizeEm={fontSizeEm(fontId)}
+              tocOpen={tocOpen}
+              setTocOpen={setTocOpen}
             />
           ) : (
             <EpubReader book={book} onSelectText={onSelectText} onError={setErr} />
           )}
-          <HighlightPanel
-            highlights={highlights}
-            courseMeta={courseMeta}
-            onSaveNote={saveNote}
-            onDelete={delHl}
-          />
+          {hlOpen ? (
+            <HighlightPanel
+              highlights={highlights}
+              courseMeta={courseMeta}
+              onSaveNote={saveNote}
+              onDelete={delHl}
+              onCollapse={() => setHlOpen(false)}
+            />
+          ) : null}
         </div>
+      )}
+
+      {/* Floating reopen affordances when panels are hidden */}
+      {courseMode && !tocOpen && (
+        <button
+          type="button"
+          className="panel-fab panel-fab-left"
+          onClick={() => setTocOpen(true)}
+          title="展开目录"
+        >
+          目录
+        </button>
+      )}
+      {!hlOpen && (
+        <button
+          type="button"
+          className="panel-fab panel-fab-right"
+          onClick={() => setHlOpen(true)}
+          title="展开划线"
+        >
+          划线{highlights.length ? ` · ${highlights.length}` : ''}
+        </button>
       )}
 
       <NoteDialog noteBox={noteBox} setNoteBox={setNoteBox} saving={saving} onSave={saveHighlight} />

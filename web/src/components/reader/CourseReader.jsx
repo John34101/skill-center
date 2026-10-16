@@ -20,11 +20,12 @@ export default function CourseReader({
   setCourseMeta,
   userId,
   fontSizeEm,
+  tocOpen = true,
+  setTocOpen,
 }) {
   const [chapterHtml, setChapterHtml] = useState('')
   const [loading, setLoading] = useState(false)
   const [err, setErr] = useState('')
-  const [navOpen, setNavOpen] = useState(false)
   const mdBodyRef = useRef(null)
   const scrollRef = useRef(null)
   const restoreScrollRef = useRef(null) // number | null when chapter just loaded
@@ -169,52 +170,61 @@ export default function CourseReader({
     if (!ch) return
     restoreScrollRef.current = 0
     setChapterId(String(ch.id))
-    setNavOpen(false)
+    // On narrow screens, auto-hide TOC after picking a chapter
+    if (typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches) {
+      setTocOpen?.(false)
+    }
     persist({ chapterId: String(ch.id), scrollTop: 0 })
   }
 
+  const toggleToc = () => setTocOpen?.(v => !v)
+
   return (
-    <div className={'course-layout' + (navOpen ? ' nav-open' : '')}>
-      <aside className="course-nav">
-        <div className="side-head course-nav-head">
-          <b>目录</b>
-          <span className="muted">{courseMeta ? courseMeta.chapters.length : 0} 讲</span>
-          <button
-            type="button"
-            className="btn sm ghost course-nav-toggle"
-            aria-expanded={navOpen}
-            onClick={() => setNavOpen(v => !v)}
-          >
-            {navOpen ? '收起' : '展开'}
-          </button>
-        </div>
-        {err && <p className="err small pad">{err}</p>}
-        {!courseMeta && !err && <p className="muted small pad">加载目录…</p>}
-        {courseMeta && (
-          <ul className="course-chapters">
-            {courseMeta.chapters.map((ch, i) => (
-              <li key={ch.id}>
-                <button
-                  type="button"
-                  className={'course-ch' + (String(ch.id) === String(chapterId) ? ' on' : '')}
-                  onClick={() => goChapter(ch)}
-                >
-                  <span className="ch-idx">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="ch-title">{ch.title}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </aside>
+    <div className={'course-layout' + (tocOpen ? ' toc-open' : ' toc-collapsed')}>
+      {tocOpen && (
+        <aside className="course-nav" aria-label="课程目录">
+          <div className="side-head course-nav-head">
+            <b>目录</b>
+            <span className="muted">{courseMeta ? courseMeta.chapters.length : 0} 讲</span>
+            <button
+              type="button"
+              className="btn sm ghost course-nav-toggle"
+              aria-expanded={tocOpen}
+              onClick={toggleToc}
+              title="收起目录"
+            >
+              收起
+            </button>
+          </div>
+          {err && <p className="err small pad">{err}</p>}
+          {!courseMeta && !err && <p className="muted small pad">加载目录…</p>}
+          {courseMeta && (
+            <ul className="course-chapters">
+              {courseMeta.chapters.map((ch, i) => (
+                <li key={ch.id}>
+                  <button
+                    type="button"
+                    className={'course-ch' + (String(ch.id) === String(chapterId) ? ' on' : '')}
+                    onClick={() => goChapter(ch)}
+                  >
+                    <span className="ch-idx">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="ch-title">{ch.title}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </aside>
+      )}
       <div className="course-read paper-sheet" ref={scrollRef}>
         <div className="course-mobile-bar">
           <button
             type="button"
             className="btn sm ghost"
-            onClick={() => setNavOpen(v => !v)}
+            onClick={toggleToc}
+            aria-expanded={tocOpen}
           >
-            {navOpen ? '收起目录' : '目录'}
+            {tocOpen ? '收起目录' : '目录'}
           </button>
           <span className="muted small course-mobile-title">{currentTitle}</span>
         </div>
@@ -249,7 +259,7 @@ export default function CourseReader({
             </button>
           </nav>
         )}
-        <p className="muted small pad course-tip">选中文字即可划线 · 右侧可整理笔记</p>
+        <p className="muted small pad course-tip">选中文字即可划线 · 顶栏可开关目录与划线</p>
       </div>
     </div>
   )
