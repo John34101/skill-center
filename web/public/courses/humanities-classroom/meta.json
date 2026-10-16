@@ -1,0 +1,16 @@
+{
+  "id": "humanities-classroom",
+  "title": "贾行家·人文课堂",
+  "author": "贾行家",
+  "source": "得到（用户 Obsidian 导出）",
+  "tags": [
+    "人文"
+  ],
+  "chapters": [
+    {
+      "id": "01-shen-parents-ai",
+      "title": "沈祖芸：AI 当前家长做什么是错的？",
+      "file": "chapters/01-沈祖芸-AI与家长.md"
+    }
+  ]
+}
