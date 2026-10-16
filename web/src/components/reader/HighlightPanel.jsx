@@ -7,6 +7,7 @@ export default function HighlightPanel({
   courseMeta,
   onSaveNote,
   onDelete,
+  onCollapse,
 }) {
   const chapterTitle = (cid) => {
     if (!cid || !courseMeta) return null
@@ -15,10 +16,20 @@ export default function HighlightPanel({
   }
 
   return (
-    <aside className="reader-side">
+    <aside className="reader-side" aria-label="我的划线">
       <div className="side-head">
         <b>我的划线</b>
         <span className="muted">{highlights.length} 条</span>
+        {onCollapse && (
+          <button
+            type="button"
+            className="btn sm ghost side-collapse"
+            onClick={onCollapse}
+            title="收起划线面板"
+          >
+            收起
+          </button>
+        )}
       </div>
       {highlights.length === 0 ? (
         <p className="muted small pad">选中正文中的文字，即可记下划线与想法。</p>
