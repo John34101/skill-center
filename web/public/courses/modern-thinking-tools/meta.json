@@ -1,0 +1,32 @@
+{
+  "id": "modern-thinking-tools",
+  "title": "万维钢·现代思维工具100讲",
+  "author": "万维钢",
+  "source": "得到（用户导出文字稿）",
+  "tags": [
+    "思维工具",
+    "世界观"
+  ],
+  "chapters": [
+    {
+      "id": "01-preface",
+      "title": "发刊词：现代精英的思维武器库",
+      "file": "chapters/01-发刊词.md"
+    },
+    {
+      "id": "02-narrative",
+      "title": "叙事：这个宇宙的第一性原理",
+      "file": "chapters/02-叙事.md"
+    },
+    {
+      "id": "03-heavy-tail",
+      "title": "重尾：世界服从极端值",
+      "file": "chapters/03-重尾.md"
+    },
+    {
+      "id": "04-agency",
+      "title": "能动：稳态生存的观念陷阱",
+      "file": "chapters/04-能动.md"
+    }
+  ]
+}
