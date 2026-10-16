@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { marked } from 'marked'
+import { loadProgress, saveProgress } from '../../lib/readingProgress.js'
 
 function resolveUrl(path) {
   if (!path) return ''
@@ -10,12 +11,28 @@ function baseDirOf(url) {
   return String(url).replace(/\/[^/]*$/, '/')
 }
 
-export default function CourseReader({ book, chapterId, setChapterId, onSelectText, courseMeta, setCourseMeta }) {
+export default function CourseReader({
+  book,
+  chapterId,
+  setChapterId,
+  onSelectText,
+  courseMeta,
+  setCourseMeta,
+  userId,
+  fontSizeEm,
+}) {
   const [chapterHtml, setChapterHtml] = useState('')
   const [loading, setLoading] = useState(false)
   const [err, setErr] = useState('')
+  const [navOpen, setNavOpen] = useState(false)
   const mdBodyRef = useRef(null)
+  const scrollRef = useRef(null)
+  const restoreScrollRef = useRef(null) // number | null when chapter just loaded
+  const skipScrollSaveRef = useRef(false)
+  const chapterIdRef = useRef(chapterId)
+  chapterIdRef.current = chapterId
 
+  // Load course meta; resume last chapter when opening
   useEffect(() => {
     if (!book?.file_path) return
     let cancelled = false
@@ -32,15 +49,25 @@ export default function CourseReader({ book, chapterId, setChapterId, onSelectTe
         if (!chapters.length) throw new Error('课程目录里没有章节')
         const next = { ...meta, chapters, _base: baseDirOf(metaUrl) }
         setCourseMeta(next)
-        if (!chapterId) setChapterId(chapters[0].id)
+        if (!chapterId) {
+          const saved = loadProgress(userId, book.id)
+          const ok = saved?.chapterId && chapters.some(c => String(c.id) === String(saved.chapterId))
+          const targetId = ok ? String(saved.chapterId) : String(chapters[0].id)
+          if (ok && typeof saved.scrollTop === 'number') {
+            restoreScrollRef.current = saved.scrollTop
+          }
+          setChapterId(targetId)
+        }
       })
       .catch(e => { if (!cancelled) setErr(e.message || '课程加载失败') })
     return () => { cancelled = true }
-  }, [book?.id, book?.file_path])
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only re-fetch when book changes
+  }, [book?.id, book?.file_path, userId])
 
+  // Load chapter markdown
   useEffect(() => {
     if (!courseMeta || !chapterId) return
-    const ch = courseMeta.chapters.find(c => c.id === chapterId)
+    const ch = courseMeta.chapters.find(c => String(c.id) === String(chapterId))
     if (!ch) return
     let cancelled = false
     setLoading(true)
@@ -61,6 +88,59 @@ export default function CourseReader({ book, chapterId, setChapterId, onSelectTe
     return () => { cancelled = true }
   }, [courseMeta, chapterId])
 
+  // After chapter HTML paints: restore scroll or jump to top
+  useEffect(() => {
+    if (loading || !chapterHtml || !scrollRef.current) return
+    const el = scrollRef.current
+    const target = restoreScrollRef.current
+    skipScrollSaveRef.current = true
+    if (typeof target === 'number' && target > 0) {
+      el.scrollTop = target
+    } else {
+      el.scrollTop = 0
+    }
+    restoreScrollRef.current = null
+    // allow scroll saves after layout settles
+    const t = setTimeout(() => { skipScrollSaveRef.current = false }, 80)
+    return () => clearTimeout(t)
+  }, [loading, chapterHtml, chapterId])
+
+  // Persist chapter + scroll
+  const persist = useCallback((patch) => {
+    if (!book?.id) return
+    saveProgress(userId, book.id, patch)
+  }, [userId, book?.id])
+
+  useEffect(() => {
+    if (!chapterId || !book?.id) return
+    persist({ chapterId })
+  }, [chapterId, book?.id, persist])
+
+  const onScroll = useCallback(() => {
+    if (skipScrollSaveRef.current || !scrollRef.current) return
+    const top = scrollRef.current.scrollTop
+    persist({ chapterId: chapterIdRef.current, scrollTop: top })
+  }, [persist])
+
+  // Throttle scroll saves via rAF
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    let raf = 0
+    const handler = () => {
+      if (raf) return
+      raf = requestAnimationFrame(() => {
+        raf = 0
+        onScroll()
+      })
+    }
+    el.addEventListener('scroll', handler, { passive: true })
+    return () => {
+      el.removeEventListener('scroll', handler)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [onScroll, courseMeta]) // rebind when layout mounts
+
   const onMdMouseUp = useCallback(() => {
     if (!chapterId) return
     const sel = window.getSelection()
@@ -79,12 +159,34 @@ export default function CourseReader({ book, chapterId, setChapterId, onSelectTe
     onSelectText({ quote: text, loc: `chapter:${chapterId}:${offset}` })
   }, [chapterId, onSelectText])
 
+  const chapters = courseMeta?.chapters || []
+  const idx = chapters.findIndex(c => String(c.id) === String(chapterId))
+  const prevCh = idx > 0 ? chapters[idx - 1] : null
+  const nextCh = idx >= 0 && idx < chapters.length - 1 ? chapters[idx + 1] : null
+  const currentTitle = idx >= 0 ? chapters[idx].title : ''
+
+  const goChapter = (ch) => {
+    if (!ch) return
+    restoreScrollRef.current = 0
+    setChapterId(String(ch.id))
+    setNavOpen(false)
+    persist({ chapterId: String(ch.id), scrollTop: 0 })
+  }
+
   return (
-    <div className="course-layout">
+    <div className={'course-layout' + (navOpen ? ' nav-open' : '')}>
       <aside className="course-nav">
-        <div className="side-head">
+        <div className="side-head course-nav-head">
           <b>目录</b>
           <span className="muted">{courseMeta ? courseMeta.chapters.length : 0} 讲</span>
+          <button
+            type="button"
+            className="btn sm ghost course-nav-toggle"
+            aria-expanded={navOpen}
+            onClick={() => setNavOpen(v => !v)}
+          >
+            {navOpen ? '收起' : '展开'}
+          </button>
         </div>
         {err && <p className="err small pad">{err}</p>}
         {!courseMeta && !err && <p className="muted small pad">加载目录…</p>}
@@ -94,8 +196,8 @@ export default function CourseReader({ book, chapterId, setChapterId, onSelectTe
               <li key={ch.id}>
                 <button
                   type="button"
-                  className={'course-ch' + (ch.id === chapterId ? ' on' : '')}
-                  onClick={() => setChapterId(ch.id)}
+                  className={'course-ch' + (String(ch.id) === String(chapterId) ? ' on' : '')}
+                  onClick={() => goChapter(ch)}
                 >
                   <span className="ch-idx">{String(i + 1).padStart(2, '0')}</span>
                   <span className="ch-title">{ch.title}</span>
@@ -105,16 +207,47 @@ export default function CourseReader({ book, chapterId, setChapterId, onSelectTe
           </ul>
         )}
       </aside>
-      <div className="course-read paper-sheet">
+      <div className="course-read paper-sheet" ref={scrollRef}>
+        <div className="course-mobile-bar">
+          <button
+            type="button"
+            className="btn sm ghost"
+            onClick={() => setNavOpen(v => !v)}
+          >
+            {navOpen ? '收起目录' : '目录'}
+          </button>
+          <span className="muted small course-mobile-title">{currentTitle}</span>
+        </div>
         {loading ? (
           <p className="muted pad">加载章节…</p>
         ) : (
           <article
             className="md-body"
             ref={mdBodyRef}
+            style={fontSizeEm ? { fontSize: fontSizeEm } : undefined}
             onMouseUp={onMdMouseUp}
             dangerouslySetInnerHTML={{ __html: chapterHtml }}
           />
+        )}
+        {!loading && chapters.length > 0 && (
+          <nav className="chapter-pager" aria-label="章节翻页">
+            <button
+              type="button"
+              className="btn ghost"
+              disabled={!prevCh}
+              onClick={() => goChapter(prevCh)}
+            >
+              ← 上一章{prevCh ? ` · ${prevCh.title}` : ''}
+            </button>
+            <button
+              type="button"
+              className="btn primary"
+              disabled={!nextCh}
+              onClick={() => goChapter(nextCh)}
+            >
+              {nextCh ? `下一章 · ${nextCh.title} →` : '已是最后一章'}
+            </button>
+          </nav>
         )}
         <p className="muted small pad course-tip">选中文字即可划线 · 右侧可整理笔记</p>
       </div>
