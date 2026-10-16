@@ -145,7 +145,7 @@ export default function CourseReader({
   const onMdMouseUp = useCallback(() => {
     if (!chapterId) return
     const sel = window.getSelection()
-    if (!sel || sel.isCollapsed) return
+    if (!sel || sel.isCollapsed || !sel.rangeCount) return
     const text = String(sel.toString() || '').trim()
     if (!text || text.length < 2) return
     const root = mdBodyRef.current
@@ -157,7 +157,15 @@ export default function CourseReader({
       pre.setEnd(sel.anchorNode, sel.anchorOffset)
       offset = pre.toString().length
     } catch (e) { offset = 0 }
-    onSelectText({ quote: text, loc: `chapter:${chapterId}:${offset}` })
+    let rect = null
+    try {
+      const r = sel.getRangeAt(0).getBoundingClientRect()
+      if (r && (r.width || r.height)) {
+        rect = { top: r.top, left: r.left, bottom: r.bottom, right: r.right, width: r.width, height: r.height }
+      }
+    } catch (e) { rect = null }
+    // Only surface a lightweight menu — do not create a highlight yet
+    onSelectText({ quote: text, loc: `chapter:${chapterId}:${offset}`, rect })
   }, [chapterId, onSelectText])
 
   const chapters = courseMeta?.chapters || []
@@ -259,7 +267,7 @@ export default function CourseReader({
             </button>
           </nav>
         )}
-        <p className="muted small pad course-tip">选中文字即可划线 · 顶栏可开关目录与划线</p>
+        <p className="muted small pad course-tip">选中文字后点「划线」或「批注」· 顶栏可开关目录与划线</p>
       </div>
     </div>
   )

@@ -32,7 +32,7 @@ export default function HighlightPanel({
         )}
       </div>
       {highlights.length === 0 ? (
-        <p className="muted small pad">选中正文中的文字，即可记下划线与想法。</p>
+        <p className="muted small pad">选中文字后点「划线」或「批注」。</p>
       ) : (
         <div className="hl-list">
           {highlights.map(hl => {
@@ -74,12 +74,16 @@ export default function HighlightPanel({
   )
 }
 
-export function NoteDialog({ noteBox, setNoteBox, saving, onSave }) {
+export function NoteDialog({
+  noteBox, setNoteBox, saving, onSave,
+  title = '写批注',
+  confirmLabel = '保存批注',
+}) {
   if (!noteBox) return null
   return (
     <div className="mask" onClick={() => setNoteBox(null)}>
       <div className="note-dialog card" onClick={e => e.stopPropagation()}>
-        <h3>记下这段</h3>
+        <h3>{title}</h3>
         <p className="hl-quote">“{noteBox.quote}”</p>
         <textarea
           autoFocus rows={3}
@@ -106,7 +110,7 @@ export function NoteDialog({ noteBox, setNoteBox, saving, onSave }) {
         <div className="row-right">
           <button type="button" className="btn ghost" onClick={() => setNoteBox(null)}>取消</button>
           <button type="button" className="btn primary" disabled={saving} onClick={onSave}>
-            {saving ? '保存中…' : '保存划线'}
+            {saving ? '保存中…' : confirmLabel}
           </button>
         </div>
       </div>
