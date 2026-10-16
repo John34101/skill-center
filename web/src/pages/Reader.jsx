@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { api, normalizeHighlights } from '../api'
 import { isCourseBook, buildHighlightsMarkdown, downloadMarkdown, safeFilename } from '../lib/highlights'
 import {
@@ -8,6 +8,7 @@ import { useAuth } from '../store'
 import CourseReader from '../components/reader/CourseReader.jsx'
 import EpubReader from '../components/reader/EpubReader.jsx'
 import HighlightPanel, { NoteDialog } from '../components/reader/HighlightPanel.jsx'
+import SelectionActionMenu, { wrapCurrentSelectionMark } from '../components/reader/SelectionActionMenu.jsx'
 
 const LS_TOC = 'sc_reader_toc'
 const LS_HL = 'sc_reader_hl'
@@ -33,6 +34,10 @@ function loadPanelOpen(key) {
   }
 }
 
+function clearWindowSelection() {
+  try { window.getSelection()?.removeAllRanges() } catch (e) {}
+}
+
 export default function Reader({ id }) {
   const { user } = useAuth()
   const userId = user?.id ?? user?.email ?? 'anon'
@@ -41,6 +46,7 @@ export default function Reader({ id }) {
   const [highlights, setHighlights] = useState([])
   const [loading, setLoading] = useState(true)
   const [noteBox, setNoteBox] = useState(null)
+  const [selMenu, setSelMenu] = useState(null) // { quote, loc, rect } — lightweight menu only
   const [saving, setSaving] = useState(false)
   const [courseMeta, setCourseMeta] = useState(null)
   const [chapterId, setChapterId] = useState(null)
@@ -49,6 +55,7 @@ export default function Reader({ id }) {
   // Panels: default open on desktop-ish; persist preference
   const [tocOpen, setTocOpen] = useState(() => loadPanelOpen(LS_TOC))
   const [hlOpen, setHlOpen] = useState(() => loadPanelOpen(LS_HL))
+  const epubPaintRef = useRef(null)
 
   const courseMode = isCourseBook(book)
 
@@ -58,6 +65,8 @@ export default function Reader({ id }) {
     setCourseMeta(null)
     setChapterId(null)
     setHighlights([])
+    setSelMenu(null)
+    setNoteBox(null)
     // 书架列表与划线并行（路由 id 即 book_id）
     Promise.all([api.books(), api.bookHighlights(id)]).then(([d, h]) => {
       if (!d.ok) { setErr(d.error || '加载失败'); setLoading(false); return }
@@ -100,27 +109,76 @@ export default function Reader({ id }) {
     })
   }
 
-  const onSelectText = useCallback(({ quote, loc }) => {
-    setNoteBox({ quote, loc, text: '', tag: ['金句'] })
+  // Selection → lightweight menu only (no highlight created yet)
+  const onSelectText = useCallback(({ quote, loc, rect }) => {
+    if (!quote || !String(quote).trim()) return
+    setNoteBox(null)
+    setSelMenu({
+      quote: String(quote).trim(),
+      loc: loc || '',
+      rect: rect || { top: 80, left: window.innerWidth / 2 - 60, bottom: 100, right: window.innerWidth / 2 + 60, width: 120, height: 20 },
+    })
   }, [])
 
-  const saveHighlight = () => {
-    if (!noteBox || !noteBox.quote.trim()) return
+  const dismissSelMenu = useCallback(() => {
+    setSelMenu(null)
+  }, [])
+
+  const paintVisual = useCallback((loc) => {
+    if (courseMode) {
+      wrapCurrentSelectionMark()
+      return
+    }
+    if (loc && epubPaintRef.current?.highlight) {
+      epubPaintRef.current.highlight(loc)
+    }
+    clearWindowSelection()
+  }, [courseMode])
+
+  const persistHighlight = useCallback(({ quote, loc, note, tag }) => {
+    if (!book || !quote?.trim()) return Promise.resolve({ ok: false })
     setSaving(true)
-    api.addHighlight({
+    return api.addHighlight({
       book_id: book.id,
-      quote: noteBox.quote,
-      note: noteBox.text,
-      loc: noteBox.loc,
-      tag: noteBox.tag || [],
+      quote,
+      note: note || '',
+      loc: loc || '',
+      tag: tag || [],
     }).then(d => {
       setSaving(false)
       if (d.ok) {
+        setSelMenu(null)
         setNoteBox(null)
-        try { window.getSelection()?.removeAllRanges() } catch (e) {}
         reloadHighlights()
-      } else alert(d.error || '保存失败')
+      } else {
+        alert(d.error || '保存失败')
+      }
+      return d
     })
+  }, [book])
+
+  // 「划线」: paint immediately (selection still live), then save — no note required
+  const onMenuHighlight = useCallback(() => {
+    if (!selMenu) return
+    const { quote, loc } = selMenu
+    paintVisual(loc)
+    setSelMenu(null)
+    persistHighlight({ quote, loc, note: '', tag: [] })
+  }, [selMenu, paintVisual, persistHighlight])
+
+  // 「批注」: open note dialog only; save (+ optional paint) on confirm
+  const onMenuAnnotate = useCallback(() => {
+    if (!selMenu) return
+    setNoteBox({ quote: selMenu.quote, loc: selMenu.loc, text: '', tag: ['金句'] })
+    setSelMenu(null)
+    // Keep selection if possible so confirm can still paint; dialog mousedown may clear it
+  }, [selMenu])
+
+  const saveHighlight = () => {
+    if (!noteBox || !noteBox.quote.trim()) return
+    const { quote, loc, text, tag } = noteBox
+    paintVisual(loc) // best-effort if selection still alive / EPUB cfi
+    persistHighlight({ quote, loc, note: text, tag: tag || [] })
   }
 
   const saveNote = (hl) => {
@@ -234,7 +292,7 @@ export default function Reader({ id }) {
               setTocOpen={setTocOpen}
             />
           ) : (
-            <EpubReader book={book} onSelectText={onSelectText} onError={setErr} />
+            <EpubReader book={book} onSelectText={onSelectText} onError={setErr} paintApiRef={epubPaintRef} />
           )}
           {hlOpen ? (
             <HighlightPanel
@@ -270,7 +328,21 @@ export default function Reader({ id }) {
         </button>
       )}
 
-      <NoteDialog noteBox={noteBox} setNoteBox={setNoteBox} saving={saving} onSave={saveHighlight} />
+      <SelectionActionMenu
+        menu={selMenu}
+        onHighlight={onMenuHighlight}
+        onAnnotate={onMenuAnnotate}
+        onDismiss={dismissSelMenu}
+      />
+
+      <NoteDialog
+        noteBox={noteBox}
+        setNoteBox={setNoteBox}
+        saving={saving}
+        onSave={saveHighlight}
+        title="写批注"
+        confirmLabel="保存批注"
+      />
     </div>
   )
 }

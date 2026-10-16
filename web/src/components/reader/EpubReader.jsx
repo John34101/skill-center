@@ -7,17 +7,20 @@ function resolveUrl(path) {
   return window.location.origin + (path.startsWith('/') ? '' : '/') + path
 }
 
-export default function EpubReader({ book, onSelectText, onError }) {
+export default function EpubReader({ book, onSelectText, onError, paintApiRef }) {
   const areaRef = useRef(null)
   const renditionRef = useRef(null)
+  const onSelectRef = useRef(onSelectText)
+  onSelectRef.current = onSelectText
 
   useEffect(() => {
     if (!book?.file_path || !areaRef.current) return
     let cancelled = false
+    let rendition = null
     const url = resolveUrl(book.file_path)
     try {
       const epubBook = ePub(url)
-      const rendition = epubBook.renderTo(areaRef.current, {
+      rendition = epubBook.renderTo(areaRef.current, {
         width: '100%', height: '100%', spread: 'none', flow: 'paginated',
       })
       renditionRef.current = rendition
@@ -30,19 +33,51 @@ export default function EpubReader({ book, onSelectText, onError }) {
           color: '#2c2926',
         },
       })
+      // Visual underline style for confirmed highlights
+      try {
+        rendition.themes.default({
+          '::selection': { background: 'rgba(212, 165, 116, .35)' },
+          '.epub-hl': { 'fill': 'rgba(212, 165, 116, .35)' },
+        })
+      } catch (e) { /* ignore */ }
+
       rendition.on('selected', (cfiRange, contents) => {
         const range = contents.getRange(cfiRange)
         const text = (range ? range.toString() : '').trim()
-        if (!text) return
-        onSelectText({ quote: text, loc: cfiRange })
+        if (!text || text.length < 2) return
+        let rect = null
+        try {
+          const r = range.getBoundingClientRect()
+          const iframe = contents.document?.defaultView?.frameElement
+          const ir = iframe ? iframe.getBoundingClientRect() : { top: 0, left: 0 }
+          rect = {
+            top: r.top + ir.top,
+            left: r.left + ir.left,
+            bottom: r.bottom + ir.top,
+            right: r.right + ir.left,
+            width: r.width,
+            height: r.height,
+          }
+        } catch (e) { rect = null }
+        onSelectRef.current?.({ quote: text, loc: cfiRange, rect })
       })
+
+      if (paintApiRef) {
+        paintApiRef.current = {
+          highlight: (cfi) => {
+            try { rendition.annotations.highlight(cfi, {}, undefined, 'epub-hl') } catch (e) {}
+          },
+        }
+      }
     } catch (e) {
       if (!cancelled) onError?.('EPUB 解析失败：' + e.message)
     }
     return () => {
       cancelled = true
+      if (paintApiRef) paintApiRef.current = null
       try { renditionRef.current && renditionRef.current.destroy() } catch (e) {}
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- recreate only when book changes
   }, [book?.id, book?.file_path])
 
   return <div className="reader-area paper-sheet" ref={areaRef} />

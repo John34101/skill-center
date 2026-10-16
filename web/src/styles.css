@@ -382,6 +382,58 @@ button { font-family: inherit }
 .note-dialog h3 { margin: 0; font-family: var(--serif); font-size: 18px }
 .note-dialog textarea { width: 100%; min-height: 90px; resize: vertical }
 
+/* Selection action menu — lightweight 划线 / 批注 */
+.sel-action-menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  padding: 3px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(40, 32, 24, .18);
+  font-family: inherit;
+  user-select: none;
+}
+.sel-action-btn {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.sel-action-btn:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.sel-action-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--line);
+  flex-shrink: 0;
+}
+
+/* In-body highlight mark (course MD) */
+mark.reader-hl,
+.md-body mark.reader-hl {
+  background: rgba(212, 165, 116, .38);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 .08em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+html.read-dark mark.reader-hl,
+.reader.is-dark mark.reader-hl {
+  background: rgba(212, 165, 116, .28);
+}
+
+
 /* ----- Dark reading mode ----- */
 html.read-dark, .reader.is-dark {
   --bg: #1b1916;
