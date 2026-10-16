@@ -23,15 +23,15 @@ export default function Reader({ id }) {
     setErr('')
     setCourseMeta(null)
     setChapterId(null)
-    api.books().then(d => {
+    setHighlights([])
+    // 书架列表与划线并行（路由 id 即 book_id）
+    Promise.all([api.books(), api.bookHighlights(id)]).then(([d, h]) => {
       if (!d.ok) { setErr(d.error || '加载失败'); setLoading(false); return }
       const b = (d.books || []).find(x => String(x.id) === String(id))
       if (!b) { setErr('书籍不存在或无权访问'); setLoading(false); return }
       setBook(b)
-      api.bookHighlights(b.id).then(h => {
-        setLoading(false)
-        if (h.ok) setHighlights(normalizeHighlights(h.highlights))
-      })
+      if (h.ok) setHighlights(normalizeHighlights(h.highlights))
+      setLoading(false)
     })
   }, [id])
 

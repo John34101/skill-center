@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from '../api'
+import { useAuth } from '../store'
 
 const CATS = ['全部', '课程', '书籍', 'PDF', 'EPUB']
 const STATUS = { '未读': 'w', '在读': 'r', '读完': 'd', '搁置': 'p' }
@@ -9,11 +10,12 @@ const emptyForm = () => ({
 })
 
 export default function Library() {
-  const [books, setBooks] = useState([])
+  const { prefetchBooks, setPrefetchBooks } = useAuth()
+  const [books, setBooks] = useState(() => prefetchBooks || [])
   const [cat, setCat] = useState('全部')
   const [q, setQ] = useState('')
   const [statusFilter, setStatusFilter] = useState('全部')
-  const [initialLoading, setInitialLoading] = useState(true)
+  const [initialLoading, setInitialLoading] = useState(() => !(prefetchBooks))
   const [err, setErr] = useState('')
   const [showAdd, setShowAdd] = useState(false)
   const [form, setForm] = useState(emptyForm)
@@ -39,16 +41,14 @@ export default function Library() {
     })
   }
 
-  /** 静默刷新：不清空列表、不闪空白 */
-  const softReload = useCallback(() => {
-    return api.books().then(d => {
-      if (d.ok) setBooks(d.books || [])
-      else setErr(d.error || '加载失败')
-      return d
-    })
-  }, [])
-
   useEffect(() => {
+    // 若 AuthProvider 已并行预取，直接用；否则再拉一次
+    if (prefetchBooks) {
+      setBooks(prefetchBooks)
+      setInitialLoading(false)
+      setPrefetchBooks(null)
+      return () => { if (toastTimer.current) clearTimeout(toastTimer.current) }
+    }
     setInitialLoading(true)
     api.books().then(d => {
       setInitialLoading(false)
@@ -102,7 +102,6 @@ export default function Library() {
           : b
       ))
       flash('已放入书架')
-      softReload() // 后台对齐服务端字段
     } catch (e) {
       setBooks(prev => prev.filter(b => b.id !== tempId))
       setShowAdd(true)
