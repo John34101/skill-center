@@ -1,11 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { api, normalizeHighlights } from '../api'
 import { isCourseBook, buildHighlightsMarkdown, downloadMarkdown, safeFilename } from '../lib/highlights'
+import {
+  FONT_SIZE_STEPS, loadFontSizeId, saveFontSizeId, fontSizeEm,
+} from '../lib/readingProgress.js'
+import { useAuth } from '../store'
 import CourseReader from '../components/reader/CourseReader.jsx'
 import EpubReader from '../components/reader/EpubReader.jsx'
 import HighlightPanel, { NoteDialog } from '../components/reader/HighlightPanel.jsx'
 
 export default function Reader({ id }) {
+  const { user } = useAuth()
+  const userId = user?.id ?? user?.email ?? 'anon'
   const [book, setBook] = useState(null)
   const [err, setErr] = useState('')
   const [highlights, setHighlights] = useState([])
@@ -15,6 +21,7 @@ export default function Reader({ id }) {
   const [courseMeta, setCourseMeta] = useState(null)
   const [chapterId, setChapterId] = useState(null)
   const [darkRead, setDarkRead] = useState(() => localStorage.getItem('sc_read_dark') === '1')
+  const [fontId, setFontId] = useState(() => loadFontSizeId())
 
   const courseMode = isCourseBook(book)
 
@@ -40,6 +47,16 @@ export default function Reader({ id }) {
     document.documentElement.classList.toggle('read-dark', darkRead)
     return () => document.documentElement.classList.remove('read-dark')
   }, [darkRead])
+
+  useEffect(() => {
+    saveFontSizeId(fontId)
+  }, [fontId])
+
+  const cycleFont = () => {
+    const i = FONT_SIZE_STEPS.findIndex(s => s.id === fontId)
+    const next = FONT_SIZE_STEPS[(i + 1) % FONT_SIZE_STEPS.length]
+    setFontId(next.id)
+  }
 
   const reloadHighlights = () => {
     if (!book) return
@@ -104,7 +121,8 @@ export default function Reader({ id }) {
   )
   if (!book) return <p className="muted pad">无此书籍</p>
 
-  const currentChapter = courseMeta?.chapters?.find(c => c.id === chapterId)
+  const currentChapter = courseMeta?.chapters?.find(c => String(c.id) === String(chapterId))
+  const fontLabel = (FONT_SIZE_STEPS.find(s => s.id === fontId) || FONT_SIZE_STEPS[0]).label
 
   return (
     <div className={'reader' + (darkRead ? ' is-dark' : '')}>
@@ -118,6 +136,11 @@ export default function Reader({ id }) {
           </span>
         </div>
         <span className="spacer" />
+        {courseMode && (
+          <button type="button" className="btn sm ghost" onClick={cycleFont} title="切换正文字号">
+            字号 · {fontLabel}
+          </button>
+        )}
         <button type="button" className="btn sm ghost" onClick={() => setDarkRead(v => !v)}>
           {darkRead ? '日间' : '夜间'}
         </button>
@@ -142,6 +165,8 @@ export default function Reader({ id }) {
               onSelectText={onSelectText}
               courseMeta={courseMeta}
               setCourseMeta={setCourseMeta}
+              userId={userId}
+              fontSizeEm={fontSizeEm(fontId)}
             />
           ) : (
             <EpubReader book={book} onSelectText={onSelectText} onError={setErr} />
