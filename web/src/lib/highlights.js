@@ -14,48 +14,66 @@ export function chapterIdFromLoc(loc) {
   return m ? m[1] : null
 }
 
+function offsetFromLoc(loc) {
+  const m = String(loc || '').match(/^chapter:[^:]+:(\d+)/)
+  return m ? Number(m[1]) : 0
+}
+
+function formatTagLine(tags) {
+  // 勿让行首以 # 开头，否则 Markdown 会当成标题
+  if (!tags) return ''
+  return `标签：${tags}`
+}
+
 export function buildHighlightsMarkdown(book, highlights, courseMeta) {
   const lines = [
     `# 《${book.title}》划线笔记`,
     `作者：${book.author || '佚名'}｜导出时间：${new Date().toLocaleDateString('zh-CN')}`,
     '',
   ]
+  // API 返回 id DESC（新→旧）；反转为旧→新，更适合笔记阅读
   const ordered = (highlights || []).slice().reverse()
 
   const appendHl = (h) => {
     lines.push(`> ${String(h.quote || '').replace(/\n/g, '\n> ')}`)
     const tags = (h.tag || []).map(t => '#' + t).join(' ')
     if (h.note) lines.push(`\n📝 ${h.note}${tags ? '  ' + tags : ''}`)
-    else if (tags) lines.push(`\n${tags}`)
+    else if (tags) lines.push(`\n${formatTagLine(tags)}`)
     lines.push(`\n---\n`)
   }
 
   const chapterTitle = (cid) => {
-    if (!cid || !courseMeta) return cid
-    const ch = (courseMeta.chapters || []).find(c => c.id === cid)
-    return ch ? ch.title : cid
+    if (!cid) return cid
+    if (!courseMeta) return cid
+    const ch = (courseMeta.chapters || []).find(c => String(c.id) === String(cid))
+    return ch ? (ch.title || cid) : cid
   }
 
-  if (isCourseBook(book) && courseMeta) {
+  // 课程书：有 meta 按目录排序；无 meta 仍按 loc 分章，避免丢章节结构
+  if (isCourseBook(book)) {
     const groups = new Map()
     const noChapter = []
     ordered.forEach(h => {
       const cid = chapterIdFromLoc(h.loc)
       if (!cid) { noChapter.push(h); return }
-      if (!groups.has(cid)) groups.set(cid, [])
-      groups.get(cid).push(h)
+      const key = String(cid)
+      if (!groups.has(key)) groups.set(key, [])
+      groups.get(key).push(h)
     })
-    const chapterOrder = (courseMeta.chapters || []).map(c => c.id)
-    chapterOrder.forEach(cid => {
+    // 同章内按正文偏移排序（阅读顺序）
+    for (const list of groups.values()) {
+      list.sort((a, b) => offsetFromLoc(a.loc) - offsetFromLoc(b.loc))
+    }
+    const chapterOrder = (courseMeta?.chapters || []).map(c => String(c.id))
+    const emitGroup = (cid) => {
       const list = groups.get(cid)
       if (!list || !list.length) return
       lines.push(`## ${chapterTitle(cid)}`, '')
       list.forEach(appendHl)
-    })
-    ;[...groups.keys()].filter(cid => !chapterOrder.includes(cid)).forEach(cid => {
-      lines.push(`## ${chapterTitle(cid)}`, '')
-      groups.get(cid).forEach(appendHl)
-    })
+      groups.delete(cid)
+    }
+    chapterOrder.forEach(emitGroup)
+    ;[...groups.keys()].forEach(emitGroup)
     if (noChapter.length) {
       lines.push('## 其他划线', '')
       noChapter.forEach(appendHl)

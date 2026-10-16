@@ -10,8 +10,8 @@ export default function HighlightPanel({
 }) {
   const chapterTitle = (cid) => {
     if (!cid || !courseMeta) return null
-    const ch = (courseMeta.chapters || []).find(c => c.id === cid)
-    return ch ? ch.title : cid
+    const ch = (courseMeta.chapters || []).find(c => String(c.id) === String(cid))
+    return ch ? (ch.title || cid) : cid
   }
 
   return (
