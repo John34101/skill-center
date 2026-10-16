@@ -1,0 +1,21 @@
+{
+  "id": "deep-thinking-daily",
+  "title": "王路·深度思考日课",
+  "author": "王路",
+  "source": "得到（用户 Obsidian 导出）",
+  "tags": [
+    "深度思考"
+  ],
+  "chapters": [
+    {
+      "id": "01-mechanism",
+      "title": "机制判断：重度使用AI的人，在怎样分化？",
+      "file": "chapters/01-机制判断.md"
+    },
+    {
+      "id": "02-attention",
+      "title": "注意力焦点：怎样区分深度思考与反刍？",
+      "file": "chapters/02-注意力焦点.md"
+    }
+  ]
+}
