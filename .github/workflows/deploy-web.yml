@@ -1,0 +1,62 @@
+# ============================================================
+# 我的书房 · 前端自动部署（Cloudflare Worker 静态资源）
+# 触发：main 上 web/** 有改动时自动部署；也可在 Actions 页手动触发。
+# 目标：Worker skill-center-web（web/wrangler.toml），
+#       自定义域名 ilovelearning.top / www.ilovelearning.top 已在 Cloudflare 绑定。
+# 凭证：复用仓库 secrets CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID
+#       （与 deploy-worker.yml 相同）。
+# 取代旧做法：提交 cloud/DEPLOY_WEB_NOW 标记后借 daily-skill-recommend-fetch 搭车部署。
+# ============================================================
+name: deploy-skill-center-web
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - ".github/workflows/deploy-web.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-web
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Check build output
+        run: |
+          test -f dist/index.html
+          test -f dist/courses/sample-efficient-learning/meta.json
+
+      - name: Deploy (wrangler deploy → skill-center-web)
+        run: npx -y wrangler@4 deploy
+
+      - name: Smoke test
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -A "Mozilla/5.0" https://ilovelearning.top/)
+          echo "ilovelearning.top -> $code"
+          test "$code" = "200"
