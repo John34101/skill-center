@@ -33,6 +33,28 @@
 
 ## [Unreleased]
 
+#### 2026-10-19 — Claude Code — 前端自动部署 + 停用每日 Skill 推荐 + 按现状重写 AGENTS.md
+
+- **前端自动部署**：新增 `.github/workflows/deploy-web.yml`。main 上 `web/**` 有改动即自动 npm ci → build → `wrangler deploy` 到 Worker `skill-center-web`，最后访问 `https://ilovelearning.top/` 做冒烟检查；也可手动触发。复用仓库 secrets `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID`，不再需要本机 token，也不再借每日推荐 workflow 搭车（`cloud/DEPLOY_WEB_NOW` 方式作废）。
+- **停用每日 Skill 推荐**：GitHub Actions `daily-skill-recommend-fetch` 已通过 API 禁用，并删除 `.github/workflows/daily-recommend-fetch.yml`。
+- **重写 `AGENTS.md`**：原文仍是 10-09 的飞书 / Skill 推荐口径。改为描述书房现状：架构、D1 表、API、部署、上架课程流程、已知问题、角色。旧口径保留在 git 历史（`git show 69afd5a:AGENTS.md`）。
+- 动了哪些文件：`.github/workflows/deploy-web.yml`（新增）、`.github/workflows/daily-recommend-fetch.yml`（删除）、`AGENTS.md`、`CHANGELOG.md`。
+- **后续待办**：
+  - WorkBuddy 本机自动化 `563ac448-23a1-46e1-9548-27a0017c7a95`（每日 9 点 `recommend.py all`）需老板在 WorkBuddy 里手动停用，Claude Code 无法操作。
+  - 课程文字稿 `/courses/**` 目前公开可下载；老板决定自用阶段暂不加登录保护，对外开放前要处理。
+  - 遗留文件（`Skill管理中心.html`、`recommend.py` 等，清单见 AGENTS.md §10）是否清理，待老板决定。
+
+#### 2026-10-15 ~ 10-16 — 补记（Claude Code 根据 git 提交历史整理）— Skill 管理中心改版为「我的书房」
+
+> 这批改动提交时没有写 CHANGELOG，以下按 PR #1–#10 的提交信息补记，细节以对应提交为准。
+
+- PR #1：课程文字稿多章节阅读 + 划线复用导出。
+- PR #2（`423adbe`）：书房重写 Phase 1–3。D1 迁移 `0002_books_user_id.sql`，书架和划线按用户隔离；纸感 UI 与夜间模式；Reader 拆成 CourseReader / EpubReader + 共用划线侧栏；划线导出下载 .md；旧 Skill 功能归档到 `#/legacy`。详见 `STUDY_REWRITE_CHECKLIST.md`。
+- PR #3：书架增删改乐观更新。PR #4：读接口提速（GET 跳过限流、JWT 快速校验、并行请求）。
+- PR #5、#6：上架万维钢《现代思维工具100讲》、王路《深度思考日课》、贾行家《人文课堂》（`web/public/courses/`）。
+- PR #7：阅读器 P0（续读、章节翻页、手机目录折叠、加大字号）。PR #8：划线导出 Markdown 修复。PR #9：目录与划线面板可收起。PR #10：选中文字先弹「划线 / 批注」菜单。
+- 前端部署当时借 `cloud/DEPLOY_WEB_NOW` 标记 + `daily-skill-recommend-fetch` workflow 完成（已被 2026-10-19 的 `deploy-web.yml` 取代）。
+
 #### 2026-10-11 — WorkBuddy（贾维斯 1 号）— 每日推荐执行 + 内容精修（10 条全量）
 
 - 运行 `recommend.py all --date 2026-10-11`（7897 代理 + 放开沙箱）：候选 61 → 池 83（含台账兜底 46）→ 选 10 条（为你推荐 5 / 全网热门 5）；发布 release `7695223875080965303` finished
